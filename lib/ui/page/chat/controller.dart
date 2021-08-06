@@ -8,20 +8,21 @@ import 'package:test/store/chat.dart';
 import 'package:test/util/helper/exception_parser.dart';
 
 class ChatBindings extends Bindings {
-  ChatBindings(this.tag, {this.chat, this.user});
+  ChatBindings(this.tag, {this.chatId, this.user});
   String tag;
-  Chat? chat;
+  String? chatId;
   User? user;
 
   @override
   void dependencies() {
-    Get.put(ChatController(Get.find(), chat, user), tag: tag);
+    Get.put(ChatController(Get.find(), chatId, user), tag: tag);
   }
 }
 
 class ChatController extends GetxController {
-  ChatController(this.chatRepository, this.chat, this.user);
+  ChatController(this.chatRepository, this.chatId, this.user);
   ChatRepository chatRepository;
+  String? chatId;
   Chat? chat;
   User? user;
 
@@ -35,18 +36,18 @@ class ChatController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    if (chat == null) status.value = RxStatus.success();
+    if (chatId == null) status.value = RxStatus.success();
   }
 
   @override
   void onReady() async {
     super.onReady();
 
-    if (chat != null) {
+    if (chatId != null) {
       try {
         List<Future> futures = [
-          chatRepository.chat(chat!.id).then((c) => chat = c),
-          chatRepository.messages(chat!.id).then((i) => items.value = i),
+          chatRepository.chat(chatId!).then((c) => chat = c),
+          chatRepository.messages(chatId!).then((i) => items.value = i),
         ];
         await Future.wait(futures);
         status.value = RxStatus.success();
@@ -61,18 +62,20 @@ class ChatController extends GetxController {
   }
 
   Future<void> sendMessage() async {
-    try {
-      ChatMessage item = ChatMessage(
-        '',
-        chat!.id,
-        Get.find<AuthService>().user!.id,
-        DateTime.now(),
-        text: messageEditingController.text,
-      );
-      messageEditingController.clear();
-      items.add(await chatRepository.sendMessage(item));
-    } catch (e) {
-      await ExceptionParser.error(e);
+    if (chat != null) {
+      try {
+        ChatMessage item = ChatMessage(
+          '',
+          chat!.id,
+          Get.find<AuthService>().user!.id,
+          DateTime.now(),
+          text: messageEditingController.text,
+        );
+        messageEditingController.clear();
+        items.add(await chatRepository.sendMessage(item));
+      } catch (e) {
+        await ExceptionParser.error(e);
+      }
     }
   }
 }

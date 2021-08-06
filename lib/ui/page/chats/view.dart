@@ -28,7 +28,7 @@ class ChatsView extends GetView<ChatsController> {
                         .map((e) => ListTile(
                               title: Text(e.id),
                               onTap: () => Get.to(ChatView(e.id),
-                                  binding: ChatBindings(e.id, chat: e)),
+                                  binding: ChatBindings(e.id, chatId: e.id)),
                             ))
                         .toList(),
                   ),

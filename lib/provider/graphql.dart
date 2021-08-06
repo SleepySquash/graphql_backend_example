@@ -336,4 +336,16 @@ class GraphQlProvider {
     return PostChatMessage$Mutation$PostChatMessageResult$ChatMessage.fromJson(
         result.data!['postChatMessage']);
   }
+
+  Future<CreateDialogChat$Mutation$CreateDialogChatResult$Chat>
+      createDialogChat(String responderId) async {
+    final QueryResult result = await getClient().query(QueryOptions(
+        document: CreateDialogChatMutation(
+          variables: CreateDialogChatArguments(responderId: responderId),
+        ).document,
+        variables: {'responderId': responderId}));
+    if (result.hasException) throw Exception(result.exception.toString());
+    return CreateDialogChat$Mutation$CreateDialogChatResult$Chat.fromJson(
+        result.data!['createDialogChat']);
+  }
 }

@@ -1,7 +1,10 @@
 import 'dart:ui';
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:test/ui/page/chat/controller.dart';
+import 'package:test/ui/page/chat/view.dart';
 import 'package:test/ui/page/profile/controller.dart';
 
 class ProfileView extends StatelessWidget {
@@ -76,6 +79,17 @@ class ProfileView extends StatelessWidget {
                                   ListTile(
                                     title: Text('Write a message'.tr),
                                     leading: const Icon(Icons.message),
+                                    onTap: () => Get.to(
+                                        ChatView(_.user!.contacts.firstOrNull
+                                                ?.dialogId ??
+                                            _.user!.id),
+                                        binding: ChatBindings(
+                                            _.user!.contacts.firstOrNull
+                                                    ?.dialogId ??
+                                                _.user!.id,
+                                            chatId: _.user!.contacts.firstOrNull
+                                                ?.dialogId,
+                                            user: _.user)),
                                   ),
                                   ListTile(
                                     title: Text('Audio call'.tr),

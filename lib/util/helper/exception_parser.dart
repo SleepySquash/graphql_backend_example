@@ -25,7 +25,15 @@ class ExceptionParser {
           );
   }
 
-  static void success(String message) => Get.snackbar('Success', message);
+  static void success(String message) => Get.snackbar(
+        'Success',
+        message,
+        barBlur: 100,
+        snackPosition: SnackPosition.BOTTOM,
+        icon: Icon(Icons.done),
+        shouldIconPulse: true,
+        margin: EdgeInsets.all(10),
+      );
 
   static String parse(Object e) {
     String string = e.toString();

@@ -1,4 +1,5 @@
 import 'package:test/api/backend/api.dart';
+import 'package:test/domain/model/avatar.dart';
 import 'package:test/domain/model/chat.dart';
 import 'package:test/domain/model/chat_item.dart';
 import 'package:test/provider/graphql.dart';
@@ -57,6 +58,14 @@ class ChatRepository implements AbstractChatRepository {
       response.kind.toString(),
       response.lastDelivery,
       name: response.name,
+      members: response.members.nodes
+          .map((e) => ChatUser(
+                e.user.id,
+                e.user.user.num,
+                name: e.user.name,
+                avatar: Avatar(big: e.user.user.avatar?.big),
+              ))
+          .toList(),
     );
   }
 
@@ -82,6 +91,25 @@ class ChatRepository implements AbstractChatRepository {
       response.at,
       text: response.text,
       repliesTo: response.repliesTo?.id,
+    );
+  }
+
+  Future<Chat> createDialog(String userId) async {
+    CreateDialogChat$Mutation$CreateDialogChatResult$Chat response =
+        await graphQlProvider.createDialogChat(userId);
+    return Chat(
+      response.id,
+      response.kind.toString(),
+      DateTime.fromMillisecondsSinceEpoch(0),
+      name: response.name,
+      members: response.members.nodes
+          .map((e) => ChatUser(
+                e.user.id,
+                e.user.user.num,
+                name: e.user.name,
+                avatar: Avatar(big: e.user.user.avatar?.big),
+              ))
+          .toList(),
     );
   }
 }

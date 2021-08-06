@@ -15,12 +15,18 @@ query user($id: UserId!) {
                 angle
             },
             original,
+            big
         },
         mutualContactsCount,
         isDeleted,
         contacts {
             id,
             name,
+            chatUsers {
+                dialog {
+                    id
+                }
+            },
             favoritePosition
         }
     }

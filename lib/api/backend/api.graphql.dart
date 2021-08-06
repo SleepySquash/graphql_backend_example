@@ -1555,10 +1555,48 @@ class User$Query$User$UserAvatar extends JsonSerializable with EquatableMixin {
 
   late String original;
 
+  late String big;
+
   @override
-  List<Object?> get props => [crop, original];
+  List<Object?> get props => [crop, original, big];
   @override
   Map<String, dynamic> toJson() => _$User$Query$User$UserAvatarToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class User$Query$User$ChatContact$ChatUser$Chat extends JsonSerializable
+    with EquatableMixin {
+  User$Query$User$ChatContact$ChatUser$Chat();
+
+  factory User$Query$User$ChatContact$ChatUser$Chat.fromJson(
+          Map<String, dynamic> json) =>
+      _$User$Query$User$ChatContact$ChatUser$ChatFromJson(json);
+
+  late String id;
+
+  @override
+  List<Object?> get props => [id];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$User$Query$User$ChatContact$ChatUser$ChatToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class User$Query$User$ChatContact$ChatUser extends JsonSerializable
+    with EquatableMixin {
+  User$Query$User$ChatContact$ChatUser();
+
+  factory User$Query$User$ChatContact$ChatUser.fromJson(
+          Map<String, dynamic> json) =>
+      _$User$Query$User$ChatContact$ChatUserFromJson(json);
+
+  User$Query$User$ChatContact$ChatUser$Chat? dialog;
+
+  @override
+  List<Object?> get props => [dialog];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$User$Query$User$ChatContact$ChatUserToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -1572,10 +1610,12 @@ class User$Query$User$ChatContact extends JsonSerializable with EquatableMixin {
 
   late String name;
 
+  late List<User$Query$User$ChatContact$ChatUser> chatUsers;
+
   double? favoritePosition;
 
   @override
-  List<Object?> get props => [id, name, favoritePosition];
+  List<Object?> get props => [id, name, chatUsers, favoritePosition];
   @override
   Map<String, dynamic> toJson() => _$User$Query$User$ChatContactToJson(this);
 }
@@ -2430,6 +2470,221 @@ class RecentChats$Query extends JsonSerializable with EquatableMixin {
   Map<String, dynamic> toJson() => _$RecentChats$QueryToJson(this);
 }
 
+@JsonSerializable(explicitToJson: true)
+class CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar
+    extends JsonSerializable with EquatableMixin {
+  CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar();
+
+  factory CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar.fromJson(
+          Map<String, dynamic> json) =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatarFromJson(
+          json);
+
+  late String big;
+
+  @override
+  List<Object?> get props => [big];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatarToJson(
+          this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User
+    extends JsonSerializable with EquatableMixin {
+  CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User();
+
+  factory CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User.fromJson(
+          Map<String, dynamic> json) =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$UserFromJson(
+          json);
+
+  late String num;
+
+  CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar?
+      avatar;
+
+  @override
+  List<Object?> get props => [num, avatar];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$UserToJson(
+          this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser
+    extends JsonSerializable with EquatableMixin {
+  CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser();
+
+  factory CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser.fromJson(
+          Map<String, dynamic> json) =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUserFromJson(
+          json);
+
+  late String id;
+
+  late CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User
+      user;
+
+  String? name;
+
+  @override
+  List<Object?> get props => [id, user, name];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUserToJson(
+          this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember
+    extends JsonSerializable with EquatableMixin {
+  CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember();
+
+  factory CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember.fromJson(
+          Map<String, dynamic> json) =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMemberFromJson(
+          json);
+
+  late CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser
+      user;
+
+  @override
+  List<Object?> get props => [user];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMemberToJson(
+          this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection
+    extends JsonSerializable with EquatableMixin {
+  CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection();
+
+  factory CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection.fromJson(
+          Map<String, dynamic> json) =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnectionFromJson(
+          json);
+
+  late List<
+          CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember>
+      nodes;
+
+  @override
+  List<Object?> get props => [nodes];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnectionToJson(
+          this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class CreateDialogChat$Mutation$CreateDialogChatResult$Chat
+    extends CreateDialogChat$Mutation$CreateDialogChatResult
+    with EquatableMixin {
+  CreateDialogChat$Mutation$CreateDialogChatResult$Chat();
+
+  factory CreateDialogChat$Mutation$CreateDialogChatResult$Chat.fromJson(
+          Map<String, dynamic> json) =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$ChatFromJson(json);
+
+  late String id;
+
+  String? name;
+
+  late CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection
+      members;
+
+  @JsonKey(unknownEnumValue: ChatKind.artemisUnknown)
+  late ChatKind kind;
+
+  @override
+  List<Object?> get props => [id, name, members, kind];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$ChatToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatError
+    extends CreateDialogChat$Mutation$CreateDialogChatResult
+    with EquatableMixin {
+  CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatError();
+
+  factory CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatError.fromJson(
+          Map<String, dynamic> json) =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatErrorFromJson(
+          json);
+
+  @JsonKey(unknownEnumValue: CreateDialogChatErrorCode.artemisUnknown)
+  late CreateDialogChatErrorCode code;
+
+  @override
+  List<Object?> get props => [code];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatErrorToJson(
+          this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class CreateDialogChat$Mutation$CreateDialogChatResult extends JsonSerializable
+    with EquatableMixin {
+  CreateDialogChat$Mutation$CreateDialogChatResult();
+
+  factory CreateDialogChat$Mutation$CreateDialogChatResult.fromJson(
+      Map<String, dynamic> json) {
+    switch (json['__typename'].toString()) {
+      case r'Chat':
+        return CreateDialogChat$Mutation$CreateDialogChatResult$Chat.fromJson(
+            json);
+      case r'CreateDialogChatError':
+        return CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatError
+            .fromJson(json);
+      default:
+    }
+    return _$CreateDialogChat$Mutation$CreateDialogChatResultFromJson(json);
+  }
+
+  @JsonKey(name: '__typename')
+  String? $$typename;
+
+  @override
+  List<Object?> get props => [$$typename];
+  @override
+  Map<String, dynamic> toJson() {
+    switch ($$typename) {
+      case r'Chat':
+        return (this as CreateDialogChat$Mutation$CreateDialogChatResult$Chat)
+            .toJson();
+      case r'CreateDialogChatError':
+        return (this
+                as CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatError)
+            .toJson();
+      default:
+    }
+    return _$CreateDialogChat$Mutation$CreateDialogChatResultToJson(this);
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class CreateDialogChat$Mutation extends JsonSerializable with EquatableMixin {
+  CreateDialogChat$Mutation();
+
+  factory CreateDialogChat$Mutation.fromJson(Map<String, dynamic> json) =>
+      _$CreateDialogChat$MutationFromJson(json);
+
+  late CreateDialogChat$Mutation$CreateDialogChatResult createDialogChat;
+
+  @override
+  List<Object?> get props => [createDialogChat];
+  @override
+  Map<String, dynamic> toJson() => _$CreateDialogChat$MutationToJson(this);
+}
+
 enum UnfavoriteChatContactErrorCode {
   @JsonValue('UNKNOWN_CHAT_CONTACT')
   unknownChatContact,
@@ -2511,6 +2766,14 @@ enum ChatKind {
   dialog,
   @JsonValue('GROUP')
   group,
+  @JsonValue('ARTEMIS_UNKNOWN')
+  artemisUnknown,
+}
+enum CreateDialogChatErrorCode {
+  @JsonValue('BLOCKED')
+  blocked,
+  @JsonValue('UNKNOWN_DIRECT_LINK')
+  unknownDirectLink,
   @JsonValue('ARTEMIS_UNKNOWN')
   artemisUnknown,
 }
@@ -4468,6 +4731,12 @@ final USER_QUERY_DOCUMENT = DocumentNode(definitions: [
                         alias: null,
                         arguments: [],
                         directives: [],
+                        selectionSet: null),
+                    FieldNode(
+                        name: NameNode(value: 'big'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
                         selectionSet: null)
                   ])),
               FieldNode(
@@ -4500,6 +4769,26 @@ final USER_QUERY_DOCUMENT = DocumentNode(definitions: [
                         arguments: [],
                         directives: [],
                         selectionSet: null),
+                    FieldNode(
+                        name: NameNode(value: 'chatUsers'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: SelectionSetNode(selections: [
+                          FieldNode(
+                              name: NameNode(value: 'dialog'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: SelectionSetNode(selections: [
+                                FieldNode(
+                                    name: NameNode(value: 'id'),
+                                    alias: null,
+                                    arguments: [],
+                                    directives: [],
+                                    selectionSet: null)
+                              ]))
+                        ])),
                     FieldNode(
                         name: NameNode(value: 'favoritePosition'),
                         alias: null,
@@ -5479,4 +5768,175 @@ class RecentChatsQuery
   @override
   RecentChats$Query parse(Map<String, dynamic> json) =>
       RecentChats$Query.fromJson(json);
+}
+
+@JsonSerializable(explicitToJson: true)
+class CreateDialogChatArguments extends JsonSerializable with EquatableMixin {
+  CreateDialogChatArguments({this.responderId});
+
+  @override
+  factory CreateDialogChatArguments.fromJson(Map<String, dynamic> json) =>
+      _$CreateDialogChatArgumentsFromJson(json);
+
+  final String? responderId;
+
+  @override
+  List<Object?> get props => [responderId];
+  @override
+  Map<String, dynamic> toJson() => _$CreateDialogChatArgumentsToJson(this);
+}
+
+final CREATE_DIALOG_CHAT_MUTATION_DOCUMENT = DocumentNode(definitions: [
+  OperationDefinitionNode(
+      type: OperationType.mutation,
+      name: NameNode(value: 'createDialogChat'),
+      variableDefinitions: [
+        VariableDefinitionNode(
+            variable: VariableNode(name: NameNode(value: 'responderId')),
+            type: NamedTypeNode(
+                name: NameNode(value: 'UserId'), isNonNull: false),
+            defaultValue: DefaultValueNode(value: null),
+            directives: [])
+      ],
+      directives: [],
+      selectionSet: SelectionSetNode(selections: [
+        FieldNode(
+            name: NameNode(value: 'createDialogChat'),
+            alias: null,
+            arguments: [
+              ArgumentNode(
+                  name: NameNode(value: 'responderId'),
+                  value: VariableNode(name: NameNode(value: 'responderId')))
+            ],
+            directives: [],
+            selectionSet: SelectionSetNode(selections: [
+              FieldNode(
+                  name: NameNode(value: '__typename'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null),
+              InlineFragmentNode(
+                  typeCondition: TypeConditionNode(
+                      on: NamedTypeNode(
+                          name: NameNode(value: 'Chat'), isNonNull: false)),
+                  directives: [],
+                  selectionSet: SelectionSetNode(selections: [
+                    FieldNode(
+                        name: NameNode(value: 'id'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null),
+                    FieldNode(
+                        name: NameNode(value: 'name'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null),
+                    FieldNode(
+                        name: NameNode(value: 'members'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: SelectionSetNode(selections: [
+                          FieldNode(
+                              name: NameNode(value: 'nodes'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: SelectionSetNode(selections: [
+                                FieldNode(
+                                    name: NameNode(value: 'user'),
+                                    alias: null,
+                                    arguments: [],
+                                    directives: [],
+                                    selectionSet: SelectionSetNode(selections: [
+                                      FieldNode(
+                                          name: NameNode(value: 'id'),
+                                          alias: null,
+                                          arguments: [],
+                                          directives: [],
+                                          selectionSet: null),
+                                      FieldNode(
+                                          name: NameNode(value: 'user'),
+                                          alias: null,
+                                          arguments: [],
+                                          directives: [],
+                                          selectionSet:
+                                              SelectionSetNode(selections: [
+                                            FieldNode(
+                                                name: NameNode(value: 'num'),
+                                                alias: null,
+                                                arguments: [],
+                                                directives: [],
+                                                selectionSet: null),
+                                            FieldNode(
+                                                name: NameNode(value: 'avatar'),
+                                                alias: null,
+                                                arguments: [],
+                                                directives: [],
+                                                selectionSet: SelectionSetNode(
+                                                    selections: [
+                                                      FieldNode(
+                                                          name: NameNode(
+                                                              value: 'big'),
+                                                          alias: null,
+                                                          arguments: [],
+                                                          directives: [],
+                                                          selectionSet: null)
+                                                    ]))
+                                          ])),
+                                      FieldNode(
+                                          name: NameNode(value: 'name'),
+                                          alias: null,
+                                          arguments: [],
+                                          directives: [],
+                                          selectionSet: null)
+                                    ]))
+                              ]))
+                        ])),
+                    FieldNode(
+                        name: NameNode(value: 'kind'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null)
+                  ])),
+              InlineFragmentNode(
+                  typeCondition: TypeConditionNode(
+                      on: NamedTypeNode(
+                          name: NameNode(value: 'CreateDialogChatError'),
+                          isNonNull: false)),
+                  directives: [],
+                  selectionSet: SelectionSetNode(selections: [
+                    FieldNode(
+                        name: NameNode(value: 'code'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null)
+                  ]))
+            ]))
+      ]))
+]);
+
+class CreateDialogChatMutation
+    extends GraphQLQuery<CreateDialogChat$Mutation, CreateDialogChatArguments> {
+  CreateDialogChatMutation({required this.variables});
+
+  @override
+  final DocumentNode document = CREATE_DIALOG_CHAT_MUTATION_DOCUMENT;
+
+  @override
+  final String operationName = 'createDialogChat';
+
+  @override
+  final CreateDialogChatArguments variables;
+
+  @override
+  List<Object?> get props => [document, operationName, variables];
+  @override
+  CreateDialogChat$Mutation parse(Map<String, dynamic> json) =>
+      CreateDialogChat$Mutation.fromJson(json);
 }

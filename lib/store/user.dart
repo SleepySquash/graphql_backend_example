@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:test/api/backend/api.dart';
 import 'package:test/domain/model/avatar.dart';
 import 'package:test/domain/model/chat_contact.dart';
@@ -62,10 +63,15 @@ class UserRepository implements AbstractUserRepository {
         x2: user.avatar?.crop?.bottomRight.x,
         y2: user.avatar?.crop?.bottomRight.y,
         original: user.avatar?.original,
+        big: user.avatar?.big,
       ),
       contacts: user.contacts
-          .map((e) =>
-              ChatContact(e.id, e.name, favoritePosition: e.favoritePosition))
+          .map((e) => ChatContact(
+                e.id,
+                e.name,
+                dialogId: e.chatUsers.firstOrNull?.dialog?.id,
+                favoritePosition: e.favoritePosition,
+              ))
           .toList(),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:test/domain/model/chat_item.dart';
@@ -103,15 +104,29 @@ class ChatView extends GetView<ChatController> {
           ? Scaffold(body: Center(child: CircularProgressIndicator()))
           : Scaffold(
               appBar: AppBar(
-                title: Text(
-                    controller.chat?.name ?? controller.user?.name ?? 'null'),
+                title: Text(controller.chat?.name ??
+                    controller.user?.name ??
+                    controller.chat?.members.firstOrNull?.name ??
+                    'null'),
                 actions: [
-                  TextButton(
-                    child: const CircleAvatar(),
-                    onPressed: () => Get.to(
-                      ProfileView('id'),
-                    ),
-                  )
+                  controller.chat == null
+                      ? TextButton(
+                          child: CircleAvatar(
+                            backgroundImage: NetworkImage(
+                                'http://localhost/files${controller.user!.avatar!.big}'),
+                          ),
+                          onPressed: () =>
+                              Get.to(() => ProfileView(controller.user!.id)),
+                        )
+                      : controller.chat!.kind == 'ChatKind.dialog'
+                          ? TextButton(
+                              child: CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                    'http://localhost/files${controller.chat!.members.firstOrNull?.avatar!.big}'),
+                              ),
+                              onPressed: () => {})
+                          : TextButton(
+                              child: const CircleAvatar(), onPressed: () => {}),
                 ],
               ),
               body: Stack(

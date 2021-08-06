@@ -1,0 +1,27 @@
+mutation createDialogChat($responderId: UserId) {
+    createDialogChat(responderId: $responderId) {
+        __typename,
+        ... on Chat {
+            id,
+            name,
+            members {
+                nodes {
+                    user {
+                        id,
+                        user {
+                            num,
+                            avatar {
+                                big,
+                            }
+                        },
+                        name
+                    },
+                }
+            },
+            kind
+        },
+        ... on CreateDialogChatError {
+            code
+        }
+    }
+}

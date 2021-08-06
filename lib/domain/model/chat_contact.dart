@@ -17,11 +17,12 @@ class ChatContactUser extends Equatable {
 // ignore: must_be_immutable
 class ChatContact extends Equatable {
   ChatContact(this.id, this.name,
-      {this.users = const [], this.favoritePosition});
+      {this.users = const [], this.dialogId, this.favoritePosition});
 
   final String id;
   final String name;
   List<ChatContactUser> users;
+  String? dialogId;
   double? favoritePosition;
 
   @override

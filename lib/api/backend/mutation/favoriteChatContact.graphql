@@ -1,0 +1,11 @@
+mutation favoriteChatContact($id: ChatContactId!, $pos: ChatContactPosition!) {
+    favoriteChatContact(id: $id, pos: $pos) {
+        __typename,
+        ...on ChatContact {
+            favoritePosition
+        },
+        ...on FavoriteChatContactError {
+            code
+        }  
+    }
+}

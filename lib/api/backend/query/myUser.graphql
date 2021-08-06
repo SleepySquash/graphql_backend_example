@@ -1,0 +1,26 @@
+query myUser() {
+    myUser {
+        id,
+        num,
+        login,
+        name,
+        bio,
+        hasPassword,
+        avatar {
+            crop { 
+                topLeft {
+                    x, y
+                },
+                bottomRight {
+                    x, y
+                },
+                angle
+            },
+            original,
+            full,
+            big,
+            medium,
+            small
+        },
+    }
+}

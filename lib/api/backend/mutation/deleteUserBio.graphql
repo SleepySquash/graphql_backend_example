@@ -1,0 +1,5 @@
+mutation deleteUserBio() {
+    deleteUserBio() {
+        bio
+    }
+}

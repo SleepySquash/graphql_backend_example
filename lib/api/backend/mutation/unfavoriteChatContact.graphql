@@ -1,0 +1,11 @@
+mutation unfavoriteChatContact($id: ChatContactId!) {
+    unfavoriteChatContact(id: $id) {
+        __typename,
+        ...on ChatContact {
+            favoritePosition
+        },
+        ...on UnfavoriteChatContactError {
+            code
+        }
+    }
+}

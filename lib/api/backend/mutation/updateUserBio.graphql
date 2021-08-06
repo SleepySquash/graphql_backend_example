@@ -1,0 +1,5 @@
+mutation updateUserBio($bio: UserBio!) {
+    updateUserBio(bio: $bio) {
+        bio
+    }
+}

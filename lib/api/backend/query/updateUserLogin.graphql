@@ -1,0 +1,11 @@
+mutation updateUserLogin($login: UserLogin!) {
+    updateUserLogin(login: $login) {
+        __typename,
+        ... on MyUser {
+            login
+        }
+        ... on UpdateUserLoginError {
+            code
+        }
+    }
+}

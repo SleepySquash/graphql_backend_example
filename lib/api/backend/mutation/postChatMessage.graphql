@@ -1,0 +1,30 @@
+mutation postChatMessage($chatId: ChatId!, $text: ChatMessageText, $attachments: [AttachmentId!], $repliesTo: ChatItemId) {
+    postChatMessage(chatId: $chatId, text: $text, attachments: $attachments, repliesTo: $repliesTo) {
+        __typename,
+        ... on ChatMessage {
+            id,
+            chatId,
+            authorId,
+            repliesTo {
+                id
+            },
+            text,
+            attachments {
+                __typename,
+                id,
+                original,
+                filename,
+                size,
+                ... on ImageAttachment {
+                    big,
+                    medium,
+                    small
+                },
+            },
+            at
+        },
+        ... on PostChatMessageError {
+            code
+        }
+    }
+}

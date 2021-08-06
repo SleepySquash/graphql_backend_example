@@ -1,0 +1,23 @@
+query chat($id: ChatId!) {
+    chat(id: $id) {
+        id,
+        name,
+        members {
+            nodes {
+                user {
+                    id,
+                    user {
+                        num,
+                        avatar {
+                            big,
+                        }
+                    },
+                    name
+                }
+            }
+        },
+        kind,
+        isHidden,
+        lastDelivery,
+    }
+}

@@ -1,0 +1,31 @@
+query messages($id: ChatId!, $first: Int, $after: String, $last: Int, $before: String) {
+    chat(id: $id) {
+        items(first: $first, after: $after, last: $last, before: $before) {
+            nodes {
+                __typename,
+                    id,
+                    chatId,
+                    authorId,
+                    at,
+                    ...on ChatMemberInfo {
+                        byId,
+                        action
+                    },
+                    #...on ChatCall {
+                        # TODO
+                    #},
+                    ...on ChatMessage {
+                        repliesTo {
+                            id       
+                        }
+                        text,
+                    },
+                    ...on ChatForward {
+                        item {
+                            id
+                        }
+                    }
+            }
+        }
+    }
+}

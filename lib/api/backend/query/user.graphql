@@ -1,0 +1,27 @@
+query user($id: UserId!) {
+    user(id: $id) {
+        id,
+        num,
+        name,
+        bio,
+        avatar {
+            crop { 
+                topLeft {
+                    x, y
+                },
+                bottomRight {
+                    x, y
+                },
+                angle
+            },
+            original,
+        },
+        mutualContactsCount,
+        isDeleted,
+        contacts {
+            id,
+            name,
+            favoritePosition
+        }
+    }
+}

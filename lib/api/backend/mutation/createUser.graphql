@@ -1,0 +1,12 @@
+mutation createUser() {
+    createUser {
+        user {
+            id,
+            num
+        },
+        session {
+            token,
+            expireAt
+        }
+    }
+}

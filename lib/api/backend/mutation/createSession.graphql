@@ -1,0 +1,37 @@
+mutation createSession($num: UserNum, $login: UserLogin, $email: UserEmail, $phone: UserPhone, $password: UserPassword!, $remember: Boolean) {
+    createSession(num: $num, login: $login, email: $email, phone: $phone, password: $password, remember: $remember) {
+         __typename,
+        ... on CreateSessionOk {
+            session {
+                token,
+                expireAt
+            },
+            user {
+                id,
+                num,
+                login,
+                name,
+                bio,
+                avatar {
+                    crop { 
+                        topLeft {
+                            x, y
+                        },
+                        bottomRight {
+                            x, y
+                        },
+                        angle
+                    },
+                    original,
+                    full,
+                    big,
+                    medium,
+                    small
+                },
+            }
+        }
+        ... on CreateSessionError {
+            code
+        }
+    }
+}

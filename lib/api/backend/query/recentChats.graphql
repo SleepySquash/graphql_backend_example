@@ -1,0 +1,38 @@
+query recentChats($first: Int, $after: String, $last: Int, $before: String) {
+    recentChats(first: $first, after: $after, last: $last, before: $before) {
+        nodes {
+            id,
+            name,
+            kind,
+            isHidden,
+            lastDelivery,
+            lastItem {
+                node {
+                    __typename,
+                    id,
+                    chatId,
+                    authorId,
+                    at,
+                    ...on ChatMemberInfo {
+                        byId,
+                        action
+                    },
+                    #...on ChatCall {
+                        # TODO
+                    #},
+                    ...on ChatMessage {
+                        repliesTo {
+                            id       
+                        }
+                        text,
+                    },
+                    ...on ChatForward {
+                        item {
+                            id
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

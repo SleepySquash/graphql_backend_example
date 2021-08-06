@@ -1,0 +1,4340 @@
+# Angle to rotate image.
+enum Angle {
+  # 0 degrees.
+  DEG0
+
+  # 90 degrees.
+  DEG90
+
+  # 180 degrees
+  DEG180
+
+  # 270 degrees.
+  DEG270
+}
+
+# Possible error codes of performing `Mutation.unblockChatUser`.
+enum UnblockChatUserErrorCode {
+  # `ChatUser` with the provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_USER
+}
+
+# Result of performing `Mutation.createSession`.
+union CreateSessionResult = CreateSessionOk | CreateSessionError
+
+# [Connection] with `ChatMember`s.
+#
+# [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+type ChatMemberConnection {
+  # List of `ChatMember` [Edges] in this [Connection].
+  #
+  # [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+  # [Edges]: https://tinyurl.com/gql-relay#sel-FAFFFBEAAAACBFpwI
+  edges: [ChatMemberEdge!]!
+
+  # List of `ChatMember`s in this [Connection].
+  #
+  # [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+  nodes: [ChatMember!]!
+
+  # [PageInfo] of this [Connection].
+  #
+  # [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+  # [PageInfo]: https://tinyurl.com/gql-relay#sec-undefined.PageInfo
+  pageInfo: PageInfo!
+}
+
+# Result of performing `Mutation.updateUserLogin`.
+union UpdateUserLoginResult = MyUser | UpdateUserLoginError
+
+# Possible error codes of performing `Mutation.renameChatUser`.
+enum RenameChatUserErrorCode {
+  # `ChatUser` with the provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_USER
+}
+
+scalar UserEmail
+
+scalar ChatCallCredentials
+
+# `ChatUser` is a representation of a `User` in a `Chat`.
+type ChatUser {
+  # Unique ID of the `User` represented by this `ChatUser`.
+  #
+  # It's always the same as `ChatUser.user.id`.
+  id: UserId!
+
+  # `User` represented by this `ChatUser`.
+  user: User!
+
+  # Dialog `Chat` between this `ChatUser` and the authenticated `MyUser`.
+  dialog: Chat
+
+  # Indicator whether this `ChatUser` is blocked by the authenticated
+  # `MyUser`.
+  isBlocked: Boolean!
+
+  # Custom `UserName` of this `ChatUser` assigned by the authenticated
+  # `MyUser`.
+  name: UserName
+
+  # Version of this `ChatUser`'s state.
+  #
+  # It increases monotonically, so may be used (and is intended to) for
+  # tracking state's actuality.
+  ver: Version!
+}
+
+# Result of performing `Mutation.renameChatUser`.
+union RenameChatUserResult = ChatUser | RenameChatUserError
+
+# Forever mute duration.
+type MuteForeverDuration {
+  # Indicator that a `Chat` (or the authenticated `MyUser`) is muted
+  # forever.
+  #
+  # Always is `true`.
+  forever: Boolean!
+}
+
+scalar Upload
+
+# Result of performing `Mutation.muteChat`.
+union MuteChatResult = Chat | MuteChatError
+
+# Result of performing `Mutation.muteMyUser`.
+union MuteMyUserResult = MyUser | MuteMyUserError
+
+# Result of performing `Mutation.createGroupChat`.
+union CreateGroupChatResult = Chat | CreateGroupChatError
+
+# Result of successful performing `Mutation.renewSession`.
+type RenewSessionOk {
+  # Renewed `Session`.
+  #
+  # It will expire in 24 hours after creation.
+  session: Session!
+
+  # Renewed `RememberedSession`.
+  #
+  # Use it instead of previous one for the next `Mutation.renewSession`
+  # execution.
+  #
+  # The expiration datetime of the renewed `RememberedSession` is not
+  # prolonged comparing to the previous one, and remains the same for the
+  # all `RememberedSession`s obtained via `Mutation.renewSession`.
+  # Use `Mutation.createSession` if you need to reset expiration datetime
+  # of a `RememberedSession`.
+  remembered: RememberedSession!
+
+  # `MyUser` that the `Session` was renewed for.
+  user: MyUser!
+}
+
+# Input area for an image cropping.
+#
+# Same as `CropArea`, but for using in arguments.
+#
+# Top left corner of the rotated by `angle` image is considered as `(0, 0)`
+# coordinates start point. So, obviously, `CropAreaInput.bottomRight` point's
+# coordinates should be bigger than the ones of `CropAreaInput.topLeft` point.
+input CropAreaInput {
+  # `PointInput` of a top left corner of this cropping area.
+  topLeft: PointInput!
+
+  # `PointInput` of a bottom right corner of this cropping area.
+  bottomRight: PointInput!
+
+  # Angle to rotate image before cropping.
+  angle: Angle
+}
+
+# Action taken upon a `ChatMember` in a `Chat`.
+enum ChatMemberInfoAction {
+  # `ChatMember` was added to a `Chat`.
+  ADDED
+
+  # `ChatMember` was removed from a `Chat`.
+  REMOVED
+}
+
+# Possible error codes of performing `Mutation.confirmUserPhone`.
+enum ConfirmUserPhoneErrorCode {
+  # Phone number being confirmed is occupied by another `User` already.
+  #
+  # `User` should delete the current unconfirmed phone number via `Mutations.deleteUserPhone`, choose another phone number and set it via `Mutations.addUserPhone`.
+  #
+  # Status code: 409 Conflict.
+  OCCUPIED
+
+  # Provided `ConfirmationCode` is wrong.
+  #
+  # Status code: 403 Forbidden.
+  WRONG_CODE
+}
+
+# Result of performing `Mutation.updateUserAvatar`.
+union UpdateUserAvatarResult = MyUser | UpdateUserAvatarError
+
+# Result of performing `Mutation.renameChat`.
+union RenameChatResult = Chat | RenameChatError
+
+# Result of performing `Mutation.confirmUserPhone`.
+union ConfirmUserPhoneResult = MyUser | ConfirmUserPhoneError
+
+# Possible error codes of performing `Mutation.resetUserPassword`.
+enum ResetUserPasswordErrorCode {
+  # `MyUser` with provided identifier doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_USER
+
+  # Provided `ConfirmationCode` is wrong.
+  #
+  # Status code: 403 Forbidden.
+  WRONG_CODE
+}
+
+# Error of performing `Mutation.favoriteChatContact`.
+type FavoriteChatContactError {
+  # Code indicating why this error has happened.
+  code: FavoriteChatContactErrorCode!
+}
+
+scalar ChatName
+
+# Event of a `Chat` being renamed by some `ChatUser`.
+type EventChatRenamed implements ChatEvent {
+  # ID of the renamed `Chat`.
+  chatId: ChatId!
+
+  # New `ChatName`.
+  name: ChatName!
+
+  # `ChatUser` who renamed the `Chat`.
+  byUser: ChatUser!
+
+  # Datetime when the `Chat` was renamed.
+  at: DateTimeUtc!
+}
+
+type Mutation {
+  # Creates a new `MyUser` having only `id` and unique `num` fields, and
+  # creates a new `Session` for this `MyUser` (valid for 24 hours).
+  #
+  # Once the created `Session` expires, the created `MyUser` looses access,
+  # if he doesn't provide a password via `Mutation.updateUserPassword`
+  # within that period of time.
+  #
+  # Authentication: no
+  #
+  # Non-idempotent:
+  # Each time creates a new unique `MyUser`.
+  createUser: CreateUserResult!
+
+  # Adds a new `email` address for the authenticated `MyUser`.
+  #
+  # Sets the given `email` address as an `unconfirmed` sub-field of a
+  # `MyUser.emails` field and sends to this address an email message with a
+  # `ConfirmationCode`. Once `User` successfully uses this
+  # `ConfirmationCode` in a `Mutation.confirmUserEmail`, the `email` address
+  # becomes a confirmed one and moves to `MyUser.emails.confirmed` sub-field
+  # unlocking the related capabilities.
+  #
+  # `MyUser` can have maximum one `MyUser.emails.unconfirmed` address at the
+  # same time.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if the provided `email` already is present in a
+  # `MyUser.emails` field (either in `confirmed` or `unconfirmed`
+  # sub-field).
+  addUserEmail(
+    # Email address to add to `MyUser.emails`.
+    email: UserEmail!
+  ): AddUserEmailResult!
+
+  # Adds a new `phone` number for the authenticated `MyUser`.
+  #
+  # Sets the given `phone` number as an `unconfirmed` sub-field of a
+  # `MyUser.phones` field and sends to this number SMS with a
+  # `ConfirmationCode`. Once `User` successfully uses this
+  # `ConfirmationCode` in a `Mutation.confirmUserPhone`, the `phone` number
+  # becomes a confirmed one and moves to `MyUser.phones.confirmed` sub-field
+  # unlocking the related capabilities.
+  #
+  # `MyUser` can have maximum one `MyUser.phone.unconfirmed` number at the
+  # same time.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if the provided `phone` already is present in a
+  # `MyUser.phones` field (either in `confirmed` or `unconfirmed`
+  # sub-field).
+  addUserPhone(
+    # Phone number to add to `MyUser.phones`.
+    phone: UserPhone!
+  ): AddUserPhoneResult!
+
+  # Resends a new `ConfirmationCode` to `MyUser.emails.unconfirmed` address
+  # for the authenticated `MyUser`.
+  #
+  # Once `User` successfully uses this `ConfirmationCode` in a
+  # `Mutation.confirmUserEmail`, the given `email` address moves to a
+  # `MyUser.emails.confirmed` sub-field unlocking the related capabilities.
+  #
+  # The number of generated `ConfirmationCode`s is limited up to 10 per 1
+  # hour.
+  #
+  # Authentication: mandatory
+  #
+  # Non-idempotent:
+  # Each time generates a new `ConfirmationCode`.
+  resendUserEmailConfirmation: ResendUserEmailConfirmationResult!
+
+  # Resends a new `ConfirmationCode` to `MyUser.phones.unconfirmed` number
+  # for the authenticated `MyUser`.
+  #
+  # Once `User` successfully uses this `ConfirmationCode` in a
+  # `Mutation.confirmUserPhone`, the given `phone` number moves to a
+  # `MyUser.phones.confirmed` sub-field unlocking the related capabilities.
+  #
+  # The number of generated `ConfirmationCode`s is limited up to 10 per 1
+  # hour.
+  #
+  # Authentication: mandatory
+  #
+  # Non-idempotent:
+  # Each time generates a new `ConfirmationCode`.
+  resendUserPhoneConfirmation: ResendUserPhoneConfirmationResult!
+
+  # Confirms the given unconfirmed `email` address with the provided
+  # `ConfirmationCode` for the authenticated `MyUser`, and moves it to a
+  # `MyUser.emails.confirmed` sub-field unlocking the related capabilities.
+  #
+  # Authentication: mandatory
+  #
+  # Non-idempotent:
+  # Errors with `WRONG_CODE` if the provided `ConfirmationCode` was used
+  # already.
+  confirmUserEmail(
+    # Email address `ConfirmationCode`.
+    code: ConfirmationCode!
+  ): ConfirmUserEmailResult!
+
+  # Confirms the given unconfirmed `phone` number with the provided
+  # `ConfirmationCode` for the authenticated `MyUser`, and moves it to a
+  # `MyUser.phones.confirmed` sub-field unlocking the related capabilities.
+  #
+  # Authentication: mandatory
+  #
+  # Non-idempotent:
+  # Errors with `WRONG_CODE` if the provided `ConfirmationCode` was used
+  # already.
+  confirmUserPhone(
+    # Phone number `ConfirmationCode`.
+    code: ConfirmationCode!
+  ): ConfirmUserPhoneResult!
+
+  # Deletes the given `email` from `MyUser.emails` of the authenticated
+  # `MyUser`.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if `MyUser` doesn't have the given `email` in his
+  # `MyUser.emails`
+  deleteUserEmail(
+    # `UserEmail` address to delete from `MyUser.emails`.
+    email: UserEmail!
+  ): MyUser!
+
+  # Deletes the given `phone` from `MyUser.phones` for the authenticated
+  # `MyUser`.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if `MyUser` doesn't have the given `phone` in his
+  # `MyUser.phones`.
+  deleteUserPhone(phone: UserPhone!): MyUser!
+
+  # Updates `MyUser.login` field for the authenticated `MyUser`.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if `MyUser` uses the provided `login` already.
+  updateUserLogin(
+    # Login to update `MyUser` with.
+    login: UserLogin!
+  ): UpdateUserLoginResult!
+
+  # Updates `MyUser.name` field for the authenticated `MyUser`.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if `MyUser` uses the provided `name` already.
+  updateUserName(
+    # Name to update `MyUser` with.
+    name: UserName!
+  ): MyUser!
+
+  # Resets `MyUser.name` field to `null` for the authenticated `MyUser`.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if `MyUser` has no `name` already.
+  deleteUserName: MyUser!
+
+  # Updates `MyUser.bio` field for the authenticated `MyUser`.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if `MyUser` uses the provided `bio` already.
+  updateUserBio(
+    # Bio to update `MyUser` with.
+    bio: UserBio!
+  ): MyUser!
+
+  # Resets `MyUser.bio` field to `null` for the authenticated `MyUser`.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if `MyUser` has no `bio` already.
+  deleteUserBio: MyUser!
+
+  # Updates password for the authenticated `MyUser`.
+  #
+  # If `MyUser` has no password yet (when sets his password), then `old`
+  # password is not required. Otherwise (when changes his password), it's
+  # mandatory to specify the `old` one.
+  #
+  # Authentication: mandatory
+  #
+  # Non-idempotent:
+  # Each time renews the password (recalculates hash) even if it's the same
+  # one.
+  updateUserPassword(
+    # Password to update `MyUser` with.
+    new: UserPassword!
+
+    # Current password of `MyUser` for mutation authentication.
+    old: UserPassword
+  ): UpdateUserPasswordResult!
+
+  # Initiates password recovery for the `MyUser` identified by the provided
+  # `num`/`login`/`email`/`phone` (exactly one of fourth should be
+  # specified).
+  #
+  # Sends a recovery `ConfirmationCode` to `MyUser`'s `email` and `phone`.
+  #
+  # If `MyUser` has no password yet, then this mutation still may be used
+  # for recovering his sign-in capability.
+  #
+  # The number of generated `ConfirmationCode`s is limited up to 10 per 1
+  # hour.
+  #
+  # Authentication: no
+  #
+  # Non-idempotent:
+  # Each time sends a new unique password recovery `ConfirmationCode`.
+  recoverUserPassword(
+    # Number of `MyUser`.
+    num: UserNum
+
+    # Login of `MyUser`.
+    login: UserLogin
+
+    # Email address of `MyUser`.
+    email: UserEmail
+
+    # Phone number of `MyUser`.
+    phone: UserPhone
+  ): RecoverUserPasswordError
+
+  # Validates the provided password recovery `ConfirmationCode` for the
+  # `MyUser` identified by the provided `num`/`login`/`email`/`phone`
+  # (exactly one of fourth should be specified).
+  #
+  # Authentication: no
+  #
+  # Idempotent:
+  # `ConfirmationCode` can be validated unlimited number of times (for now).
+  validateUserPasswordRecoveryCode(
+    # Number of `MyUser`.
+    num: UserNum
+
+    # Login of `MyUser`.
+    login: UserLogin
+
+    # Email address of `MyUser`.
+    email: UserEmail
+
+    # Phone number of `MyUser`.
+    phone: UserPhone
+
+    # Recovery `ConfirmationCode` to validate.
+    code: ConfirmationCode!
+  ): ValidateUserPasswordRecoveryCodeError
+
+  # Resets password for the `MyUser` identified by the provided
+  # `num`/`login`/`email`/`phone` (exactly one of fourth should be
+  # specified), and  authenticating the mutation with the provided
+  # recovery `ConfirmationCode`.
+  #
+  # If `MyUser` has no password yet, then `new_password` will be his first
+  # password unlocking the sign-in capability.
+  #
+  # Authentication: no
+  #
+  # Non-idempotent:
+  # Errors with `WRONG_CODE` if the provided `ConfirmationCode` was used
+  # already.
+  resetUserPassword(
+    # Number of `MyUser`.
+    num: UserNum
+
+    # Login of `MyUser`.
+    login: UserLogin
+
+    # Email address of `MyUser`.
+    email: UserEmail
+
+    # Phone number of `MyUser`.
+    phone: UserPhone
+
+    # Password to update `MyUser` with.
+    newPassword: UserPassword!
+
+    # Recovery `ConfirmationCode` for `MyUser` identification and mutation authentication.
+    code: ConfirmationCode!
+  ): ResetUserPasswordResult!
+
+  # Updates `MyUser.avatar` field with a `GalleryItem` from the gallery of
+  # the authenticated `MyUser`.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if `MyUser` uses the provided `avatar` already with
+  # the same `crop` area.
+  updateUserAvatar(
+    # ID of the `GalleryItem` to be set as avatar.
+    id: GalleryItemId!
+
+    # Optional area to crop a `GalleryItem`.
+    crop: CropAreaInput = null
+  ): UpdateUserAvatarResult!
+
+  # Resets `MyUser.avatar` field to `null` for the authenticated `MyUser`.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if `MyUser` has no `avatar` already.
+  deleteUserAvatar: MyUser!
+
+  # Updates `MyUser.callCover` field with a `GalleryItem` from the gallery
+  # of the authenticated `MyUser`.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if `MyUser` uses the provided `callCover` already with
+  # the same `crop` area.
+  updateUserCallCover(
+    # ID of the `GalleryItem` to be set as call cover.
+    id: GalleryItemId!
+
+    # Optional area to crop a `GalleryItem`.
+    crop: CropAreaInput = null
+  ): UpdateUserCallCoverResult!
+
+  # Resets `MyUser.callCover` field to `null` for the authenticated
+  # `MyUser`.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if `MyUser` has no `callCover` already.
+  deleteUserCallCover: MyUser!
+
+  # Adds a new `GalleryItem` to the gallery of the authenticated `MyUser`.
+  #
+  # HTTP request for this mutation must be
+  # `Content-Type: multipart/form-data` containing the uploaded file
+  # and the `file` argument itself must be `null`, otherwise this
+  # mutation will fail.
+  #
+  # See [GraphQL multipart request specification][1] for details.
+  #
+  # Authentication: mandatory
+  #
+  # Non-idempotent:
+  # Each time adds a new `GalleryItem`.
+  #
+  # [1]: https://github.com/jaydenseric/graphql-multipart-request-spec
+  uploadUserGalleryItem(
+    # File to use as a `GalleryItem`.
+    #
+    # Not really used and must be always specified as `null`. For schema declaration only.
+    #
+    # Real file must be sent as `Content-Type: multipart/form-data` along.
+    # See [GraphQL multipart request specification][1] for details.
+    #
+    # Maximum allowed uploaded file's size is 15 MiB.
+    #
+    # Maximum allowed uploaded image's dimensions are 32767x32767.
+    #
+    # [1]: https://github.com/jaydenseric/graphql-multipart-request-spec
+    file: Upload
+  ): UploadUserGalleryItemResult!
+
+  # Removes the specified `GalleryItem` from the authenticated `MyUser`'s
+  # gallery.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if the specified `GalleryItem` was deleted already.
+  #
+  # Result:
+  # Always returns `true`, never returns `false`.
+  deleteUserGalleryItem(id: GalleryItemId!): Boolean!
+
+  # Mutes all the `Chat`s of the authenticated `MyUser`.
+  # Overrides an existing mute even if it's longer.
+  #
+  # Muted `MyUser` implies that all his `Chat`s events don't produce sounds
+  # and notifications on a client side. This, however, has nothing to do
+  # with a server and is the responsibility to be satisfied by a client
+  # side.
+  #
+  # Note, that `Mutation.muteMyUser` doesn't correlate with
+  # `Mutation.unmuteChat`. Unmuted `Chat` of muted `MyUser` should not
+  # produce any sounds.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if `MyUser` is muted already `until` the specified
+  # datetime.
+  muteMyUser(
+    # Datetime in [RFC 3339] format until `MyUser` should be muted.
+    #
+    # `null` means indefinite muting.
+    #
+    # [RFC 3339]: https://tools.ietf.org/html/rfc3339#section-5.8
+    until: DateTimeUtc
+  ): MuteMyUserResult!
+
+  # Unmutes all the `Chat`s the authenticated `MyUser`.
+  #
+  # Note, that `Mutation.unmuteMyUser` doesn't correlate with
+  # `Mutation.muteChat`. Muted `Chat` of unmuted `MyUser` should not produce
+  # any sounds.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if the authenticated `MyUser` is unmuted already.
+  unmuteMyUser: MyUser!
+
+  # Deletes the authenticated `MyUser` completely.
+  #
+  # **This action cannot be reverted.**
+  #
+  # Authentication: mandatory
+  #
+  # Non-idempotent:
+  # All `MyUser`s `Session`s are deleted as well.
+  #
+  # Result:
+  # Always returns `true`, never returns `false`.
+  deleteMyUser: Boolean!
+
+  # Creates a new `Session` for the `MyUser` identified by the provided
+  # `num`/`login`/`email` (exactly one of three should be specified).
+  #
+  # Represents a sing-in action.
+  #
+  # The created `Session` expires in 1 day after creation. To renew the
+  # created `Session` use `Mutation.renewSession` with the `RememberToken`
+  # returned by this mutation (use `remember` argument to get one).
+  #
+  # Authentication: no
+  #
+  # Non-idempotent:
+  # Each time creates a new `Session`.
+  createSession(
+    # Number of `MyUser` to create `Session` for.
+    num: UserNum
+
+    # Login of `MyUser` to create `Session` for.
+    login: UserLogin
+
+    # Email address of `MyUser` to create `Session` for.
+    email: UserEmail
+    phone: UserPhone
+
+    # Password of `MyUser` to authenticate with.
+    password: UserPassword!
+
+    # Generate `RememberToken` along with `AccessToken` or not.
+    remember: Boolean = false
+  ): CreateSessionResult!
+
+  # Renews a `Session` of the `MyUser` identified by the provided
+  # `RememberToken`.
+  #
+  # Invalidates the provided `RememberToken` and returns a new one, which
+  # should be used instead.
+  #
+  # The renewed `Session` expires in 1 day after renewal. To renew it again
+  # use this mutation with the new returned `RememberToken`.
+  #
+  # Authentication: no
+  #
+  # Non-idempotent:
+  # Each time creates a new `Session` and generates new `RememberToken`.
+  renewSession(
+    # `RememberToken` for mutation authentication and `MyUser` identification.
+    token: RememberToken!
+  ): RenewSessionResult!
+
+  # Deletes `Session` of the `MyUser` identified by the provided
+  # `AccessToken`.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if `Session` with the given `AccessToken` was deleted
+  # already.
+  #
+  # Result:
+  # Always returns `true`, never returns `false`.
+  deleteSession(
+    # `AccessToken` of the `Session` to delete.
+    token: AccessToken!
+  ): Boolean!
+
+  # Creates a `Chat`-dialog with the provided responder for the
+  # authenticated `MyUser`.
+  #
+  # Responder may be identified either by his `UserId`, or by his active
+  # `ChatDirectLink.slug`.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if a `Chat` with the given responder has been created
+  # already.
+  createDialogChat(
+    # ID of the responder `User` to create `Chat` with.
+    responderId: UserId = null
+
+    # `ChatDirectLink.slug` of the responder `ChatUser` to create `Chat` with.
+    directLink: ChatDirectLinkSlug = null
+  ): CreateDialogChatResult!
+
+  # Creates a `Chat`-group with the provided members and the authenticated
+  # `MyUser`.
+  #
+  # Authentication: mandatory
+  #
+  # Non-idempotent:
+  # Each time creates a new `Chat`-group.
+  createGroupChat(memberIds: [UserId!]!): CreateGroupChatResult!
+
+  # Adds an `User` to a `Chat`-group by the authority of the authenticated
+  # `MyUser`.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if the specified `User` is already a member of the
+  # `Chat`.
+  addChatMember(
+    # ID of the `User` to become a member of the `Chat`-group.
+    userId: UserId!
+
+    # ID of the `Chat`-group to add the `User` to.
+    chatId: ChatId!
+  ): AddChatMemberResult!
+
+  # Removes an `User` from a `Chat`-group by the authority of the
+  # authenticated `MyUser`.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if the specified `User` is not a member of the `Chat`.
+  removeChatMember(
+    # ID of the `User` to be removed from the `Chat`-group.
+    userId: UserId!
+
+    # ID of the `Chat`-group to remove the `User` from.
+    chatId: ChatId!
+  ): RemoveChatMemberResult!
+
+  # Renames the specified `Chat` by the authority of authenticated `MyUser`.
+  #
+  # Only `Chat`-groups can be named or renamed.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if the specified `Chat` already has the specified
+  # `name`.
+  renameChat(
+    # ID of the `Chat` to rename.
+    id: ChatId!
+
+    # `ChatName` to rename the `Chat` with.
+    name: ChatName!
+  ): RenameChatResult!
+
+  # Clears an existing `Chat` (hides all its `ChatItem`s) for the
+  # authenticated `MyUser` until the specified `ChatItem` inclusively.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if the specified `Chat` has been cleared already until
+  # the specified `ChatItem`.
+  clearChat(
+    # ID of the `Chat` to be cleared.
+    id: ChatId!
+
+    # ID of the `ChatItem` to clear the `Chat` until (inclusively).
+    untilId: ChatItemId!
+  ): ClearChatResult!
+
+  # Marks the specified `Chat` as hidden for the authenticated `MyUser`.
+  #
+  # Hidden `Chat` is excluded from `Query.recentChats`, but preserves all
+  # its content. Once a new `ChatItem` posted in a `Chat` it becomes visible
+  # again, and so included into `Query.recentChats` as well.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if the given `Chat` was hidden already by the
+  # authenticated `MyUser`.
+  hideChat(
+    # ID of the `Chat` to be hidden.
+    id: ChatId!
+  ): HideChatResult!
+
+  # Mutes the specified `Chat` for the authenticated `MyUser`.
+  # Overrides an existing mute even if it's longer.
+  #
+  # Muted `Chat` implies that its events don't produce sounds and
+  # notifications on a client side. This, however, has nothing to do with
+  # a server and is the responsibility to be satisfied by a client side.
+  #
+  # Note, that `Mutation.muteChat` doesn't correlate with
+  # `Mutation.unmuteMyUser`. Muted `Chat` of unmuted `MyUser` should not
+  # produce any sounds.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if the given `Chat` is muted already `until` the
+  # specified datetime for the authenticated `MyUser`.
+  muteChat(
+    # ID of the `Chat` to be muted.
+    id: ChatId!
+
+    # Datetime in [RFC 3339] format until `Chat` should be muted.
+    #
+    # `null` means indefinite muting.
+    #
+    # [RFC 3339]: https://tools.ietf.org/html/rfc3339#section-5.8
+    until: DateTimeUtc
+  ): MuteChatResult!
+
+  # Unmutes the specified `Chat` for the authenticated `MyUser`.
+  #
+  # Note, that `Mutation.unmuteChat` doesn't correlate with
+  # `Mutation.muteMyUser`. Unmuted `Chat` of muted `MyUser` should not
+  # produce any sounds.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if the given `Chat` is unmuted already for the
+  # authenticated `MyUser` .
+  unmuteChat(
+    # ID of the `Chat` to be unmuted.
+    id: ChatId!
+  ): UnmuteChatResult!
+
+  # Posts a new `ChatMessage` to the specified `Chat` by the authenticated
+  # `MyUser`.
+  #
+  # For the posted `ChatMessage` to be meaningful, at least one of `text`
+  # or `attachments` arguments must be specified and non-empty.
+  #
+  # To attach some `Attachment`s to the posted `Message`, first, they should
+  # be uploaded with `Mutation.uploadAttachment`, and then use the returned
+  # `Attachment.id`s in `attachments` argument of this mutation.
+  #
+  # Specify `repliesTo` argument of this mutations if the posted
+  # `ChatMessage` is going to be a reply to some other `ChatItem`.
+  #
+  # Authentication: mandatory
+  #
+  # Non-idempotent:
+  # Each time creates a new unique `ChatMessage`.
+  postChatMessage(
+    # ID of the `Chat` to post a new `ChatMessage` in.
+    chatId: ChatId!
+
+    # Optional text of the posted `ChatMessage`. If not specified then `attachments` argument must be specified and non-empty.
+    text: ChatMessageText
+
+    # Optional IDs of `Attachment`s to be attached to the posted `ChatMessage`. If not specified or empty then `text` argument must be specified.
+    attachments: [AttachmentId!]
+
+    # Optional ID of the `ChatItem` that the posted `ChatMessage` is replying to. The replied `ChatItem` may belong to the current `Chat` only.
+    repliesTo: ChatItemId
+  ): PostChatMessageResult!
+
+  # Marks the specified `Chat` as read for the authenticated `MyUser` until
+  # the specified `ChatItem` inclusively.
+  #
+  # There is no notion of a single `ChatItem` being read or not separately
+  # in a `Chat`. Only a whole `Chat` as a sequence of `ChatItem`s can be
+  # read until some its position (concrete `ChatItem`). So, any `ChatItem`
+  # may be considered as read or not by comparing its `ChatItem.at` datetime
+  # with the `Chat.lastReads.at` datetime of the authenticated `MyUser`:
+  # if it's below (less or equal) then the `ChatItem` is read, otherwise
+  # it's unread.
+  #
+  # This mutation should be called whenever the authenticated `MyUser` reads
+  # new `ChatItem`s appeared in the `Chat`'s UI and directly influences the
+  # `Chat.unreadCount` value.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if the given `Chat` was hidden already by the
+  # authenticated `MyUser`.
+  readChat(
+    # ID of the `Chat` to be read.
+    id: ChatId!
+
+    # ID of the `ChatItem` to read the `Chat` until (inclusively).
+    untilId: ChatItemId!
+  ): ReadChatResult!
+
+  # Creates a new `Attachment` linked to the authenticated `MyUser` for a
+  # later use in `Mutation.postChatMessage`.
+  #
+  # HTTP request for this mutation must be
+  # `Content-Type: multipart/form-data` containing the uploaded file and the
+  # `attachment` argument must be `null`, otherwise this mutation will fail.
+  #
+  # See [GraphQL multipart request specification][1] for details.
+  #
+  # Authentication: mandatory
+  #
+  # Non-idempotent:
+  # Each time creates a new unique `Attachment`.
+  #
+  # [1]: https://github.com/jaydenseric/graphql-multipart-request-spec
+  uploadAttachment(
+    # Attachment to be uploaded.
+    #
+    # Not really used and must be always specified as `null`. For schema declaration only.
+    #
+    # Real attachment data must be sent as `Content-Type: multipart/form-data` along.See [GraphQL multipart request specification][1] for details.
+    #
+    # Maximum allowed uploaded file's size is 15 MiB.
+    #
+    # [1]: https://github.com/jaydenseric/graphql-multipart-request-spec
+    attachment: Upload
+  ): UploadAttachmentResult!
+
+  # Deletes the specified `ChatMessage` posted by the authenticated
+  # `MyUser`.
+  #
+  # `ChatMessage` is allowed to be deleted only when it's not read by any
+  # other `Chat` member and neither forwarded, nor replied. Once deleted,
+  # `ChatMessage` is not visible for anyone in the `Chat`.
+  #
+  # If this mutation returns `READ` (or `QUOTED`) error, use
+  # `Mutation.hideChatItem` to "remove" the `ChatMessage` for the
+  # authenticated `MyUser`.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if the specified `ChatMessage` was deleted already.
+  deleteChatMessage(
+    # ID of the `ChatMessage` to delete.
+    id: ChatItemId!
+  ): DeleteChatMessageError
+
+  # Edits `ChatMessage`'s text by the authenticated `MyUser`.
+  #
+  # `ChatMessage`'s text is allowed to be edited within 5 minutes since its
+  # creation __or__ if it hasn't been read by any other `Chat` member yet.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if the given `ChatMessage`'s text is already set to
+  # the given value.
+  editChatMessageText(
+    # ID of the `ChatMessage` to edit.
+    id: ChatItemId!
+
+    # New text to assign to the `ChatMessage`.
+    #
+    # Can be `null` only if the `ChatMessage` has at least 1 `Attachment`.
+    text: ChatMessageText
+  ): EditChatMessageTextResult!
+
+  # Hides the specified `ChatItem` for the authenticated `MyUser`.
+  #
+  # Hidden `ChatItem` is not visible only for the one who hid it, remaining
+  # visible for other `ChatUser`s.
+  #
+  # Use this mutation for "deleting" a `ChatItem` for the authenticated
+  # `MyUser` in `Chat`'s UI in case `Mutation.deleteChatMessage` (or
+  # `Mutation.deleteChatForward`) returns `READ` (or `QUOTED`) error.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if the specified `ChatItem` was hidden by the
+  # authenticated `MyUser` already.
+  hideChatItem(
+    # ID of the `ChatItem` to hide.
+    id: ChatItemId!
+  ): HideChatItemError
+
+  # Forwards `ChatItem`s to the specified `Chat` by the authenticated
+  # `MyUser`.
+  #
+  # Supported `ChatItem`s are `ChatMessage` and `ChatForward`.
+  #
+  # If `text` argument is specified then the forwarded `ChatItem`s will be
+  # followed with a posted `ChatMessage` containing that text.
+  #
+  # The maximum number of forwarded `ChatItem`s at once is 100.
+  #
+  # Authentication: mandatory
+  #
+  # Non-idempotent:
+  # Each time posts a new `ChatForward`.
+  forwardChatItems(
+    # Quotes of the `ChatItem`s to be forwarded.
+    items: [ChatItemQuoteInput!]!
+
+    # ID of the `Chat` to forward `ChatItem`s into.
+    chatId: ChatId!
+
+    # Optional text to post a `ChatMessage` along with the forwarded `ChatItem`s.
+    text: ChatMessageText
+  ): ForwardChatItemsResult!
+
+  # Deletes the specified `ChatForward` posted by the authenticated
+  # `MyUser`.
+  #
+  # `ChatForward` is allowed to be deleted only when it's not read by any
+  # other `Chat` member and neither forwarded, nor replied. Once deleted,
+  # `ChatForward` is not visible for anyone in the `Chat`.
+  #
+  # If this mutation returns `READ` (or `QUOTED`) error, use
+  # `Mutation.hideChatItem` to "remove" the `ChatForward` for the
+  # authenticated `MyUser`.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if the specified `ChatForward` was deleted already.
+  deleteChatForward(
+    # ID of the `ChatForward` to delete.
+    id: ChatItemId!
+  ): DeleteChatForwardError
+
+  # Starts a new `ChatCall` in the specified `Chat` by the authenticated
+  # `MyUser`.
+  #
+  # Once this mutation succeeds the `EventChatCallStarted` is fired
+  # to all `Chat` members via `Subscription.chatEvents`, and it's required
+  # to use `Subscription.chatCallEvents` for the authenticated `MyUser` to
+  # be able to react on all `ChatCallEvent`s happening during the started
+  # `ChatCall`.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # No-op if there is a `ChatCall` in this `Chat` already and the
+  # authenticated `MyUser` is a member of it. Joins it if the authenticated
+  # `MyUser` is not a member yet .
+  startChatCall(
+    # ID of the `Chat` to start a `ChatCall` in.
+    chatId: ChatId!
+
+    # One-time `MyUser`'s secret credentials to authorize him with on a media server for this `ChatCall`.
+    #
+    # Use this credentials to establish a WebSocket connection with a media server after `EventChatCallRoomCreated` is received via `Subscription.chatCallEvents`.
+    creds: ChatCallCredentials!
+
+    # Indicates whether the `ChatCall` is intended to start with video.
+    withVideo: Boolean = false
+  ): StartChatCallResult!
+
+  # Declines the current `ChatCall` in the specified `Chat` by the
+  # authenticated `MyUser`.
+  #
+  # Use this mutation when an `EventChatCallStarted` is received via
+  # `Subscription.chatEvents` and `MyUser` doesn't want to accept the
+  # `ChatCall`.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # No-op if there is no current `ChatCall`, or it was declined already by
+  # the authenticated `MyUser`.
+  declineChatCall(
+    # ID of the `Chat` to decline a `ChatCall` in.
+    chatId: ChatId!
+  ): DeclineChatCallError
+
+  # Joins the current `ChatCall` in the specified `Chat` by the
+  # authenticated `MyUser`.
+  #
+  # Use this mutation when an `EventChatCallStarted` is received via
+  # `Subscription.chatEvents` and `MyUser` wants to accept the `ChatCall`,
+  # or he wants to join an ongoing `ChatCall`.
+  #
+  # Once this mutation succeeds the `EventChatCallMemberJoined` is fired
+  # to all `ChatCall` members via `Subscription.chatCallEvents`, and it's
+  # required to use `Subscription.chatCallEvents` for the authenticated
+  # `MyUser` to be able to react on all `ChatCallEvent`s happening during
+  # the accepted `ChatCall`.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # No-op if the authenticated `MyUser` joined the current `ChatCall`
+  # already (is a member of it).
+  joinChatCall(
+    # ID of the `Chat` to accept a `ChatCall` in.
+    chatId: ChatId!
+
+    # One-time `MyUser`'s secret credentials to authorize him with on a media server for this `ChatCall`.
+    #
+    # Use this credentials to establish a WebSocket connection with a media server after `EventChatCallRoomCreated` is received via `Subscription.chatCallEvents`.
+    creds: ChatCallCredentials!
+  ): JoinChatCallResult!
+
+  # Leaves the current `ChatCall` in the specified `Chat` by the
+  # authenticated `MyUser`.
+  #
+  # Use this mutation when the authenticated `MyUser` wants to finish or
+  # leave the `ChatCall` he's participating in at the moment.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # No-op if there is no current `ChatCall` in the specified `Chat` at the
+  # moment, or the authenticated `MyUser` is not a member of it already.
+  leaveChatCall(
+    # ID of the `Chat` to leave a `ChatCall` of.
+    chatId: ChatId!
+  ): LeaveChatCallError
+
+  # Blocks the specified `ChatUser` for the authenticated `MyUser`.
+  #
+  # Blocked `ChatUser`s are not able to communicate with the authenticated
+  # `MyUser` directly (in dialogs).
+  #
+  # List of all currently blocked `ChatUser`s can be obtained via
+  # `Query.blockedChatUsers`.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if the specified `ChatUser` was blocked by the
+  # authenticated `MyUser` already.
+  blockChatUser(
+    # ID of the `ChatUser` to block.
+    id: UserId!
+  ): BlockChatUserResult!
+
+  # Unblocks the specified `ChatUser` for the authenticated `MyUser`.
+  #
+  # Reverses the action of `Mutation.blockChatUser`.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if the specified `ChatUser` is not yet blocked by the
+  # authenticated `MyUser`.
+  unblockChatUser(
+    # ID of the `ChatUser` to unblock.
+    id: UserId!
+  ): UnblockChatUserResult!
+
+  # Renames the specified `ChatUser` for the authenticated `MyUser`.
+  #
+  # This custom name could be retrieved via `ChatUser.name` field.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if the specified `ChatUser` is already renamed with
+  # the specified `name`.
+  renameChatUser(
+    # ID of the `ChatUser` to rename.
+    id: UserId!
+
+    # `UserName` to rename the `ChatUser` with.
+    name: UserName!
+  ): RenameChatUserResult!
+
+  # Creates a new `ChatDirectLink` with the specified `ChatDirectLinkSlug`
+  # and disables the current active `ChatDirectLink` of the authenticated
+  # `MyUser` (if he has one).
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if authenticated `MyUser` has active `ChatDirectLink`
+  # with the specified `ChatDirectLinkSlug`.
+  createChatDirectLink(slug: ChatDirectLinkSlug!): CreateChatDirectLinkResult!
+
+  # Deletes the current `ChatDirectLink` of the authenticated `MyUser`.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if the authenticated `MyUser` has no active
+  # `ChatDirectLink`s.
+  #
+  # Result:
+  # Always returns `true`, never returns `false`.
+  deleteChatDirectLink: Boolean!
+
+  # Creates a new `ChatContact` in the authenticated `MyUser`'s address
+  # book.
+  #
+  # Authentication: mandatory
+  #
+  # Non-idempotent:
+  # Each time creates a new unique `ChatContact`.
+  createChatContact(
+    # Name to create the `ChatContact` with.
+    name: UserName!
+
+    # Optional `ChatContactRecord`s to create and attach to the created `ChatContact`.
+    records: [ChatContactRecord!] = []
+  ): CreateChatContactResult!
+
+  # Marks the specified `ChatContact` as favorited for the authenticated
+  # `MyUser` and sets its position in a favorites list.
+  #
+  # To move a `ChatContact` into some position in a favorites list, provide
+  # the average value of positions of two other `ChatContact`s it should be
+  # placed in-between.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if `ChatContact`'s position in a favorites list is the
+  # same already.
+  favoriteChatContact(
+    # ID of the `ChatContact` to mark as favorited.
+    id: ChatContactId!
+
+    # Position of the `ChatContact` in a favorites list.
+    pos: ChatContactPosition!
+  ): FavoriteChatContactResult!
+
+  # Removes the specified `ChatContact` from a favorites list of the
+  # authenticated `MyUser`.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if the specified `ChatContact` is not in a favorites
+  # list already.
+  unfavoriteChatContact(
+    # ID of the `ChatContact` to remove from a favorites list.
+    id: ChatContactId!
+  ): UnfavoriteChatContactResult!
+
+  # Deletes the specified `ChatContact` from the authenticated `MyUser`'s
+  # address book.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if the specified `ChatContact` doesn't exist already.
+  #
+  # Result:
+  # Always returns `true`, never returns `false`.
+  deleteChatContact(
+    # ID of the `ChatContact` to delete.
+    id: ChatContactId!
+  ): Boolean!
+
+  # Updates `name` of the specified `ChatContact` in the authenticated
+  # `MyUser`'s address book.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if the specified `ChatContact` has such `name`
+  # already.
+  updateChatContactName(
+    # ID of the `ChatContact` to update `name` of.
+    id: ChatContactId!
+
+    # Name to update the `ChatContact` with.
+    name: UserName!
+  ): UpdateChatContactNameResult!
+
+  # Creates a new `ChatContactRecord` in the specified `ChatContact` of the
+  # authenticated `MyUser`'s address book.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if the specified `ChatContact` has such
+  # `ChatContactRecord` already.
+  createChatContactRecord(
+    # ID of the `ChatContact` to create a new `ChatContactRecord` in.
+    id: ChatContactId!
+
+    # `ChatContactRecord` to create.
+    record: ChatContactRecord!
+  ): CreateChatContactRecordResult!
+
+  # Removes the specified `ChatContactRecord` from the specified
+  # `ChatContact` in the authenticated `MyUser`'s address book.
+  #
+  # Authentication: mandatory
+  #
+  # Idempotent:
+  # Succeeds as no-op if the specified `ChatContact` has no such
+  # `ChatContactRecord` already.
+  deleteChatContactRecord(
+    # ID of the `ChatContact` to remove the `ChatContactRecord` from.
+    id: ChatContactId!
+
+    # `ChatContactRecord` to remove.
+    record: ChatContactRecord!
+  ): DeleteChatContactRecordResult!
+}
+
+# Image `Attachment`.
+type ImageAttachment implements Attachment {
+  # Unique ID of this `ImageAttachment`.
+  id: AttachmentId!
+
+  # Path on a files storage to the original file representing this
+  # `ImageAttachment`.
+  #
+  # Prepend it with a files storage URL to obtain a link to the original
+  # file.
+  original: String!
+
+  # Uploaded file's name.
+  filename: String!
+
+  # Uploaded file's size in bytes.
+  size: Int!
+
+  # Path on a files storage to a `big` `ImageAttachment`'s view of
+  # `400px`x`400px` size.
+  big: String!
+
+  # Path on a files storage to a `medium` `ImageAttachment`'s view of
+  # `200px`x`200px` size.
+  medium: String!
+
+  # Path on a files storage to a `small` `ImageAttachment`'s view of
+  # `30px`x`30px` size.
+  small: String!
+}
+
+# Error of performing `Mutation.unfavoriteChatContact`.
+type UnfavoriteChatContactError {
+  # Code indicating why this error has happened.
+  code: UnfavoriteChatContactErrorCode!
+}
+
+# Attachment of a `ChatItem`.
+#
+# `Mutation.uploadAttachment` expects to find a `filename` in a
+# [Content-Disposition][1] header.
+#
+# Field `original` will return path to the file named `orig`. To download this
+# file with the original name, set the [`download`][2] attribute on `<a>` HTML
+# element to the value of the `filename` field.
+#
+# [1]: https://mdn.io/Web/HTTP/Headers/Content-Disposition#directives
+# [2]: https://mdn.io/Web/HTML/Element/A#attributes
+interface Attachment {
+  # Unique ID of this `Attachment`.
+  id: AttachmentId!
+
+  # Path on a files storage to the original file representing this
+  # `Attachment`.
+  #
+  # Prepend it with a files storage URL to obtain a link to the original
+  # file.
+  original: String!
+
+  # Uploaded file's name.
+  filename: String!
+
+  # Uploaded file's size in bytes.
+  size: Int!
+}
+
+# Possible error codes of performing `Mutation.addUserPhone`.
+enum AddUserPhoneErrorCode {
+  # `MyUser` has an unconfirmed phone number already set.
+  #
+  # Status code: 409 Conflict.
+  BUSY
+
+  # Provided phone number is occupied by another `User` already.
+  #
+  # Status code: 409 Conflict.
+  OCCUPIED
+
+  # `MyUser` has reached maximum allowed number of phone numbers.
+  #
+  # Status code: 403 Forbidden.
+  TOO_MANY
+}
+
+# Event of a `Chat` being cleared by the authenticated `MyUser`.
+type EventChatCleared implements ChatEvent {
+  # ID of the `Chat` being read by a `ChatUser`.
+  chatId: ChatId!
+
+  # Datetime when the `Chat` was cleared in [RFC 3339] format.
+  #
+  # [RFC 3339]: https://tools.ietf.org/html/rfc3339#section-5.8
+  at: DateTimeUtc!
+}
+
+scalar UserBio
+
+# [Connection] with `ChatItem`s.
+#
+# [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+type ChatItemConnection {
+  # List of `ChatItem` [Edges] in this [Connection].
+  #
+  # [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+  # [Edges]: https://tinyurl.com/gql-relay#sel-FAFFFBEAAAACBFpwI
+  edges: [ChatItemEdge!]!
+
+  # List of `ChatItem`s in this [Connection].
+  #
+  # [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+  nodes: [ChatItem!]!
+
+  # [PageInfo] of this [Connection].
+  #
+  # [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+  # [PageInfo]: https://tinyurl.com/gql-relay#sec-undefined.PageInfo
+  pageInfo: PageInfo!
+}
+
+scalar ChatId
+
+# Error of performing `Mutation.addUserPhone`.
+type AddUserPhoneError {
+  # Code indicating why this error has happened.
+  code: AddUserPhoneErrorCode!
+}
+
+# Result of performing `Mutation.resetUserPassword`.
+union ResetUserPasswordResult = MyUser | ResetUserPasswordError
+
+scalar UserPassword
+
+# Result of performing `Mutation.uploadAttachment`.
+union UploadAttachmentResult = UploadAttachmentOk | UploadAttachmentError
+
+# Information about an action taken upon a `ChatMember`.
+type ChatMemberInfo implements ChatItem {
+  # Unique ID of this `ChatMemberInfo`.
+  id: ChatItemId!
+
+  # ID of the `Chat` this `ChatMemberInfo` was posted in.
+  chatId: ChatId!
+
+  # ID of the `User` (`ChatMember`) this `ChatMemberInfo` is about.
+  userId: UserId!
+
+  # ID of the `User` who performed this `ChatMemberInfo.action`.
+  byId: UserId!
+
+  # Action taken upon the `ChatMember`.
+  action: ChatMemberInfoAction!
+
+  # Datetime when this `ChatMemberInfo` was posted in [RFC 3339] format.
+  #
+  # [RFC 3339]: https://tools.ietf.org/html/rfc3339#section-5.8
+  at: DateTimeUtc!
+
+  # Version of this `ChatMemberInfo`'s state.
+  #
+  # It increases monotonically, so may be used (and is intended to) for
+  # tracking state's actuality.
+  ver: Version!
+}
+
+# Call in a `Chat`.
+type ChatCall implements ChatItem {
+  # Unique ID of this `ChatCall`.
+  id: ChatItemId!
+
+  # ID of the `Chat` where this `ChatCall` is organized.
+  chatId: ChatId!
+
+  # ID of the `ChatUser` who started this `ChatCall`.
+  authorId: UserId!
+
+  # `ChatUser` who started this `ChatCall`.
+  caller: ChatUser!
+
+  # Indicator whether this `ChatCall` is intended to start with video.
+  withVideo: Boolean!
+
+  # List of `ChatUser`s participating in this `ChatCall` at the moment.
+  members: [ChatUser!]!
+
+  # Link for joining this `ChatCall`'s room on [Medea] media server.
+  #
+  # Use `ChatCallCredentials` (generated for `Mutation.startChatCall` or
+  # `Mutation.joinChatCall`) to authenticate.
+  #
+  # [Medea]: https://github.com/instrumetisto/medea
+  joinLink: ChatCallRoomJoinLink
+
+  # Datetime when this `ChatCall` was started in [RFC 3339] format.
+  #
+  # [RFC 3339]: https://tools.ietf.org/html/rfc3339#section-5.8
+  at: DateTimeUtc!
+
+  # Datetime when the actual conversation in this `ChatCall` was started
+  # (after ringing had been finished) in [RFC 3339] format.
+  #
+  # [RFC 3339]: https://tools.ietf.org/html/rfc3339#section-5.8
+  conversationStartedAt: DateTimeUtc
+
+  # Datetime when this `ChatCall` was finished in [RFC 3339] format.
+  #
+  # [RFC 3339]: https://tools.ietf.org/html/rfc3339#section-5.8
+  finishedAt: DateTimeUtc
+
+  # Reason of why this `ChatCall` was finished.
+  finishReason: ChatCallFinishReason
+
+  # `ChatCallEventsCursor` of this `Call`.
+  #
+  # Use it in `Subscription.chatCallEvents` to receive new `ChatCallEvent`s
+  # of this `ChatCall`.
+  eventsCursor: ChatCallEventsCursor!
+
+  # Version of this `ChatCall`'s state.
+  #
+  # It increases monotonically, so may be used (and is intended to) for
+  # tracking state's actuality.
+  ver: Version!
+}
+
+# Possible error codes of performing `Mutation.deleteChatContactRecord`.
+enum DeleteChatContactRecordErrorCode {
+  # `ChatContact` with the provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_CHAT_CONTACT
+}
+
+# Error of performing `Mutation.blockChatUser`.
+type BlockChatUserError {
+  # Code indicating why this error has happened.
+  code: BlockChatUserErrorCode!
+}
+
+type Subscription {
+  # Subscribes to updates of a `User`.
+  #
+  # Authentication: optional
+  #
+  # Completion:
+  # Infinite. Completes only if an error occurs on the server, or the server
+  # is shutting down, so does require a re-subscription on any completion.
+  user(
+    # ID of the `User` to subscribe to.
+    id: UserId!
+  ): User!
+
+  # Subscribes to updates of the current authenticated `MyUser`.
+  #
+  # Authentication: mandatory
+  #
+  # Completion:
+  # Infinite. Completes only if an error occurs on the server, or the server
+  # is shutting down, so does require a re-subscription on any completion.
+  myUser: MyUser!
+
+  # Keeps `MyUser` online while subscribed.
+  #
+  # Keep this subscription up while the authenticated `MyUser` should be
+  # considered as online. Once this subscription begins `User.online` of
+  # `MyUser` becomes `ONLINE`, and when it ends sets to `OFFLINE`.
+  # TODO: Update the description above in !424.
+  #
+  # This subscription isn't meant to emit any values by itself. Even if
+  # something is emitted, it should be discarded.
+  #
+  # Authentication: mandatory
+  #
+  # Completion:
+  # Infinite. Completes only if an error occurs on the server, or the server
+  # is shutting down, so does require a re-subscription on any completion.
+  keepOnline: Int!
+
+  # Subscribes to new and updated `Chat`s in `Queries.recentChats`.
+  #
+  # Authentication: mandatory
+  #
+  # Completion:
+  # Infinite. Completes only if an error occurs on the server, or the server
+  # is shutting down, so does require a re-subscription on any completion.
+  recentChats(
+    # Cursor to start returning `Chat`s from.
+    #
+    # Get it from `Queries.recentChats.pageInfo.startCursor`.
+    cursor: String
+  ): ChatEdge!
+
+  # Subscribes to all recent `ChatEvent`s of the authenticated `MyUser`.
+  #
+  # Authentication: mandatory
+  #
+  # Completion:
+  # Infinite. Completes only if an error occurs on the server, or the server
+  # is shutting down, so does require a re-subscription on any completion.
+  recentChatsEvents(
+    # Cursor to start returning `Chat`s from.
+    #
+    # Get it from `Queries.recentChats.recentEventsCursor`.
+    cursor: String!
+  ): ChatEventEdge!
+
+  # Subscribes to `ChatEvent`s of the specified `Chat`.
+  #
+  # Authentication: mandatory
+  #
+  # Completion:
+  # Infinite. Completes only if an error occurs on the server, or the server
+  # is shutting down, so does require a re-subscription on any completion.
+  chatEvents(
+    # ID of the `Chat` to subscribe to.
+    id: ChatId!
+
+    # `Chat.eventCursor` to start returning `ChatEvent`s from.
+    cursor: ChatEventsCursor!
+  ): ChatEventEdge!
+
+  # Subscribes to `unreadCount` updates of the specified `Chat`.
+  #
+  # Authentication: mandatory
+  #
+  # Completion:
+  # Infinite. Completes only if an error occurs on the server, or the server
+  # is shutting down, so does require a re-subscription on any completion.
+  chatUnreadItemsCount(id: ChatId!): Int!
+
+  # Subscribes to `ChatTypingEvent`s of the specified `Chat`.
+  #
+  # Authentication: mandatory
+  #
+  # Completion:
+  # Infinite. Completes only if an error occurs on the server, or the server
+  # is shutting down, so does require a re-subscription on any completion.
+  chatTypings(id: ChatId!): ChatTypingEvent!
+
+  # Subscribes to `lastItem` updates of the specified `Chat`.
+  #
+  # Returns `null` when `Chat` hadn't been empty, but then became a such
+  # one.
+  #
+  # Authentication: mandatory
+  #
+  # Completion:
+  # Infinite. Completes only if an error occurs on the server, or the server
+  # is shutting down, so does require a re-subscription on any completion.
+  chatLastItem(id: ChatId!): ChatItemEdge
+
+  # Subscribes to `ChatCallEvent`s of a `ChatCall`.
+  #
+  # This subscription is mandatory to be created after executing
+  # `Mutation.startChatCall` or `Mutation.joinChatCall` as represents
+  # a heartbeat indication of the authenticated `MyUser`'s participation
+  # in a `ChatCall`. Stopping or breaking this subscription without leaving
+  # a `ChatCall` will end up by kicking the authenticated `MyUser` from this
+  # `ChatCall` by timeout.
+  #
+  # Authentication: mandatory
+  #
+  # Completion:
+  # Finite. Successfully completes when a `ChatCall` is finished, thus
+  # doesn't require a re-subscription. Also, completes when an error occurs
+  # on the server, or the server is shutting down, so does require a
+  # re-subscription in such cases.
+  chatCallEvents(
+    # `ChatCall.eventCursor` to start returning `ChatCallEvent`s from.
+    cursor: ChatCallEventsCursor!
+  ): ChatCallEventEdge!
+
+  # Subscribes to `ChatContactsEvent`s of `Queries.chatContacts` and
+  # `Queries.favoriteContacts`.
+  #
+  # Authentication: mandatory
+  #
+  # Completion:
+  # Infinite. Completes only if an error occurs on the server, or the server
+  # is shutting down, so does require a re-subscription on any completion.
+  chatContactsEvents(
+    # Cursor to start returning `ChatContactsEvent`s from.
+    #
+    # Get it from `Queries.chatContacts.eventsCursor` or `Queries.favoriteContacts.eventsCursor`.
+    cursor: String!
+  ): ChatContactsEventEdge!
+
+  # Notifies `ChatMember`s subscribed to `Subscription.chatTypings` about
+  # the authenticated `MyUser` being typing in the `Chat` at the moment.
+  #
+  # Keep this subscription up while the authenticated `MyUser` is typing.
+  # Once this subscription begins `Subscription.chatTypings` emits
+  # `EventChatTypingStarted`, and when it ends `EventChatTypingStopped`.
+  #
+  # This subscription isn't meant to emit any values by itself. Even if
+  # something is emitted, it should be discarded.
+  #
+  # Authentication: mandatory
+  #
+  # Completion:
+  # Infinite. Completes only if an error occurs on the server, or the server
+  # is shutting down, so does require a re-subscription on any completion.
+  keepTyping(
+    # ID of the `Chat` to type in.
+    chatId: ChatId!
+  ): Boolean!
+}
+
+# Avatar of an `User`.
+#
+# Specified as relative paths on a files storage. Prepend them with a files
+# storage URL to obtain a link to the concrete image.
+type UserAvatar {
+  # ID of the `GalleryItem` this `UserAvatar` is created from.
+  galleryItemId: GalleryItemId!
+
+  # `CropArea` applied to the `GalleryItem` to create this `UserAvatar`.
+  crop: CropArea
+
+  # Path to the original file representing this avatar image.
+  original: String!
+
+  # Path to the full-sized avatar image keeping the original sizes.
+  full: String!
+
+  # Path to the `big` avatar image preview of `70px`x`70px` size.
+  big: String!
+
+  # Path to the `medium` avatar image preview of `46px`x`46px` size.
+  medium: String!
+
+  # Path to the `small` avatar image preview of `25px`x`25px` size.
+  small: String!
+}
+
+# Possible error codes of performing `Mutation.hideChat`.
+enum HideChatErrorCode {
+  # Authenticated `MyUser` doesn't participate in the `Chat` which is attempted to be hidden.
+  #
+  # Status code: 403 Forbidden.
+  NOT_MEMBER
+
+  # `Chat` with provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_CHAT
+}
+
+# Event of a `ChatItem` being hidden by the authenticated `MyUser`.
+type EventChatItemHidden implements ChatEvent {
+  # ID of the `Chat` where `ChatItem` is being hidden by the authenticated
+  # `MyUser`.
+  chatId: ChatId!
+
+  # ID of the hidden `ChatItem`.
+  itemId: ChatItemId!
+}
+
+# Event of a `Chat` being muted by the authenticated `MyUser`.
+#
+# Once `duration` pasts (or is in the past already), it should be considered
+# by a client side as automatically unmuted. Server won't notify a client side
+# about that.
+type EventChatMuted implements ChatEvent {
+  # ID of the `Chat` being muted by the authenticated `MyUser`.
+  chatId: ChatId!
+
+  # Duration the `Chat` should be muted until.
+  duration: MuteDuration!
+}
+
+# Error of performing `Mutation.createChatContactRecord`.
+type CreateChatContactRecordError {
+  # Code indicating why this error has happened.
+  code: CreateChatContactRecordErrorCode!
+}
+
+# Possible error codes of performing `Mutation.validateUserPasswordRecoveryCode`.
+enum ValidateUserPasswordRecoveryCodeError {
+  # `MyUser` with the provided identifier doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_USER
+
+  # Provided `ConfirmationCode` is wrong.
+  #
+  # Status code: 403 Forbidden.
+  WRONG_CODE
+}
+
+# [Edge] with a `ChatContact`.
+#
+# [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+type ChatContactEdge {
+  # `ChatContact` [Node] at the end of this [Edge].
+  #
+  # [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+  # [Node]: https://tinyurl.com/gql-relay#sec-Node
+  node: ChatContact!
+
+  # [Cursor] of this [Edge].
+  #
+  # [Cursor]: https://tinyurl.com/gql-relay#sec-Cursor
+  # [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+  cursor: String!
+}
+
+# Input type representing a record of a `ChatContact`.
+#
+# Exactly one field should be set.
+input ChatContactRecord {
+  # `User` record.
+  userId: UserId
+
+  # `UserEmail` record.
+  email: UserEmail
+
+  # `UserPhone` record.
+  phone: UserPhone
+}
+
+# Plain file `Attachment`.
+type FileAttachment implements Attachment {
+  # Unique ID of this `FileAttachment`.
+  id: AttachmentId!
+
+  # Path on a files storage to the original file representing this
+  # `FileAttachment`.
+  #
+  # Prepend it with a files storage URL to obtain a link to the original
+  # file.
+  original: String!
+
+  # Uploaded file's name.
+  filename: String!
+
+  # Uploaded file's size in bytes.
+  size: Int!
+}
+
+scalar ChatContactPosition
+
+# Result of performing `Mutation.resendUserEmailConfirmation`.
+union ResendUserEmailConfirmationResult =
+    MyUser
+  | ResendUserEmailConfirmationError
+
+# Item posted in a `Chat` (its content).
+interface ChatItem {
+  # Unique ID of this `ChatItem`.
+  id: ChatItemId!
+
+  # ID of the `Chat` this `ChatItem` is posted in.
+  chatId: ChatId!
+
+  # ID of the `User` who posted this `ChatItem`.
+  authorId: UserId!
+
+  # Datetime when this `ChatItem` was posted in [RFC 3339] format.
+  #
+  # [RFC 3339]: https://tools.ietf.org/html/rfc3339#section-5.8
+  at: DateTimeUtc!
+
+  # Version of this `ChatItem`'s state.
+  #
+  # It increases monotonically, so may be used (and is intended to) for
+  # tracking state's actuality.
+  ver: Version!
+}
+
+# Result of performing `Mutation.updateUserCallCover`.
+union UpdateUserCallCoverResult = MyUser | UpdateUserCallCoverError
+
+# Possible error codes of performing `Mutation.declineChatCall`.
+enum DeclineChatCallError {
+  # Authenticated `MyUser` joined the `ChatCall` already.
+  #
+  # Status code: 403 Forbidden.
+  ALREADY_JOINED
+
+  # `Chat` with the provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_CHAT
+}
+
+# Error of performing `Mutation.updateUserLogin`.
+type UpdateUserLoginError {
+  # Code indicating why this error has happened.
+  code: UpdateUserLoginErrorCode!
+}
+
+# Error of performing `Mutation.createDialogChat`.
+type CreateDialogChatError {
+  # Code indicating why this error has happened.
+  code: CreateDialogChatErrorCode!
+}
+
+# Error of performing `Mutation.confirmUserPhone`.
+type ConfirmUserPhoneError {
+  # Code indicating why this error has happened.
+  code: ConfirmUserPhoneErrorCode!
+}
+
+# List of email addresses associated with a `MyUser`.
+type UserEmails {
+  # List of already confirmed email addresses.
+  #
+  # Any `confirmed` email address can be used in combination with `password`
+  # to sign-in a `MyUser`.
+  #
+  # All `confirmed` email addresses can be used for a `password` recovery.
+  confirmed: [UserEmail!]!
+
+  # Email address that still requires a confirmation.
+  #
+  # `unconfirmed` email address doesn't provide any functionality like
+  # `confirmed` ones do.
+  #
+  # `unconfirmed` email address can be moved to `confirmed` ones after
+  # completion of confirmation process via `Mutation.confirmUserEmail` only.
+  unconfirmed: UserEmail
+}
+
+# `User` of a system being currently signed-in.
+type MyUser {
+  # Unique ID of this `MyUser`.
+  #
+  # Once assigned it never changes.
+  id: UserId!
+
+  # Unique number of this `MyUser`.
+  #
+  # `num` is intended for an easier `MyUser` identification by other
+  # `User`s. It's just like a telephone number in a real life.
+  #
+  # `num` allows `MyUser` to perform a sign-in, when combined with a
+  # password.
+  #
+  # It may be reused by another `User` in future, once this `MyUser` becomes
+  # unreachable (sign-in for this `MyUser` is impossible).
+  num: UserNum!
+
+  # Unique login of this `MyUser`.
+  #
+  # `login` allows `MyUser` to perform a sign-in, when combined with a
+  # password.
+  login: UserLogin
+
+  # List of email addresses of this `MyUser`.
+  emails: UserEmails!
+
+  # List of phone numbers of this `MyUser`.
+  phones: UserPhones!
+
+  # Name of this `MyUser`.
+  #
+  # `name` of a `MyUser` is not unique and is intended for displaying a
+  # `MyUser` in a well-readable form. It can be either first name, or last
+  # name of a `MyUser`, both of them, or even some nickname.
+  name: UserName
+
+  # Arbitrary descriptive information about this `MyUser`.
+  bio: UserBio
+
+  # Avatar of this `MyUser`.
+  #
+  # `avatar` is an image helping to identify a `MyUser` visually.
+  avatar: UserAvatar
+
+  # Call cover of this `MyUser`.
+  #
+  # `callCover` is an image helping to identify a `MyUser` visually in
+  # `ChatCall`s.
+  callCover: UserCallCover
+
+  # `GalleryItem`s of this `MyUser` ordered by their adding time.
+  gallery(
+    # Number of next `GalleryItem`s to return.
+    first: Int
+
+    # Cursor indicating the `GalleryItemEdge` position to return next `GalleryItem`s after.
+    after: String
+
+    # Number of prior `GalleryItem`s to return.
+    last: Int
+
+    # Cursor indicating the `GalleryItemEdge` position to return prior `GalleryItem`s before.
+    before: String
+  ): GalleryItemConnection!
+
+  # Indicator whether this `MyUser` has a password.
+  #
+  # Password allows `MyUser` to perform a sign-in, when combined with a
+  # `login`, `num`, `email` or `phone`.
+  hasPassword: Boolean!
+
+  # `ChatDirectLink` to the `Chat` with this `MyUser`.
+  chatDirectLink: ChatDirectLink
+
+  # Count of the unread `Chat`s of this `MyUser`.
+  unreadChatsCount: Int!
+
+  # Mute state of this `MyUser`.
+  #
+  # Muted `MyUser` implies that all its `Chat`s events don't produce sounds
+  # and notifications on a client side. This, however, has nothing to do
+  # with a server and is the responsibility to be satisfied by a client
+  # side.
+  #
+  # Note, that `MyUser.muted` doesn't correlate with `Chat.muted`. Muted
+  # `Chat` of unmuted `MyUser` (and unmuted `Chat` of muted `MyUser`) should
+  # not produce any sounds.
+  muted: MuteDuration
+
+  # Version of this `MyUser`'s state.
+  #
+  # It increases monotonically, so may be used (and is intended to) for
+  # tracking state's actuality.
+  ver: Version!
+}
+
+# Possible error codes of performing `Mutation.removeChatMember`.
+enum RemoveChatMemberErrorCode {
+  # `Chat` with the provided ID is not a group.
+  #
+  # Status code: 400 Bad Request.
+  NOT_GROUP
+
+  # `MyUser` is not a member of the `Chat` and tries to remove someone else.
+  #
+  # Status code: 403 Forbidden.
+  NOT_MEMBER
+
+  # `Chat` with the provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_CHAT
+}
+
+# Result of performing `Mutation.postChatMessage`.
+union PostChatMessageResult = ChatMessage | PostChatMessageError
+
+# Events happening in a `ChatCall`.
+union ChatCallEvent = EventChatCallRoomReady
+
+# Reason of why a `ChatCall` was finished.
+enum ChatCallFinishReason {
+  # `Chat`-dialog `ChatCall` was dropped (canceled by the caller before
+  # being responded).
+  DROPPED
+
+  # `Chat`-dialog `ChatCall` was declined by the responder.
+  DECLINED
+
+  # `Chat`-dialog responder didn't manage to answer a `ChatCall` in the
+  # given ringing time.
+  UNANSWERED
+
+  # The last member of a `ChatCall` left.
+  MEMBER_LEFT
+
+  # The last member of a `ChatCall` lost connection.
+  MEMBER_LOST_CONNECTION
+
+  # Server decided to finish a `ChatCall` due its inner processes.
+  SERVER_DECISION
+}
+
+# Possible error codes of performing `Mutation.resendUserEmailConfirmation`.
+enum ResendUserEmailConfirmationErrorCode {
+  # Exceeded limit of sending email address `ConfirmationCode`s. Try again in 1 hour.
+  #
+  # Status code: 403 Forbidden.
+  CODE_LIMIT_EXCEEDED
+
+  # `MyUser` has no unconfirmed email addresses.
+  #
+  # Status code: 404 Not Found.
+  NO_UNCONFIRMED_EMAIL
+}
+
+# Possible error codes of performing `Mutation.updateUserCallCover`.
+enum UpdateUserCallCoverErrorCode {
+  # Point coordinates of `crop` area are negative or bigger than original image dimensions.
+  #
+  # Status code: 400 Bad Request.
+  INVALID_CROP_COORDINATES
+
+  # Top left point coordinates of `crop` area must be smaller than bottom right ones.
+  #
+  # Status code: 400 Bad Request.
+  INVALID_CROP_POINTS
+
+  # `GalleryItem` with the provided ID doesn't exist in the gallery of the authenticated `MyUser`.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_GALLERY_ITEM
+}
+
+# Error of performing `Mutation.muteMyUser`.
+type MuteMyUserError {
+  # Code indicating why this error has happened.
+  code: MuteMyUserErrorCode!
+}
+
+scalar ChatCallRoomJoinLink
+
+# Error of performing `Mutation.unmuteChat`.
+type UnmuteChatError {
+  # Code indicating why this error has happened.
+  code: UnmuteChatErrorCode!
+}
+
+# Result of performing `Mutation.renewSession`.
+union RenewSessionResult = RenewSessionOk | RenewSessionError
+
+# Result of performing `Mutation.clearChat`.
+union ClearChatResult = Chat | ClearChatError
+
+# Possible error codes of performing `Mutation.readChat`.
+enum ReadChatErrorCode {
+  # Authenticated `MyUser` doesn't participate in the `Chat` which is attempted to be read.
+  #
+  # Status code: 403 Forbidden.
+  NOT_MEMBER
+
+  # `Chat` with the provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_CHAT
+
+  # `ChatItem` with the provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_CHAT_ITEM
+}
+
+# Error of performing `Mutation.renameChat`.
+type RenameChatError {
+  # Code indicating why this error has happened.
+  code: RenameChatErrorCode!
+}
+
+scalar AccessToken
+
+# Message in a `Chat`.
+type ChatMessage implements ChatItem {
+  # Unique ID of this `ChatMessage`.
+  id: ChatItemId!
+
+  # ID of the `Chat` this `ChatMessage` is posted in.
+  chatId: ChatId!
+
+  # ID of the `User` who posted this `ChatMessage`.
+  authorId: UserId!
+
+  # Quote of the `ChatItem` this `ChatMessage` replies to.
+  repliesTo: ChatItem
+
+  # Text of this `ChatMessage`.
+  text: ChatMessageText
+
+  # `Attachment`s of this `ChatMessage`.
+  attachments: [Attachment!]!
+
+  # Datetime when this `ChatMessage` was posted in [RFC 3339] format.
+  #
+  # [RFC 3339]: https://tools.ietf.org/html/rfc3339#section-5.8
+  at: DateTimeUtc!
+
+  # Version of this `ChatMessage`'s state.
+  #
+  # It increases monotonically, so may be used (and is intended to) for
+  # tracking state's actuality.
+  ver: Version!
+}
+
+scalar UserPhone
+
+scalar Version
+
+# Result of performing `Mutation.updateUserPassword`.
+union UpdateUserPasswordResult = MyUser | UpdateUserPasswordError
+
+# Error of performing `Mutation.uploadUserGalleryItem`.
+type UploadUserGalleryItemError {
+  # Code indicating why this error has happened.
+  code: UploadUserGalleryItemErrorCode!
+}
+
+# Possible error codes of performing `Mutation.postChatMessage`.
+enum PostChatMessageErrorCode {
+  # Authenticated `MyUser` is blocked by the `ChatUser` who receives the `ChatMessage`.
+  #
+  # This error can happen only if `Chat` represents a dialog (consists only of two `ChatUser`s).
+  #
+  # Status code: 403 Forbidden.
+  BLOCKED
+
+  # Either `text` argument or at least one ID in `attachments` should be specified.
+  #
+  # Status code: 400 Bad Request.
+  NO_TEXT_AND_NO_ATTACHMENT
+
+  # Authenticated `MyUser` doesn't participate in the `Chat` to post the `ChatMessage` in.
+  #
+  # Status code: 403 Forbidden.
+  NOT_MEMBER
+
+  # One of the specified `Attachment`s doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_ATTACHMENT
+
+  # `Chat` with the provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_CHAT
+
+  # Replied `ChatItem` doesn't exist in the current `Chat`.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_REPLYING_CHAT_ITEM
+}
+
+# Quote of a `ChatItem` forwarded to some `Chat`.
+type ChatForward implements ChatItem {
+  # Unique ID of this `ChatForward`.
+  id: ChatItemId!
+
+  # ID of the `Chat` this `ChatForward` is posted in.
+  chatId: ChatId!
+
+  # ID of the `User` who posted this `ChatForward`.
+  authorId: UserId!
+
+  # Forwarded `ChatItem`.
+  item: ChatItem!
+
+  # Datetime when this `ChatForward` was posted in [RFC 3339] format.
+  #
+  # [RFC 3339]: https://tools.ietf.org/html/rfc3339#section-5.8
+  at: DateTimeUtc!
+
+  # Version of this `ChatForward`'s state.
+  #
+  # It increases monotonically, so may be used (and is intended to) for
+  # tracking state's actuality.
+  ver: Version!
+}
+
+# Call cover of an `User`.
+#
+# Specified as relative paths on a files storage. Prepend them with a files
+# storage URL to obtain a link to the concrete image.
+type UserCallCover {
+  # ID of the `GalleryItem` this `UserCallCover` is created from.
+  galleryItemId: GalleryItemId!
+
+  # `CropArea` applied to the `GalleryItem` to create this `UserCallCover`.
+  crop: CropArea
+
+  # Path to the original file representing this call cover image.
+  original: String!
+
+  # Path to the full-sized avatar image keeping the original sizes.
+  full: String!
+
+  # Path to the `vertical` call cover image preview of `675px`x`900px` size.
+  vertical: String!
+
+  # Path to the `square` call cover image preview of `300px`x`300px` size.
+  square: String!
+}
+
+# Possible error codes of performing `Mutation.recoverUserPassword`.
+enum RecoverUserPasswordError {
+  # Exceeded limit of sending recovery `ConfirmationCode`s. Try again in 1 hour.
+  #
+  # Status code: 403 Forbidden.
+  CODE_LIMIT_EXCEEDED
+
+  # `MyUser` has neither confirmed email address nor confirmed phone number.
+  #
+  # Status code: 403 Forbidden.
+  NOWHERE_TO_SEND
+
+  # `MyUser` with the provided identifier doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_USER
+}
+
+# Possible error codes of performing `Mutation.renameChat`.
+enum RenameChatErrorCode {
+  # `Chat` is not a group.
+  #
+  # Status code: 400 Bad Request.
+  NOT_GROUP
+
+  # Authenticated `MyUser` doesn't participate in the `Chat` which is attempted to be renamed.
+  #
+  # Status code: 403 Forbidden.
+  NOT_MEMBER
+
+  # `Chat` with the provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_CHAT
+}
+
+# Possible error codes of performing `Mutation.joinChatCall`.
+enum JoinChatCallErrorCode {
+  # There is no current `ChatCall` to join.
+  #
+  # Status code: 404 Not Found.
+  NO_CALL
+
+  # `Chat` with the provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_CHAT
+}
+
+# Error of performing `Mutation.createChatDirectLink`.
+type CreateChatDirectLinkError {
+  # Code indicating why this error has happened.
+  code: CreateChatDirectLinkErrorCode!
+}
+
+# Result of performing `Mutation.createChatContactRecord`.
+union CreateChatContactRecordResult = ChatContact | CreateChatContactRecordError
+
+# List of phone numbers associated with a `MyUser`.
+type UserPhones {
+  # List of already confirmed phone numbers.
+  #
+  # Any `confirmed` phone number can be used in combination with `password`
+  # to sign-in a `MyUser`.
+  #
+  # All `confirmed` phone numbers can be used for a `password` recovery.
+  confirmed: [UserPhone!]!
+
+  # Phone number that still requires a confirmation.
+  #
+  # `unconfirmed` phone number doesn't provide any functionality like
+  # `confirmed` ones do.
+  #
+  # `unconfirmed` phone number can be moved to `confirmed` ones after
+  # completion of confirmation process via `Mutation.confirmUserPhone` only.
+  unconfirmed: UserPhone
+}
+
+# Possible error codes of performing `Mutation.addUserEmail`.
+enum AddUserEmailErrorCode {
+  # `MyUser` has an unconfirmed email address already set.
+  #
+  # Status code: 409 Conflict.
+  BUSY
+
+  # Provided email address is occupied by another `User` already.
+  #
+  # Status code: 409 Conflict.
+  OCCUPIED
+
+  # `MyUser` has reached maximum allowed number of email addresses.
+  #
+  # Status code: 403 Forbidden.
+  TOO_MANY
+}
+
+scalar ChatContactsEventsCursor
+
+# Error of performing `Mutation.resendUserEmailConfirmation`.
+type ResendUserEmailConfirmationError {
+  # Code indicating why this error has happened.
+  code: ResendUserEmailConfirmationErrorCode!
+}
+
+# Error of performing `Mutation.updateUserCallCover`.
+type UpdateUserCallCoverError {
+  # Code indicating why this error has happened.
+  code: UpdateUserCallCoverErrorCode!
+}
+
+# Mute duration until an exact datetime.
+#
+# Once this datetime pasts (or is in the past already), it should be
+# considered by a client side as automatically unmuted. Server won't notify a
+# client side about that.
+type MuteUntilDuration {
+  # Datetime in [RFC 3339] format until a `Chat` (or the authenticated
+  # `MyUser`) is muted.
+  #
+  # [RFC 3339]: https://tools.ietf.org/html/rfc3339#section-5.8
+  until: DateTimeUtc!
+}
+
+scalar ChatCallEventsCursor
+
+# Possible error codes of performing `Mutation.renewSession`.
+enum RenewSessionErrorCode {
+  # Provided `RememberToken` is wrong.
+  #
+  # Status code: 403 Forbidden.
+  WRONG_REMEMBER_TOKEN
+}
+
+# Possible error codes of performing `Mutation.startChatCall`.
+enum StartChatCallErrorCode {
+  # Authenticated `MyUser` is blocked by the `ChatUser`, who responds to the `ChatCall`.
+  #
+  # This error can happen only if `Chat` represents a dialog (consists only of two `ChatUser`s).
+  #
+  # Status code: 403 Forbidden.
+  BLOCKED
+
+  # `Chat` is a monolog, and monologues can't have calls.
+  #
+  # Status code: 400 Bad Request.
+  MONOLOG
+
+  # `Chat` with the provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_CHAT
+}
+
+# [Connection] with `ChatUser`s.
+#
+# [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+type ChatUserConnection {
+  # List of `ChatUser` [Edges] in this [Connection].
+  #
+  # [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+  # [Edges]: https://tinyurl.com/gql-relay#sel-FAFFFBEAAAACBFpwI
+  edges: [ChatUserEdge!]!
+
+  # List of `ChatUser`s in this [Connection].
+  #
+  # [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+  nodes: [ChatUser!]!
+
+  # [PageInfo] of this [Connection].
+  #
+  # [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+  # [PageInfo]: https://tinyurl.com/gql-relay#sec-undefined.PageInfo
+  pageInfo: PageInfo!
+}
+
+# Email address provided by a `ChatContact`.
+type ChatContactEmail {
+  # `UserEmail` of this `ChatContactEmail`.
+  email: UserEmail!
+
+  # `ChatUser` behind this `ChatContactEmail`, if any.
+  chatUser: ChatUser
+}
+
+# [Edge] with a `ChatContactsEvent`.
+#
+# [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+type ChatContactsEventEdge {
+  # `ChatContactsEvent` [Node] at the end of this [Edge].
+  #
+  # [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+  # [Node]: https://tinyurl.com/gql-relay#sec-Node
+  node: ChatContactsEvent!
+
+  # [Cursor] of this [Edge].
+  #
+  # [Cursor]: https://tinyurl.com/gql-relay#sec-Cursor
+  # [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+  cursor: ChatContactsEventsCursor!
+}
+
+# Events happening in a `Chat`.
+interface ChatEvent {
+  # ID of the `Chat` this `ChatEvent` is related to.
+  chatId: ChatId!
+}
+
+scalar ChatDirectLinkSlug
+
+# [Edge] with an `GalleryItem`.
+#
+# [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+type GalleryItemEdge {
+  # `GalleryItem` [Node] at the end of this [Edge].
+  #
+  # [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+  # [Node]: https://tinyurl.com/gql-relay#sec-Node
+  node: GalleryItem!
+
+  # [Cursor] of this [Edge].
+  #
+  # [Cursor]: https://tinyurl.com/gql-relay#sec-Cursor
+  # [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+  cursor: String!
+}
+
+# Datetime of when a `Chat` was read last time by a `ChatUser`.
+type LastChatRead {
+  # ID of the `ChatUser` who read the `Chat`.
+  memberId: UserId!
+
+  # Datetime when the `Chat` was read last time in [RFC 3339] format.
+  #
+  # [RFC 3339]: https://tools.ietf.org/html/rfc3339#section-5.8
+  at: DateTimeUtc!
+}
+
+# [Connection] with `GalleryItem`s.
+#
+# [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+type GalleryItemConnection {
+  # List of `GalleryItem` [Edges] in this [Connection].
+  #
+  # [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+  # [Edges]: https://tinyurl.com/gql-relay#sel-FAFFFBEAAAACBFpwI
+  edges: [GalleryItemEdge!]!
+
+  # List of `GalleryItem`s in this [Connection].
+  #
+  # [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+  nodes: [GalleryItem!]!
+
+  # [PageInfo] of this [Connection].
+  #
+  # [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+  # [PageInfo]: https://tinyurl.com/gql-relay#sec-undefined.PageInfo
+  pageInfo: PageInfo!
+}
+
+scalar UserNum
+
+# Member of a `Chat`.
+type ChatMember {
+  # `ChatUser` represented by this `ChatMember`.
+  user: ChatUser!
+
+  # Datetime when the `ChatUser` became a `ChatMember`.
+  joinedAt: DateTimeUtc!
+}
+
+# Event of a `ChatMember` started typing in a `Chat`.
+type EventChatTypingStarted {
+  # `ChatUser` who started typing.
+  user: ChatUser!
+}
+
+scalar ChatContactId
+
+# Possible error codes of performing `Mutation.deleteChatForward`.
+enum DeleteChatForwardError {
+  # Authenticated `MyUser` is not an author of the `ChatForward`.
+  #
+  # Status code: 403 Forbidden.
+  NOT_AUTHOR
+
+  # Authenticated `MyUser` doesn't participate in the `Chat` where the `ChatForward` was posted in.
+  #
+  # Status code: 403 Forbidden.
+  NOT_MEMBER
+
+  # `ChatForward` has been replied or forwarded to another `Chat`.
+  #
+  # Status code: 403 Forbidden.
+  QUOTED
+
+  # `ChatForward` has been read by a `Chat` member.
+  #
+  # Only unread `ChatForward`s can be deleted.
+  #
+  # Status code: 403 Forbidden.
+  READ
+
+  # `ChatForward` with the provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_CHAT_FORWARD
+}
+
+# Result of performing `Mutation.deleteChatContactRecord`.
+union DeleteChatContactRecordResult = ChatContact | DeleteChatContactRecordError
+
+# Image `GalleryItem`.
+type ImageGalleryItem implements GalleryItem {
+  # Unique ID of this `ImageGalleryItem`.
+  id: GalleryItemId!
+
+  # Path on a files storage to the original file representing this
+  # `ImageGalleryItem`.
+  original: String!
+
+  # Path on a files storage to a `square` `ImageGalleryItem`'s view of
+  # `85px`x`85px` size.
+  square: String!
+
+  # Datetime when this `ImageGalleryItem` was added in [RFC 3339] format.
+  #
+  # [RFC 3339]: https://tools.ietf.org/html/rfc3339#section-5.8
+  addedAt: DateTimeUtc!
+}
+
+# Result of performing `Mutation.hideChat`.
+union HideChatResult = Chat | HideChatError
+
+# Error of performing `Mutation.muteChat`.
+type MuteChatError {
+  # Code indicating why this error has happened.
+  code: MuteChatErrorCode!
+}
+
+# Result of performing `Mutation.favoriteChatContact`.
+union FavoriteChatContactResult = ChatContact | FavoriteChatContactError
+
+# Event of a `Chat` being unmuted by the authenticated `MyUser`.
+#
+# This event means that `MyUser` had manually unmuted the `Chat` before
+# `MuteDuration` expired.
+type EventChatUnmuted implements ChatEvent {
+  # ID of the `Chat` being unmuted by the authenticated `MyUser`.
+  chatId: ChatId!
+}
+
+# Possible error codes of performing `Mutation.favoriteChatContact`.
+enum FavoriteChatContactErrorCode {
+  # `ChatContact` with the provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_CHAT_CONTACT
+}
+
+# Record in an address book of the authenticated `MyUser`.
+#
+# It may be linked with some real `User`s, but also may not.
+type ChatContact {
+  # Unique ID of this `ChatContact`.
+  id: ChatContactId!
+
+  # Custom `UserName` of this `ChatContact` given by the authenticated
+  # `MyUser`.
+  name: UserName!
+
+  # `ChatUser`s linked to this `ChatContact`.
+  #
+  # Guaranteed to have no duplicates.
+  chatUsers: [ChatUser!]!
+
+  # List of `UserEmail`s provided by this `ChatContact`.
+  #
+  # Guaranteed to have no duplicates.
+  emails: [ChatContactEmail!]!
+
+  # List of `UserPhone`s provided by this `ChatContact`.
+  #
+  # Guaranteed to have no duplicates.
+  phones: [UserPhone!]!
+
+  # Position of this `ChatContact` in a favorites list of the authenticated
+  # `MyUser`.
+  favoritePosition: ChatContactPosition
+}
+
+# Possible error codes of performing `Mutation.createChatContactRecord`.
+enum CreateChatContactRecordErrorCode {
+  # `ChatContact` with the provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_CHAT_CONTACT
+
+  # `User` with the provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_USER
+}
+
+scalar ChatEventsCursor
+
+scalar ConfirmationCode
+
+# Result of performing `Mutation.forwardChatItems`.
+union ForwardChatItemsResult = ChatItemConnection | ForwardChatItemsError
+
+# Event of a `ChatMember` stopped typing in a `Chat`.
+type EventChatTypingStopped {
+  # `ChatUser` who stopped typing.
+  user: ChatUser!
+}
+
+# Result of performing `Mutation.createChatContact`.
+union CreateChatContactResult = ChatContact | CreateChatContactError
+
+# Error of performing `Mutation.readChat`.
+type ReadChatError {
+  # Code indicating why this error has happened.
+  code: ReadChatErrorCode!
+}
+
+# Result of performing `Mutation.uploadUserGalleryItem`.
+union UploadUserGalleryItemResult =
+    UploadUserGalleryItemOk
+  | UploadUserGalleryItemError
+
+# [Edge] with a `ChatCallEvent`.
+#
+# [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+type ChatCallEventEdge {
+  # `ChatCallEvent` [Node] at the end of this [Edge].
+  #
+  # [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+  # [Node]: https://tinyurl.com/gql-relay#sec-Node
+  node: ChatCallEvent!
+
+  # [Cursor] of this [Edge].
+  #
+  # [Cursor]: https://tinyurl.com/gql-relay#sec-Cursor
+  # [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+  cursor: ChatCallEventsCursor!
+}
+
+# Possible error codes of performing `Mutation.confirmUserEmail`.
+enum ConfirmUserEmailErrorCode {
+  # Email address being confirmed is occupied by another `User` already.
+  #
+  # `User` should delete the current unconfirmed email address via `Mutations.deleteUserEmail`, choose another email address and set it via `Mutations.addUserEmail`.
+  #
+  # Status code: 409 Conflict.
+  OCCUPIED
+
+  # Provided `ConfirmationCode` is wrong.
+  #
+  # Status code: 403 Forbidden.
+  WRONG_CODE
+}
+
+scalar ChatMessageText
+
+# Possible error codes of performing `Mutation.updateUserPassword`.
+enum UpdateUserPasswordErrorCode {
+  # Provided current password of `MyUser` is wrong.
+  #
+  # Status code: 403 Forbidden.
+  WRONG_OLD_PASSWORD
+}
+
+scalar ChatItemId
+
+# Error of performing `Mutation.removeChatMember`.
+type RemoveChatMemberError {
+  # Code indicating why this error has happened.
+  code: RemoveChatMemberErrorCode!
+}
+
+# Event of a `Chat` being hidden by the authenticated `MyUser`.
+type EventChatHidden implements ChatEvent {
+  # ID of the `Chat` being hidden by the authenticated `MyUser`.
+  chatId: ChatId!
+
+  # Datetime when the `Chat` was hidden in [RFC 3339] format.
+  #
+  # [RFC 3339]: https://tools.ietf.org/html/rfc3339#section-5.8
+  at: DateTimeUtc!
+}
+
+# Error of performing `Mutation.deleteChatContactRecord`.
+type DeleteChatContactRecordError {
+  # Code indicating why this error has happened.
+  code: DeleteChatContactRecordErrorCode!
+}
+
+# Event of a `ChatItem` being deleted by some `ChatUser`.
+type EventChatItemDeleted implements ChatEvent {
+  # ID of the `Chat` where `ChatItem` is being deleted by some `ChatUser`.
+  chatId: ChatId!
+
+  # ID of the deleted `ChatItem`.
+  itemId: ChatItemId!
+}
+
+# [Edge] with a `ChatUser`.
+#
+# [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+type ChatUserEdge {
+  # `ChatUser` [Node] at the end of this [Edge].
+  #
+  # [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+  # [Node]: https://tinyurl.com/gql-relay#sec-Node
+  node: ChatUser!
+
+  # [Cursor] of this [Edge].
+  #
+  # [Cursor]: https://tinyurl.com/gql-relay#sec-Cursor
+  # [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+  cursor: String!
+}
+
+# Event of a `ChatItem`'s text being edited by its author.
+type EventChatItemTextEdited implements ChatEvent {
+  # ID of the `Chat` where `ChatItem`'s text being edited by its author.
+  chatId: ChatId!
+
+  # ID of the edited `ChatItem`.
+  itemId: ChatItemId!
+
+  # Edited `ChatItem`'s text.
+  text: ChatMessageText
+}
+
+# Events of a `ChatMember` typing in a `Chat`.
+union ChatTypingEvent = EventChatTypingStarted | EventChatTypingStopped
+
+# [Connection] with `User`s.
+#
+# [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+type UserConnection {
+  # List of `User` [Edges] in this [Connection].
+  #
+  # [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+  # [Edges]: https://tinyurl.com/gql-relay#sel-FAFFFBEAAAACBFpwI
+  edges: [UserEdge!]!
+
+  # List of `User`s in this [Connection].
+  #
+  # [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+  nodes: [User!]!
+
+  # [PageInfo] of this [Connection].
+  #
+  # [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+  # [PageInfo]: https://tinyurl.com/gql-relay#sec-undefined.PageInfo
+  pageInfo: PageInfo!
+}
+
+# Result of performing `Mutation.removeChatMember`.
+union RemoveChatMemberResult = Chat | RemoveChatMemberError
+
+# Result of performing `Mutation.resendUserPhoneConfirmation`.
+union ResendUserPhoneConfirmationResult =
+    MyUser
+  | ResendUserPhoneConfirmationError
+
+# Error of performing `Mutation.resetUserPassword`.
+type ResetUserPasswordError {
+  # Code indicating why this error has happened.
+  code: ResetUserPasswordErrorCode!
+}
+
+# Result of performing `Mutation.confirmUserEmail`.
+union ConfirmUserEmailResult = MyUser | ConfirmUserEmailError
+
+scalar RecentChatsEventsCursor
+
+# Possible error codes of performing `Mutation.muteMyUser`.
+enum MuteMyUserErrorCode {
+  # Mute duration cannot be shorter than one minute.
+  #
+  # Status code: 400 Bad Request.
+  TOO_SHORT
+}
+
+# Error of performing `Mutation.resendUserPhoneConfirmation`.
+type ResendUserPhoneConfirmationError {
+  # Code indicating why this error has happened.
+  code: ResendUserPhoneConfirmationErrorCode!
+}
+
+# Error of performing `Mutation.renewSession`.
+type RenewSessionError {
+  # Code indicating why this error has happened.
+  code: RenewSessionErrorCode!
+}
+
+# Possible error codes of performing `Mutation.createSession`.
+enum CreateSessionErrorCode {
+  # `MyUser` with the provided identifier doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_USER
+
+  # Provided password of `MyUser` is wrong.
+  #
+  # Status code: 403 Forbidden.
+  WRONG_PASSWORD
+}
+
+# Result of a successful performing `Mutation.createUser`.
+type CreateUserResult {
+  # Created `MyUser`.
+  user: MyUser!
+
+  # `Session` of the created `MyUser`.
+  #
+  # It will expire in 24 hours after `MyUser` creation.
+  session: Session!
+}
+
+# Possible error codes of performing `Mutation.createChatContact`.
+enum CreateChatContactErrorCode {
+  # `User` with the provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_USER
+}
+
+# Direct link to chat with `User`.
+type ChatDirectLink {
+  # Unique slug associated with this `ChatDirectLink`.
+  slug: ChatDirectLinkSlug!
+
+  # Counter of `Chat`s created using this `ChatDirectLink`.
+  usageCount: Int!
+
+  # Version of this `ChatDirectLink`'s state.
+  #
+  # It increases monotonically, so may be used (and is intended to) for
+  # tracking state's actuality.
+  ver: Version!
+}
+
+# Error of performing `Mutation.joinChatCall`.
+type JoinChatCallError {
+  # Code indicating why this error has happened.
+  code: JoinChatCallErrorCode!
+}
+
+# [Edge] with a `ChatItem`.
+#
+# [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+type ChatItemEdge {
+  # `ChatItem` [Node] at the end of this [Edge].
+  #
+  # [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+  # [Node]: https://tinyurl.com/gql-relay#sec-Node
+  node: ChatItem!
+
+  # [Cursor] of this [Edge].
+  #
+  # [Cursor]: https://tinyurl.com/gql-relay#sec-Cursor
+  # [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+  cursor: String!
+}
+
+# Error of performing `Mutation.addUserEmail`.
+type AddUserEmailError {
+  # Code indicating why this error has happened.
+  code: AddUserEmailErrorCode!
+}
+
+# Possible error codes of performing `Mutation.createGroupChat`.
+enum CreateGroupChatErrorCode {
+  # `Chat` can't be created with more than 100 initial members.
+  #
+  # Status code: 400 Bad Request.
+  WRONG_MEMBERS_COUNT
+}
+
+# [Edge] with a `ChatMember`.
+#
+# [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+type ChatMemberEdge {
+  # `ChatMember` [Node] at the end of this [Edge].
+  #
+  # [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+  # [Node]: https://tinyurl.com/gql-relay#sec-Node
+  node: ChatMember!
+
+  # [Cursor] of this [Edge].
+  #
+  # [Cursor]: https://tinyurl.com/gql-relay#sec-Cursor
+  # [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+  cursor: String!
+}
+
+# Error of performing `Mutation.startChatCall`.
+type StartChatCallError {
+  # Code indicating why this error has happened.
+  code: StartChatCallErrorCode!
+}
+
+# Possible error codes of performing `Mutation.updateChatContactName`.
+enum UpdateChatContactNameErrorCode {
+  # Authenticated `MyUser` is not an owner of the `ChatContact`.
+  #
+  # Status code: 403 Forbidden.
+  NOT_OWNER
+
+  # `ChatContact` with the provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_CHAT_CONTACT
+}
+
+# Item in a `User`'s gallery.
+interface GalleryItem {
+  # Unique ID of this `GalleryItem`.
+  id: GalleryItemId!
+
+  # Path on a files storage to the original file representing this
+  # `GalleryItem`.
+  #
+  # Prepend it with a files storage URL to obtain a link to the original
+  # file.
+  original: String!
+
+  # Datetime when this `GalleryItem` was added in [RFC 3339] format.
+  #
+  # [RFC 3339]: https://tools.ietf.org/html/rfc3339#section-5.8
+  addedAt: DateTimeUtc!
+}
+
+# Error of performing `Mutation.forwardChatItems`.
+type ForwardChatItemsError {
+  # Code indicating why this error has happened.
+  code: ForwardChatItemsErrorCode!
+}
+
+# Possible error codes of performing `Mutation.blockChatUser`.
+enum BlockChatUserErrorCode {
+  # `ChatUser` with the provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_USER
+}
+
+# Result of performing `Mutation.unfavoriteChatContact`.
+union UnfavoriteChatContactResult = ChatContact | UnfavoriteChatContactError
+
+# Event of a `ChatCall` being started.
+#
+# Either `Mutation.joinChatCall` or `Mutation.declineChatCall` should be
+# executed when this event is received. Otherwise, the authenticated `MyUser`
+# will be considered as timed out to answer the `ChatCall`.
+type EventChatCallStarted implements ChatEvent {
+  # ID of the `Chat` where `ChatCall` is being started.
+  chatId: ChatId!
+
+  # Started `ChatCall`.
+  call: ChatCall!
+}
+
+# Kind of a `Chat`.
+enum ChatKind {
+  # `Chat` with a single member.
+  MONOLOG
+
+  # `Chat` between two members.
+  DIALOG
+
+  # `Chat` between an arbitrary number of members.
+  GROUP
+}
+
+# Result of a successful performing `Mutation.uploadAttachment`.
+type UploadAttachmentOk {
+  # Uploaded `Attachment`.
+  attachment: Attachment!
+}
+
+# Result of performing `Mutation.updateChatContactName`.
+union UpdateChatContactNameResult = ChatContact | UpdateChatContactNameError
+
+# Possible error codes of performing `Mutation.uploadUserGalleryItem`.
+enum UploadUserGalleryItemErrorCode {
+  # Uploaded image has too big dimensions.
+  #
+  # Status code: 400 Bad Request.
+  DIMENSIONS_TOO_BIG
+
+  # Uploaded file cannot be decoded as an image or a video.
+  #
+  # Status code: 400 Bad Request.
+  MALFORMED
+
+  # Uploaded file is too big in size.
+  #
+  # Status code: 400 Bad Request.
+  SIZE_TOO_BIG
+
+  # Uploaded file has unsupported MIME type.
+  #
+  # Status code: 400 Bad Request.
+  UNSUPPORTED_FORMAT
+}
+
+# Error of performing `Mutation.createSession`.
+type CreateSessionError {
+  # Code indicating why this error has happened.
+  code: CreateSessionErrorCode!
+}
+
+# Result of performing `Mutation.unmuteChat`.
+union UnmuteChatResult = Chat | UnmuteChatError
+
+# Possible error codes of performing `Mutation.unmuteChat`.
+enum UnmuteChatErrorCode {
+  # Authenticated `MyUser` doesn't participate in the `Chat` which is attempted to be unmuted.
+  #
+  # Status code: 403 Forbidden.
+  NOT_MEMBER
+
+  # `Chat` with provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_CHAT
+}
+
+# Remembered session of a `MyUser`, which allows to renew his `Session`s.
+type RememberedSession {
+  # Unique remember token of this `RememberedSession`.
+  #
+  # This one should be used for a `Session` renewal via
+  # `Mutation.renewSession` and is **NOT** usable as a
+  # [Bearer authentication token][1].
+  #
+  # [1]: https://tools.ietf.org/html/rfc6750#section-2.1
+  token: RememberToken!
+
+  # Datetime of this `RememberedSession` expiration in [RFC 3339] format.
+  #
+  # Once expired, it's not usable anymore and a new `RememberedSession`
+  # should be created via `Mutation.createSession`.
+  #
+  # Client applications are supposed to use this field for tracking
+  # `RememberedSession`'s expiration and sign out `MyUser`s properly.
+  #
+  # [RFC 3339]: https://tools.ietf.org/html/rfc3339#section-5.8
+  expireAt: DateTimeUtc!
+
+  # Version of this `RememberedSession`'s state.
+  #
+  # It increases monotonically, so may be used (and is intended to) for
+  # tracking state's actuality.
+  ver: Version!
+}
+
+# Error of performing `Mutation.unblockChatUser`.
+type UnblockChatUserError {
+  # Code indicating why this error has happened.
+  code: UnblockChatUserErrorCode!
+}
+
+# Possible error codes of performing `Mutation.clearChat`.
+enum ClearChatErrorCode {
+  # Authenticated `MyUser` doesn't participate in the `Chat` which is attempted to be cleared.
+  #
+  # Status code: 403 Forbidden.
+  NOT_MEMBER
+
+  # `Chat` with the provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_CHAT
+
+  # `ChatItem` with the provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_CHAT_ITEM
+}
+
+# 2D point on an image.
+type Point {
+  # X coordinate of this `Point` in `px` (pixels).
+  x: Int!
+
+  # Y coordinate of this `Point` in `px` (pixels).
+  y: Int!
+}
+
+# Event of a `ChatContact` being updated or a new one being
+# created.
+type EventChatContactUpdated {
+  # Updated `ChatContact`.
+  contact: ChatContact!
+}
+
+# Possible error codes of performing `Mutation.resendUserPhoneConfirmation`.
+enum ResendUserPhoneConfirmationErrorCode {
+  # Exceeded limit of sending phone number `ConfirmationCode`s. Try again in 1 hour.
+  #
+  # Status code: 403 Forbidden.
+  CODE_LIMIT_EXCEEDED
+
+  # `MyUser` has no unconfirmed phone number.
+  #
+  # Status code: 404 Not Found.
+  NO_UNCONFIRMED_PHONE
+}
+
+# Possible error codes of performing `Mutation.unfavoriteChatContact`.
+enum UnfavoriteChatContactErrorCode {
+  # `ChatContact` with the provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_CHAT_CONTACT
+}
+
+# Event of a `ChatCall` being finished.
+#
+# Client side may preliminarily disconnect from [Medea] media server when this
+# event is received.
+#
+# [Medea]: https://github.com/instrumetisto/medea
+type EventChatCallFinished implements ChatEvent {
+  # ID of the `Chat` where `ChatCall` is being finished.
+  chatId: ChatId!
+
+  # Finished `ChatCall`.
+  call: ChatCall!
+}
+
+# Error of performing `Mutation.updateUserPassword`.
+type UpdateUserPasswordError {
+  # Code indicating why this error has happened.
+  code: UpdateUserPasswordErrorCode!
+}
+
+# User of a system impersonating a real person.
+type User {
+  # Unique ID of this `User`.
+  #
+  # Once assigned it never changes.
+  id: UserId!
+
+  # Unique number of this `User`.
+  #
+  # `num` is intended for an easier `User` identification by other `User`s.
+  # It's just like a telephone number in a real life.
+  #
+  # It may be reused by another `User` in future, once this `User` becomes
+  # unreachable (sign-in for this `User` is impossible).
+  num: UserNum!
+
+  # Name of this `User`.
+  #
+  # `name` of a `User` is not unique and is intended for displaying an
+  # `User` in a well-readable form for an easier `User` identification by
+  # other `User`s.
+  #
+  # `User` is free to choose how exactly he should be displayed for other
+  # `User`s.
+  name: UserName
+
+  # Arbitrary descriptive information about this `User`.
+  bio: UserBio
+
+  # Avatar of this `User`.
+  #
+  # `avatar` is an image helping to identify an `User` visually.
+  avatar: UserAvatar
+
+  # Call cover of this `User`.
+  #
+  # `callCover` is an image helping to identify an `User` visually in
+  # `ChatCall`s.
+  callCover: UserCallCover
+
+  # `GalleryItem`s of this `User` ordered by their adding time.
+  gallery(
+    # Number of next `GalleryItem`s to return.
+    first: Int
+
+    # Cursor indicating the `GalleryItemEdge` position to return next `GalleryItem`s after.
+    after: String
+
+    # Number of prior `GalleryItem`s to return.
+    last: Int
+
+    # Cursor indicating the `GalleryItemEdge` position to return prior `GalleryItem`s before.
+    before: String
+  ): GalleryItemConnection!
+
+  # Number of mutual `ChatContact`s that this `User` has with the
+  # authenticated `MyUser`.
+  mutualContactsCount: Int!
+
+  # `ChatContact`s linked to this `ChatUser`.
+  contacts: [ChatContact!]!
+
+  # Indicator whether this `User` is deleted.
+  isDeleted: Boolean!
+
+  # Version of this `User`'s state.
+  #
+  # It increases monotonically, so may be used (and is intended to) for
+  # tracking state's actuality.
+  ver: Version!
+}
+
+# Possible error codes of performing `Mutation.hideChatItem`.
+enum HideChatItemError {
+  # Authenticated `MyUser` doesn't participate in the `Chat` where the `ChatItem` was posted in.
+  #
+  # Status code: 403 Forbidden.
+  NOT_MEMBER
+
+  # `ChatItem` with the provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_CHAT_ITEM
+}
+
+# Mute duration of a `Chat` or the authenticated `MyUser`.
+union MuteDuration = MuteUntilDuration | MuteForeverDuration
+
+# Possible error codes of performing `Mutation.uploadAttachment`.
+enum UploadAttachmentErrorCode {
+  # Uploaded file attachment is malformed.
+  #
+  # Status code: 400 Bad Request.
+  MALFORMED
+
+  # No filename found in a [Content-Disposition][1] header.
+  #
+  # [1]: https://mdn.io/Web/HTTP/Headers/Content-Disposition
+  #
+  # Status code: 400 Bad Request.
+  NO_FILENAME
+
+  # Uploaded attachment is too big in size.
+  #
+  # Status code: 400 Bad Request.
+  SIZE_TOO_BIG
+}
+
+# [`PageInfo`][1] returned by a [Connection] according to
+# [GraphQL Cursor Connections Specification][0].
+#
+# [0]: https://tinyurl.com/gql-relay
+# [1]: https://tinyurl.com/gql-relay#sec-Connection-Types.Fields.PageInfo
+# [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+type PageInfo {
+  # [Cursor] pointing to the last [Node] in [Connection]'s [Edges].
+  #
+  # [Cursor]: https://tinyurl.com/gql-relay#sec-Cursor
+  # [Node]: https://tinyurl.com/gql-relay#sec-Node
+  # [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+  # [Edges]: https://tinyurl.com/gql-relay#sec-Edges
+  endCursor: String
+
+  # Indicator whether more [Edge]s exist following the set defined by the
+  # clients arguments.
+  #
+  # If the client is paginating with `first`/`after`, then `true` is
+  # returned if further [Edge]s exist, otherwise `false`.
+  #
+  # If the client is paginating with `last`/`before`, then `false` is
+  # returned.
+  #
+  # See [`PageInfo` fields spec][1] for more details.
+  #
+  # [1]: https://tinyurl.com/gql-relay#sec-undefined.PageInfo.Fields
+  # [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+  hasNextPage: Boolean!
+
+  # [Cursor] pointing to the first [Node] in [Connection]'s [Edges].
+  #
+  # [Cursor]: https://tinyurl.com/gql-relay#sec-Cursor
+  # [Node]: https://tinyurl.com/gql-relay#sec-Node
+  # [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+  # [Edges]: https://tinyurl.com/gql-relay#sec-Edges
+  startCursor: String
+
+  # Indicator whether more [Edge]s exist prior to the set defined by the
+  # clients arguments.
+  #
+  # If the client is paginating with `last`/`before`, then `true` is
+  # returned if prior [Edge]s exist, otherwise `false`.
+  #
+  # If the client is paginating with `first`/`after`, then `false` is
+  # returned.
+  #
+  # See [`PageInfo` fields spec][1] for more details.
+  #
+  # [1]: https://tinyurl.com/gql-relay#sec-undefined.PageInfo.Fields
+  # [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+  hasPreviousPage: Boolean!
+}
+
+# `Chat` is a conversation between `User`s.
+type Chat {
+  # Unique ID of this `Chat`.
+  id: ChatId!
+
+  # Name of this `Chat`.
+  #
+  # Only `Chat`-group can have a `name`.
+  name: ChatName
+
+  # `ChatMember`s of this `Chat`.
+  members(
+    first: Int
+    after: String
+    last: Int
+    before: String
+  ): ChatMemberConnection!
+
+  # Kind of this `Chat`.
+  kind: ChatKind!
+
+  # Indicator whether this `Chat` is hidden by the authenticated `MyUser`.
+  isHidden: Boolean!
+
+  # Mute condition of this `Chat` for the authenticated `MyUser`.
+  #
+  # Muted `Chat` implies that its events don't produce sounds and
+  # notifications on a client side. This, however, has nothing to do with a
+  # server and is the responsibility to be satisfied by a client side.
+  #
+  # Note, that `Chat.muted` doesn't correlate with `MyUser.muted`. Muted
+  # `Chat` of unmuted `MyUser` (and unmuted `Chat` of muted `MyUser`) should
+  # not produce any sounds.
+  muted: MuteDuration
+
+  # Datetime when this `Chat` was created in [RFC 3339] format.
+  #
+  # [RFC 3339]: https://tools.ietf.org/html/rfc3339#section-5.8
+  createdAt: DateTimeUtc!
+
+  # List of this `Chat`'s members which have read it, along with the
+  # corresponding `LastChatRead`s.
+  lastReads: [LastChatRead!]!
+
+  # Datetime when the last `ChatItem` posted by the authenticated `MyUser`
+  # was delivered in [RFC 3339] format.
+  #
+  # [RFC 3339]: https://tools.ietf.org/html/rfc3339#section-5.8
+  lastDelivery: DateTimeUtc!
+
+  # Last `ChatItem` posted in this `Chat`.
+  #
+  # If `Chat` has no visible `ChatItem`s for the authenticated `MyUser`,
+  # then returns `null`.
+  lastItem: ChatItemEdge
+
+  # Last `ChatItem` read by the authenticated `MyUser` in this `Chat`.
+  #
+  # If `Chat` hasn't been read yet, or has no visible `ChatItem`s for the
+  # authenticated `MyUser`, then returns `null`.
+  lastReadItem: ChatItemEdge
+
+  # `ChatItem`s of this `Chat` ordered by their posting time.
+  items(
+    # Number of next `ChatItem`s to return.
+    first: Int
+
+    # Cursor indicating the `ChatItemEdge` position to return next `ChatItem`s after.
+    after: String
+
+    # Number of prior `ChatItem`s to return.
+    last: Int
+
+    # Cursor indicating the `ChatItemEdge` position to return prior `ChatItem`s before.
+    before: String
+  ): ChatItemConnection!
+
+  # Count of `ChatItem`s unread by the authenticated `MyUser` in this
+  # `Chat`.
+  unreadCount: Int!
+
+  # Count of `ChatItem`s visible to the authenticated `MyUser` in this
+  # `Chat`.
+  #
+  # It doesn't include deleted or hidden `ChatItem`s.
+  totalCount: Int!
+
+  # Current ongoing `ChatCall` of this `Chat`, if any.
+  currentCall: ChatCall
+
+  # `ChatEventsCursor` of this `Chat`.
+  #
+  # Use it in `Subscription.chatEvents` to receive new `ChatEvent`s of this
+  # `Chat`.
+  eventsCursor: ChatEventsCursor!
+
+  # Version of this `Chat`'s state.
+  #
+  # It increases monotonically, so may be used (and is intended to) for
+  # tracking state's actuality.
+  ver: Version!
+}
+
+# Result of performing `Mutation.createDialogChat`.
+union CreateDialogChatResult = Chat | CreateDialogChatError
+
+# Error of performing `Mutation.hideChat`.
+type HideChatError {
+  # Code indicating why this error has happened.
+  code: HideChatErrorCode!
+}
+
+# Error of performing `Mutation.addChatMember`.
+type AddChatMemberError {
+  # Code indicating why this error has happened.
+  code: AddChatMemberErrorCode!
+}
+
+scalar UserId
+
+# Result of performing `Mutation.addUserEmail`.
+union AddUserEmailResult = MyUser | AddUserEmailError
+
+# Result of performing `Mutation.startChatCall`.
+union StartChatCallResult = ChatCall | StartChatCallError
+
+# Result of performing `Mutation.joinChatCall`.
+union JoinChatCallResult = ChatCall | JoinChatCallError
+
+# Event of a `ChatUser` leaving a `ChatCall`.
+type EventChatCallMemberLeft implements ChatEvent {
+  # ID of the `Chat` where `ChatUser` leaving a `ChatCall`.
+  chatId: ChatId!
+
+  # `ChatUser` who left the `ChatCall`.
+  user: ChatUser!
+
+  # Datetime when the `ChatUser` left the `ChatCall` in [RFC 3339] format.
+  #
+  # [RFC 3339]: https://tools.ietf.org/html/rfc3339#section-5.8
+  at: DateTimeUtc!
+}
+
+# Event of a [Medea] room being ready to accept the connection with `MyUser`.
+#
+# Client side should connect to [Medea] media server when this event is
+# received. Use `EventChatCallRoomReady.joinLink` to reach the [Medea] media
+# server and the `ChatCallCredentials` (generated for
+# `Mutation.startChatCall` or `Mutation.joinChatCall`) to authenticate.
+# Otherwise, the authenticated `MyUser` will be kicked from the `ChatCall` by
+# timeout.
+#
+# [Medea]: https://github.com/instrumetisto/medea
+type EventChatCallRoomReady {
+  # ID of the `Chat` where [Medea] room being ready to accept the connection
+  # with `MyUser`.
+  chatId: ChatId!
+
+  # Link for joining the room on [Medea] media server.
+  #
+  # Use `ChatCallCredentials` (generated for `Mutation.startChatCall` or
+  # `Mutation.joinChatCall`) to authenticate.
+  #
+  # [Medea]: https://github.com/instrumetisto/medea
+  joinLink: ChatCallRoomJoinLink!
+
+  # Datetime when the [Medea] room became ready in [RFC 3339] format.
+  #
+  # [Medea]: https://github.com/instrumetisto/medea
+  # [RFC 3339]: https://tools.ietf.org/html/rfc3339#section-5.8
+  at: DateTimeUtc!
+}
+
+# Event of a `ChatContact` being deleted.
+type EventChatContactDeleted {
+  # ID of the deleted `ChatContact`.
+  id: ChatContactId!
+}
+
+# Event of a `ChatUser` joined a `ChatCall`.
+type EventChatCallMemberJoined implements ChatEvent {
+  # ID of the `Chat` where `ChatUser` joined a `ChatCall`.
+  chatId: ChatId!
+
+  # `ChatUser` who joined the `ChatCall`.
+  user: ChatUser!
+
+  # Datetime when the `ChatUser` joined the `ChatCall` in [RFC 3339] format.
+  #
+  # [RFC 3339]: https://tools.ietf.org/html/rfc3339#section-5.8
+  at: DateTimeUtc!
+}
+
+# Possible error codes of performing `Mutation.updateUserLogin`.
+enum UpdateUserLoginErrorCode {
+  # Provided login is occupied by another `User` already.
+  #
+  # Status code: 409 Conflict.
+  OCCUPIED
+}
+
+# Error of performing `Mutation.postChatMessage`.
+type PostChatMessageError {
+  # Code indicating why this error has happened.
+  code: PostChatMessageErrorCode!
+}
+
+# Events of a `ChatContact`s list being changed.
+union ChatContactsEvent = EventChatContactUpdated | EventChatContactDeleted
+
+# Result of performing `Mutation.addUserPhone`.
+union AddUserPhoneResult = MyUser | AddUserPhoneError
+
+# Error of performing `Mutation.editChatMessageText`.
+type EditChatMessageTextError {
+  # Code indicating why this error has happened.
+  code: EditChatMessageTextErrorCode!
+}
+
+# Possible error codes of performing `Mutation.updateUserAvatar`.
+enum UpdateUserAvatarErrorCode {
+  # Point coordinates of `crop` area are negative or bigger than original image dimensions.
+  #
+  # Status code: 400 Bad Request.
+  INVALID_CROP_COORDINATES
+
+  # Top left point coordinates of `crop` area must be smaller than bottom right ones.
+  #
+  # Status code: 400 Bad Request.
+  INVALID_CROP_POINTS
+
+  # `GalleryItem` with the provided ID doesn't exist in the gallery of the authenticated `MyUser`.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_GALLERY_ITEM
+}
+
+scalar UserLogin
+
+# Result of performing `Mutation.editChatMessageText`.
+union EditChatMessageTextResult = ChatMessage | EditChatMessageTextError
+
+# [Connection] with `ChatContact`s.
+#
+# [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+type ChatContactConnection {
+  # List of `ChatContact` [Edges] in this [Connection].
+  #
+  # [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+  # [Edges]: https://tinyurl.com/gql-relay#sel-FAFFFBEAAAACBFpwI
+  edges: [ChatContactEdge!]!
+
+  # List of `ChatContact`s in this [Connection].
+  #
+  # [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+  nodes: [ChatContact!]!
+
+  # [PageInfo] of this [Connection].
+  #
+  # [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+  # [PageInfo]: https://tinyurl.com/gql-relay#sec-undefined.PageInfo
+  pageInfo: PageInfo!
+
+  # Cursor to be used in `Subscription.chatContactsEvents`.
+  eventsCursor: ChatContactsEventsCursor!
+}
+
+# Error of performing `Mutation.confirmUserEmail`.
+type ConfirmUserEmailError {
+  # Code indicating why this error has happened.
+  code: ConfirmUserEmailErrorCode!
+}
+
+# Result of performing `Mutation.unblockChatUser`.
+union UnblockChatUserResult = ChatUser | UnblockChatUserError
+
+# [Edge] with a `Chat`.
+#
+# [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+type ChatEdge {
+  # `Chat` [Node] at the end of this [Edge].
+  #
+  # [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+  # [Node]: https://tinyurl.com/gql-relay#sec-Node
+  node: Chat!
+
+  # [Cursor] of this [Edge].
+  #
+  # [Cursor]: https://tinyurl.com/gql-relay#sec-Cursor
+  # [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+  cursor: String!
+}
+
+# [Connection] with `Chat`s.
+#
+# [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+type ChatConnection {
+  # List of `Chat` [Edges] in this [Connection].
+  #
+  # [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+  # [Edges]: https://tinyurl.com/gql-relay#sel-FAFFFBEAAAACBFpwI
+  edges: [ChatEdge!]!
+
+  # List of `Chat`s in this [Connection].
+  #
+  # [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+  nodes: [Chat!]!
+
+  # [PageInfo] of this [Connection].
+  #
+  # [Connection]: https://tinyurl.com/gql-relay#sec-Connection-Types
+  # [PageInfo]: https://tinyurl.com/gql-relay#sec-undefined.PageInfo
+  pageInfo: PageInfo!
+
+  # Cursor to be used in `Subscription.recentChatsEvents`.
+  recentEventsCursor: RecentChatsEventsCursor!
+}
+
+# Event of last `ChatItem`s posted by the authenticated `MyUser` being
+# delivered to other `ChatUser`s in a `Chat`.
+type EventChatDelivered implements ChatEvent {
+  # ID of the `Chat` where `ChatItem`s are delivered.
+  chatId: ChatId!
+
+  # Datetime when `ChatItem`s were delivered in [RFC 3339] format.
+  #
+  # [RFC 3339]: https://tools.ietf.org/html/rfc3339#section-5.8
+  at: DateTimeUtc!
+}
+
+# Error of performing `Mutation.clearChat`.
+type ClearChatError {
+  # Code indicating why this error has happened.
+  code: ClearChatErrorCode!
+}
+
+scalar UserName
+
+# Possible error codes of performing `Mutation.createDialogChat`.
+enum CreateDialogChatErrorCode {
+  # Authenticated `MyUser` is blocked by one of the `Chat` members.
+  #
+  # This error can happen only if the created `Chat` represents a dialog (consists only of two `ChatUser`s).
+  #
+  # Status code: 403 Forbidden.
+  BLOCKED
+
+  # `ChatDirectLink` with the provided slug doesn't exist or is not active anymore.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_DIRECT_LINK
+}
+
+# Result of performing `Mutation.addChatMember`.
+union AddChatMemberResult = Chat | AddChatMemberError
+
+# Error of performing `Mutation.createGroupChat`.
+type CreateGroupChatError {
+  # Code indicating why this error has happened.
+  code: CreateGroupChatErrorCode!
+}
+
+# Result of performing `Mutation.readChat`.
+union ReadChatResult = Chat | ReadChatError
+
+# Error of performing `Mutation.createChatContact`.
+type CreateChatContactError {
+  # Code indicating why this error has happened.
+  code: CreateChatContactErrorCode!
+}
+
+# DateTime
+scalar DateTimeUtc
+
+# Error of performing `Mutation.updateChatContactName`.
+type UpdateChatContactNameError {
+  # Code indicating why this error has happened.
+  code: UpdateChatContactNameErrorCode!
+}
+
+# Area for an image cropping.
+#
+# Top left corner of the rotated by `angle` image is considered as `(0, 0)`
+# coordinates start point. So, obviously, `CropArea.bottomRight` point's
+# coordinates should be bigger than the ones of `CropArea.topLeft` point.
+type CropArea {
+  # `Point` of a top left corner of this cropping area.
+  topLeft: Point!
+
+  # `Point` of a bottom right corner of this cropping area.
+  bottomRight: Point!
+
+  # Angle to rotate image before cropping.
+  angle: Angle
+}
+
+# Possible error codes of performing `Mutation.createChatDirectLink`.
+enum CreateChatDirectLinkErrorCode {
+  # `ChatDirectLink` with the specified `slug` is occupied by another `User` already.
+  #
+  # Status code: 403 Forbidden.
+  OCCUPIED
+}
+
+type Query {
+  # Returns the current authenticated `MyUser`.
+  #
+  # Authentication: mandatory
+  myUser: MyUser
+
+  # Returns a `User` by its `id`.
+  #
+  # Authentication: optional
+  user(
+    # ID of the `User` to be returned.
+    id: UserId!
+  ): User
+
+  # Returns `User`s by their `ids`.
+  #
+  # Authentication: optional
+  users(
+    # IDs of the `User`s to be returned.
+    ids: [UserId!]!
+  ): [User!]!
+
+  # Searches `User`s by the given criteria.
+  #
+  # Exactly one of `num`/`login`/`link` arguments must be specified (be
+  # non-`null`).
+  #
+  # Authentication: optional
+  searchUsers(
+    # `UserNum` to search `User`s with.
+    num: UserNum = null
+
+    # `UserLogin` to search `User`s with.
+    login: UserLogin = null
+    directLink: ChatDirectLinkSlug
+  ): UserConnection!
+
+  # Returns `ChatUser`s blocked by the authenticated `MyUser`.
+  #
+  # Authentication: mandatory
+  blockedChatUsers(
+    # Number of next `ChatUser`s to return.
+    first: Int
+
+    # Cursor indicating the `ChatUserEdge` position to return next `ChatUser`s after.
+    after: String
+
+    # Number of prior `ChatUser`s to return.
+    last: Int
+
+    # Cursor indicating the `ChatUserEdge` position to return prior `ChatUser`s before.
+    before: String
+  ): ChatUserConnection!
+
+  # Indicates whether the specified `UserLogin` is occupied by some `User`,
+  # or is free to be used.
+  #
+  # Authentication: mandatory
+  checkUserLoginOccupied(
+    # `UserLogin` to be checked.
+    login: UserLogin!
+  ): Boolean!
+
+  # Indicates whether some `User` can be identified by the given `num`,
+  # `login`, `email` or `phone`.
+  #
+  # Exactly one of `num`/`login`/`email`/`phone` arguments must be specified
+  # (be non-`null`).
+  #
+  # Authentication: no
+  checkUserIdentifiable(
+    # `UserNum` of the `User` for identification.
+    num: UserNum
+
+    # `UserLogin` of the `User` for identification.
+    login: UserLogin
+
+    # `UserEmail` address of the `User` for identification.
+    email: UserEmail
+
+    # `UserPhone` number of the `User` for identification.
+    phone: UserPhone
+  ): Boolean!
+
+  # Returns a `Chat` by its ID.
+  #
+  # The authenticated `MyUser` should be a member of the `Chat` in order to
+  # view it.
+  #
+  # Authentication: mandatory
+  chat(
+    # ID of the `Chat` to be returned.
+    id: ChatId!
+  ): Chat
+
+  # Returns non-hidden `Chat`s of authenticated `MyUser` ordered descending
+  # by the last updating time.
+  #
+  # Authentication: mandatory
+  recentChats(
+    # Number of next `Chat`s to return.
+    first: Int
+
+    # Cursor indicating the `ChatEdge` position to return next `Chat`s after.
+    after: String
+
+    # Number of prior `Chat`s to return.
+    last: Int
+
+    # Cursor indicating the `ChatEdge` position to return prior `Chat`s before.
+    before: String
+  ): ChatConnection!
+
+  # Returns all the currently active ongoing `ChatCall`s of the
+  # authenticated `MyUser`.
+  #
+  # This query is intended to load initial states of ongoing `ChatCall`s.
+  # Use `Subscription.chatCallEvents` with `ChatCall.eventsCursor` to be
+  # up-to-date with the returned ongoing `ChatCall`s.
+  #
+  # Use `Subscription.recentChatsEvents` to be notified about all new
+  # `ChatCall`s happened in any `Chat`s of the authenticated `MyUser`.
+  #
+  # Authentication: mandatory
+  ongoingChatCalls: [ChatCall!]!
+
+  # Returns address book of the authenticated `MyUser` ordered
+  # alphabetically by `ChatContact` names.
+  #
+  # Use the `noFavorite` argument to exclude favorited `ChatContact`s from
+  # the returned result.
+  #
+  # Authentication: mandatory
+  chatContacts(
+    # Number of next `ChatContact`s to return.
+    first: Int
+
+    # Cursor indicating the `ChatContactEdge` position to return next `ChatContact`s after.
+    after: String
+
+    # Number of prior `ChatContact`s to return.
+    last: Int
+
+    # Cursor indicating the `ChatContactEdge` position to return prior `ChatContact`s before.
+    before: String
+
+    # Indicator whether favorite `ChatContact`s should be excluded from result.
+    noFavorite: Boolean = false
+  ): ChatContactConnection!
+
+  # Returns favorited `ChatContact`s of the authenticated `MyUser` ordered
+  # by the custom order of `MyUser`'s favorites list via
+  # `ChatContact.favoritePosition` field.
+  #
+  # Use `Mutation.favoriteChatContact` to update the position of a
+  # `ChatContact` in `MyUser`'s favorites list.
+  #
+  # Authentication: mandatory
+  favoriteChatContacts(
+    # Number of next `ChatContact`s to return.
+    first: Int
+
+    # Cursor indicating the `ChatContactEdge` position to return next `ChatContact`s after.
+    after: String
+
+    # Number of prior `ChatContact`s to return.
+    last: Int
+
+    # Cursor indicating the `ChatContactEdge` position to return prior `ChatContact`s before.
+    before: String
+  ): ChatContactConnection!
+}
+
+# Result of performing `Mutation.createChatDirectLink`.
+union CreateChatDirectLinkResult = ChatDirectLink | CreateChatDirectLinkError
+
+# Session of a `MyUser` being signed-in.
+type Session {
+  # Unique authentication token of this `Session`.
+  #
+  # This one should be used as a [Bearer authentication token][1].
+  #
+  # [1]: https://tools.ietf.org/html/rfc6750#section-2.1
+  token: AccessToken!
+
+  # Datetime of this `Session` expiration in [RFC 3339] format.
+  #
+  # Once expired, it's not usable anymore and a new `Session` should be
+  # created via `Mutation.createSession` or `Mutation.renewSession`.
+  #
+  # Client applications are supposed to use this field for tracking
+  # `Session`'s expiration and renewing it before an authentication error
+  # occur.
+  #
+  # [RFC 3339]: https://tools.ietf.org/html/rfc3339#section-5.8
+  expireAt: DateTimeUtc!
+
+  # Version of this `Session`'s state.
+  #
+  # It increases monotonically, so may be used (and is intended to) for
+  # tracking state's actuality.
+  ver: Version!
+}
+
+scalar RememberToken
+
+# `ChatItem`'s quote used as input of `Mutation.forwardChatItems`.
+input ChatItemQuoteInput {
+  # ID of the `ChatItem` to be forwarded.
+  id: ChatItemId!
+
+  # Indicator whether a forward should contain the full `ChatMessageText` of
+  # the original `ChatItem` (if it contains any).
+  withText: Boolean!
+
+  # IDs of the `ChatItem`'s `Attachment`s to be forwarded.
+  #
+  # If no `Attachment`s are provided, then `ChatForward` will only contain a
+  # `ChatMessageText`.
+  attachments: [AttachmentId!]!
+}
+
+# Possible error codes of performing `Mutation.leaveChatCall`.
+enum LeaveChatCallError {
+  # `Chat` with the provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_CHAT
+}
+
+# [Edge] with an `User`.
+#
+# [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+type UserEdge {
+  # `User` [Node] at the end of this [Edge].
+  #
+  # [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+  # [Node]: https://tinyurl.com/gql-relay#sec-Node
+  node: User!
+
+  # [Cursor] of this [Edge].
+  #
+  # [Cursor]: https://tinyurl.com/gql-relay#sec-Cursor
+  # [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+  cursor: String!
+}
+
+# Possible error codes of performing `Mutation.editChatMessageText`.
+enum EditChatMessageTextErrorCode {
+  # `ChatMessage`'s text can be set as `null` only if there is at least 1 `Attachment` in it.
+  #
+  # Status code: 400 Bad Request.
+  NO_TEXT_AND_NO_ATTACHMENT
+
+  # Authenticated `MyUser` is not an author of the `ChatMessage`.
+  #
+  # Status code: 403 Forbidden.
+  NOT_AUTHOR
+
+  # Authenticated `MyUser` doesn't participate in the `Chat` where the `ChatMessage` was posted.
+  #
+  # Status code: 403 Forbidden.
+  NOT_MEMBER
+
+  # 5 minutes passed since `ChatMessage` creation and it was read by other `Chat` members.
+  #
+  # Status code: 403 Forbidden.
+  UNEDITABLE
+
+  # `ChatMessage` with the provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_CHAT_MESSAGE
+}
+
+# Result of performing `Mutation.blockChatUser`.
+union BlockChatUserResult = ChatUser | BlockChatUserError
+
+# Event of a `Chat` being read by a `ChatUser`.
+type EventChatRead implements ChatEvent {
+  # ID of the `Chat` being read by a `ChatUser`.
+  chatId: ChatId!
+
+  # `ChatUser` who read the `Chat`.
+  byUser: ChatUser!
+
+  # Datetime when the `Chat` was read by the `ChatUser` in [RFC 3339]
+  # format.
+  #
+  # [RFC 3339]: https://tools.ietf.org/html/rfc3339#section-5.8
+  at: DateTimeUtc!
+}
+
+# Result of a successful performing `Mutation.uploadUserGalleryItem`.
+type UploadUserGalleryItemOk {
+  # Uploaded `GalleryItem`.
+  galleryItem: GalleryItem!
+}
+
+# Error of performing `Mutation.uploadAttachment`.
+type UploadAttachmentError {
+  # Code indicating why this error has happened.
+  code: UploadAttachmentErrorCode!
+}
+
+# Event of a new `ChatItem` being posted in a `Chat`.
+type EventChatItemPosted implements ChatEvent {
+  # ID of the `Chat` where `ChatItem` is being posted.
+  chatId: ChatId!
+
+  # Posted `ChatItem`.
+  item: ChatItem!
+}
+
+# 2D point on an image.
+#
+# Same as `Point`, but for using in arguments.
+input PointInput {
+  # X coordinate of this `PointInput` in `px` (pixels).
+  x: Int!
+
+  # Y coordinate of this `PointInput` in `px` (pixels).
+  y: Int!
+}
+
+# Event of a `ChatCall` being declined by a `ChatMember`.
+type EventChatCallDeclined implements ChatEvent {
+  # ID of the `Chat` where `ChatCall` is being declined by a `ChatMember`.
+  chatId: ChatId!
+
+  # Declined `ChatCall`.
+  call: ChatCall!
+
+  # `ChatUser` who declined the `ChatCall`.
+  user: ChatUser!
+
+  # Datetime when the `ChatCall` was declined in [RFC 3339] format.
+  #
+  # [RFC 3339]: https://tools.ietf.org/html/rfc3339#section-5.8
+  at: DateTimeUtc!
+}
+
+# Result of a successful performing `Mutation.createSession`.
+type CreateSessionOk {
+  # Created `Session`.
+  #
+  # It will expire in 24 hours after creation.
+  session: Session!
+
+  # Created `RememberedSession` for a `Session` renewal.
+  #
+  # It will expire in 90 days (~3 months) after creation.
+  #
+  # `null` if `remember` argument of `Mutation.createSession` wasn't
+  # specified or was `false`.
+  remembered: RememberedSession
+
+  # `MyUser` that the `Session` was created for.
+  user: MyUser!
+}
+
+# Possible error codes of performing `Mutation.deleteChatMessage`.
+enum DeleteChatMessageError {
+  # Authenticated `MyUser` is not an author of the `ChatMessage`.
+  #
+  # Status code: 403 Forbidden.
+  NOT_AUTHOR
+
+  # Authenticated `MyUser` doesn't participate in the `Chat` where the `ChatMessage` was posted.
+  #
+  # Status code: 403 Forbidden.
+  NOT_MEMBER
+
+  # `ChatMessage` has been replied or forwarded.
+  #
+  # Status code: 403 Forbidden.
+  QUOTED
+
+  # `ChatMessage` has been read by `Chat` members.
+  #
+  # Only unread `ChatMessage`s can be deleted.
+  #
+  # Status code: 403 Forbidden.
+  READ
+
+  # `ChatMessage` with the provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_CHAT_MESSAGE
+}
+
+scalar GalleryItemId
+
+# Error of performing `Mutation.updateUserAvatar`.
+type UpdateUserAvatarError {
+  # Code indicating why this error has happened.
+  code: UpdateUserAvatarErrorCode!
+}
+
+# Possible error codes of performing `Mutation.forwardChatItems`.
+enum ForwardChatItemsErrorCode {
+  # Authenticated `MyUser` is blocked by the `ChatUser`, who receives the `ChatForward`.
+  #
+  # This error can happen only if `Chat` represents a dialog (consists only of two `ChatUser`s).
+  #
+  # Status code: 403 Forbidden.
+  BLOCKED
+
+  # Either `withText` field or at least one ID in `attachments` field should be specified in all of the `ChatItemQuoteInput`s.
+  #
+  # Status code: 400 Bad Request.
+  NO_TEXT_AND_NO_ATTACHMENT
+
+  # Authenticated `MyUser` doesn't participate in the `Chat` to post `ChatForward`s into.
+  #
+  # Status code: 403 Forbidden.
+  NOT_MEMBER
+
+  # `Chat` with the provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_CHAT
+
+  # One or more forwarded `Attachments`s don't belong to the corresponding `ChatItem`s.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_FORWARDED_ATTACHMENT
+
+  # One or more forwarded `ChatItem`s not found.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_FORWARDED_ITEM
+
+  # One or more forwarded `ChatItem`s have an unsupported kind. Only `ChatMessage` and `ChatForward` are allowed.
+  #
+  # Status code: 400 Bad Request.
+  UNSUPPORTED_FORWARDED_ITEM
+
+  # List of `Item`s to forward should contain at least 1 element and at most 100 elements.
+  #
+  # Status code: 400 Bad Request.
+  WRONG_ITEMS_COUNT
+}
+
+# Possible error codes of performing `Mutation.addChatMember`.
+enum AddChatMemberErrorCode {
+  # Authenticated `MyUser` is blocked by the `User` he tries to add to the `Chat`.
+  #
+  # Status code: 403 Forbidden.
+  BLOCKED
+
+  # `Chat` with the provided ID is not a group.
+  #
+  # Status code: 400 Bad Request.
+  NOT_GROUP
+
+  # `MyUser` is not a member of the `Chat` and tries to add someone else.
+  #
+  # Status code: 403 Forbidden.
+  NOT_MEMBER
+
+  # `Chat` with the provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_CHAT
+}
+
+# Error of performing `Mutation.renameChatUser`.
+type RenameChatUserError {
+  # Code indicating why this error has happened.
+  code: RenameChatUserErrorCode!
+}
+
+# Possible error codes of performing `Mutation.muteChat`.
+enum MuteChatErrorCode {
+  # Authenticated `MyUser` doesn't participate in the `Chat` which is attempted to be muted.
+  #
+  # Status code: 403 Forbidden.
+  NOT_MEMBER
+
+  # Mute duration cannot be shorter than one minute.
+  #
+  # Status code: 400 Bad Request.
+  TOO_SHORT
+
+  # `Chat` with provided ID doesn't exist.
+  #
+  # Status code: 404 Not Found.
+  UNKNOWN_CHAT
+}
+
+# [Edge] with a `ChatEvent`.
+#
+# [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+type ChatEventEdge {
+  # `ChatEvent` [Node] at the end of this [Edge].
+  #
+  # [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+  # [Node]: https://tinyurl.com/gql-relay#sec-Node
+  node: ChatEvent!
+
+  # [Cursor] of this [Edge].
+  #
+  # [Cursor]: https://tinyurl.com/gql-relay#sec-Cursor
+  # [Edge]: https://tinyurl.com/gql-relay#sec-Edge-Types
+  cursor: ChatEventsCursor!
+}
+
+scalar AttachmentId

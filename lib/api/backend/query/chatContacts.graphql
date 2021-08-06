@@ -1,0 +1,20 @@
+query chatContacts($first: Int, $after: String, $last: Int, $before: String, $noFavorite: Boolean) {
+    chatContacts(first: $first, after: $after, last: $last, before: $before, noFavorite: $noFavorite) {
+        nodes {
+            id,
+            name,
+            chatUsers {
+                id,
+                user {
+                    id,
+                    num,
+                    name,
+                    avatar {
+                        big
+                    }
+                },
+            },
+            favoritePosition,
+        }
+    }
+}

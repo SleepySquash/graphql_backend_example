@@ -1,0 +1,23 @@
+mutation createChatContact($name: UserName!, $records: [ChatContactRecord!]) {
+    createChatContact(name: $name, records: $records) {
+        __typename,
+        ...on ChatContact {
+            id,
+            name,
+            chatUsers {
+                id,
+                user {
+                    id,
+                    num,
+                    name,
+                    avatar {
+                        big
+                    }
+                },
+            },
+        },
+        ...on CreateChatContactError {
+            code
+        }
+    }
+}

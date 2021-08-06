@@ -1,0 +1,12 @@
+query searchUsers($num: UserNum, $login: UserLogin) {
+    searchUsers(num: $num, login: $login) {
+        nodes {
+            id,
+            num,
+            name,
+            avatar {
+                big
+            },
+        }
+    }
+}

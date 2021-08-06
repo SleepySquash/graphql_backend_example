@@ -1,0 +1,44 @@
+targets:
+  $default:
+    builders:
+      artemis:
+        options:
+          schema_mapping:
+            - output: lib/api/api.dart
+              schema: lib/api/schema.graphql
+              queries_glob: lib/api/backend/**.graphql
+          scalar_mapping:
+            - graphql_type: UserId
+              dart_type: String
+            - graphql_type: UserNum
+              dart_type: String
+            - graphql_type: AccessToken
+              dart_type: String
+            - graphql_type: DateTimeUtc
+              dart_type: DateTime
+            - graphql_type: UserLogin
+              dart_type: String
+            - graphql_type: UserName
+              dart_type: String
+            - graphql_type: UserBio
+              dart_type: String
+            - graphql_type: UserPassword
+              dart_type: String
+            - graphql_type: UserEmail
+              dart_type: String
+            - graphql_type: UserPhone
+              dart_type: String
+            - graphql_type: ChatContactId
+              dart_type: String
+            - graphql_type: ChatContactPosition
+              dart_type: double
+            - graphql_type: ChatId
+              dart_type: String
+            - graphql_type: ChatName
+              dart_type: String
+            - graphql_type: ChatItemId
+              dart_type: String
+            - graphql_type: ChatMessageText
+              dart_type: String
+            - graphql_type: AttachmentId
+              dart_type: String

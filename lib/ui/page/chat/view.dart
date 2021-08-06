@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:test/domain/model/chat_item.dart';
 import 'package:test/ui/page/profile/view.dart';
 import 'package:intl/intl.dart';
 
@@ -119,7 +120,7 @@ class ChatView extends GetView<ChatController> {
                       ? Center(child: Text('Write your first message!'))
                       : Scrollbar(
                           child: ListView(
-                            children: controller.items
+                            children: controller.items.reversed
                                 .map(
                                   (e) => Align(
                                     alignment: Alignment.topLeft,
@@ -131,6 +132,33 @@ class ChatView extends GetView<ChatController> {
                                       margin: const EdgeInsets.all(5),
                                       child: Builder(
                                         builder: (_) {
+                                          if (e is ChatMessage) {
+                                            ChatMessage m = e;
+                                            return Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    e.userId,
+                                                    style:
+                                                        Get.textTheme.caption,
+                                                  ),
+                                                  SelectableText(
+                                                    m.text ?? '',
+                                                    style:
+                                                        Get.textTheme.bodyText2,
+                                                  ),
+                                                  Text(
+                                                    DateFormat('kk:mm')
+                                                        .format(e.at),
+                                                    style:
+                                                        Get.textTheme.caption,
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          }
                                           return Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Column(

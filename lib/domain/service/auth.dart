@@ -8,10 +8,12 @@ import '../model/session.dart';
 import '../model/user.dart';
 import '../../provider/graphql.dart';
 
-class AuthService extends GetxController with StateMixin<Session?> {
+class AuthService extends GetxController {
   AuthService(this.graphQlProvider);
   GraphQlProvider graphQlProvider;
 
+  Rx<RxStatus> status = Rx<RxStatus>(RxStatus.loading());
+  Session? session;
   MyUser? user;
 
   Future<void> init() async {
@@ -19,10 +21,10 @@ class AuthService extends GetxController with StateMixin<Session?> {
     String? map = prefs.getString('session');
 
     if (map != null) {
-      Session session = Session.fromJson(json.decode(map));
-      if (session.expireAt.isAfter(DateTime.now().toUtc())) {
+      session = Session.fromJson(json.decode(map));
+      if (session!.expireAt.isAfter(DateTime.now().toUtc())) {
         try {
-          graphQlProvider.token = session.token;
+          graphQlProvider.token = session!.token;
           MyUser$Query$MyUser response = await graphQlProvider.myUser();
           user = MyUser(
             response.id,
@@ -43,53 +45,56 @@ class AuthService extends GetxController with StateMixin<Session?> {
               small: response.avatar?.small,
             ),
           );
-          return change(session, status: RxStatus.success());
+          status.value = RxStatus.success();
+          return;
         } catch (e) {
+          if (e.toString().contains('Failed to parse header value')) {
+            graphQlProvider.token = null;
+            prefs.remove('session');
+            Get.offAndToNamed('/auth');
+          }
           print('AuthService.init: $e');
         }
       } else {
-        // if not connected {
         graphQlProvider.token = null;
         prefs.remove('session');
         Get.offAndToNamed('/auth');
-        // }
       }
     }
 
-    change(null, status: RxStatus.empty());
+    status.value = RxStatus.empty();
   }
 
   Future<void> register() async {
-    change(null, status: RxStatus.loading());
+    status.value = RxStatus.loading();
     try {
       CreateUser$Mutation$CreateUserResult response =
           await graphQlProvider.registration();
-      Session session =
-          Session(response.session.token, response.session.expireAt);
+      session = Session(response.session.token, response.session.expireAt);
       user = MyUser(response.user.id, response.user.num);
-      graphQlProvider.token = session.token;
+      graphQlProvider.token = session!.token;
 
       var prefs = await SharedPreferences.getInstance();
-      await prefs.setString('session', json.encode(session.toJson()));
-      change(session, status: RxStatus.success());
+      await prefs.setString('session', json.encode(session!.toJson()));
+      status.value = RxStatus.success();
 
       Get.offAndToNamed('/');
     } catch (e) {
-      change(null, status: RxStatus.empty());
-      print(e);
+      graphQlProvider.token = null;
+      status.value = RxStatus.empty();
+      rethrow;
     }
   }
 
   Future<void> login(String password,
       {String? username, String? num, String? email, String? phone}) async {
-    change(null, status: RxStatus.loading());
+    status.value = RxStatus.loading();
     try {
       CreateSession$Mutation$CreateSessionResult$CreateSessionOk response =
           await graphQlProvider.createSession(
               password, username, num, email, phone);
 
-      Session session =
-          Session(response.session.token, response.session.expireAt);
+      session = Session(response.session.token, response.session.expireAt);
       user = MyUser(
         response.user.id,
         response.user.num,
@@ -109,21 +114,22 @@ class AuthService extends GetxController with StateMixin<Session?> {
           small: response.user.avatar?.small,
         ),
       );
-      graphQlProvider.token = session.token;
+      graphQlProvider.token = session!.token;
 
       var prefs = await SharedPreferences.getInstance();
-      await prefs.setString('session', json.encode(session.toJson()));
-      change(session, status: RxStatus.success());
+      await prefs.setString('session', json.encode(session!.toJson()));
+      status.value = RxStatus.success();
 
       Get.offAndToNamed('/');
     } catch (e) {
-      change(null, status: RxStatus.empty());
+      graphQlProvider.token = null;
+      status.value = RxStatus.empty();
       rethrow;
     }
   }
 
   Future<void> logout() async {
-    change(null, status: RxStatus.loading());
+    status.value = RxStatus.loading();
 
     if (graphQlProvider.token != null) {
       try {
@@ -136,7 +142,8 @@ class AuthService extends GetxController with StateMixin<Session?> {
     prefs.remove('session');
 
     user = null;
+    session = null;
 
-    change(null, status: RxStatus.empty());
+    status.value = RxStatus.empty();
   }
 }

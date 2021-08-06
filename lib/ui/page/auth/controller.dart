@@ -21,7 +21,7 @@ class AuthController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    if (Get.find<AuthService>().status.isSuccess) {
+    if (Get.find<AuthService>().status.value.isSuccess) {
       Get.offAndToNamed('/');
     }
   }

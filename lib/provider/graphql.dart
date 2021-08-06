@@ -14,7 +14,7 @@ class GraphQlProvider {
     final link = Link.split(
         (request) => request.isSubscription, websocketLink, httpAuthLink);
     return GraphQLClient(
-      cache: GraphQLCache(),
+      cache: GraphQLCache(), // TODO: use Hive
       link: link,
     );
   }

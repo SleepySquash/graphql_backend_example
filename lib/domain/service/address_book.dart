@@ -13,7 +13,7 @@ class AddressBook extends GetxController {
 
   Future<ChatContact> addToContacts(User user) async {
     ChatContact contact = await userRepository.addToContacts(user);
-    contact.favoritePosition != null && contact.favoritePosition != 65536.0
+    contact.favoritePosition != null
         ? favorites.add(contact)
         : contacts.add(contact);
     return contact;

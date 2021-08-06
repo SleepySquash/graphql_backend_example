@@ -1,8 +1,6 @@
 import 'package:test/domain/model/user.dart';
 import 'package:graphql/client.dart';
 
-import '../api/api.dart';
-
 class GraphQlProvider {
   List<User> users = [];
   late Stream<QueryResult> subscription;

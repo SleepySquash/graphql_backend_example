@@ -1,4 +1,4 @@
-import 'package:test/api/api.dart';
+import 'package:test/api/backend/api.dart';
 import 'package:test/domain/model/avatar.dart';
 import 'package:test/domain/model/chat_contact.dart';
 import 'package:test/domain/model/user.dart';

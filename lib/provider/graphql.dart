@@ -1,6 +1,6 @@
 import 'package:graphql/client.dart';
 
-import '../api/api.dart';
+import '../api/backend/api.dart';
 
 class GraphQlProvider {
   String? token;

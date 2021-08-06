@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:test/api/api.dart';
+import 'package:test/api/backend/api.dart';
 import 'package:test/domain/model/avatar.dart';
 import '../model/session.dart';
 import '../model/user.dart';

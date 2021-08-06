@@ -4,9 +4,9 @@ targets:
       artemis:
         options:
           schema_mapping:
-            - output: lib/api/api.dart
-              schema: lib/api/schema.graphql
-              queries_glob: lib/api/backend/**.graphql
+            - output: lib/api/backend/api.dart
+              schema: lib/schema.graphql
+              queries_glob: lib/api/backend/graphql/**.graphql
           scalar_mapping:
             - graphql_type: UserId
               dart_type: String

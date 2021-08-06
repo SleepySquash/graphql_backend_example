@@ -1,4 +1,4 @@
-import 'package:test/api/api.dart';
+import 'package:test/api/backend/api.dart';
 import 'package:test/domain/model/chat.dart';
 import 'package:test/domain/model/chat_item.dart';
 import 'package:test/provider/graphql.dart';

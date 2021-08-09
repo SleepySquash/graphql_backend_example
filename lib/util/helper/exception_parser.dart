@@ -5,6 +5,7 @@ import 'package:test/domain/service/auth.dart';
 class ExceptionParser {
   static Future<void> error(Object e) async {
     String parsed = parse(e);
+    if (parsed == 'Connection refused'.tr) return;
     parsed == 'Unauthorized'.tr
         ? await Get.defaultDialog(
             title: 'Error',
@@ -30,9 +31,9 @@ class ExceptionParser {
         message,
         barBlur: 100,
         snackPosition: SnackPosition.BOTTOM,
-        icon: Icon(Icons.done),
+        icon: const Icon(Icons.done),
         shouldIconPulse: true,
-        margin: EdgeInsets.all(10),
+        margin: const EdgeInsets.all(10),
       );
 
   static String parse(Object e) {
@@ -47,6 +48,12 @@ class ExceptionParser {
       return 'Username already occupied'.tr;
     } else if (string.contains('Failed to parse header value')) {
       return 'Unauthorized'.tr;
+    } else if (string.contains('AUTHENTICATION_REQUIRED')) {
+      return 'Unauthorized'.tr;
+    } else if (string.contains('SITE_INTERNAL_ERROR')) {
+      return 'Site internal error'.tr;
+    } else if (string.contains('Connection refused')) {
+      return 'Connection refused'.tr;
     }
     return string;
   }

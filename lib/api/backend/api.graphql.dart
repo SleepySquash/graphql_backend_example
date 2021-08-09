@@ -2037,11 +2037,13 @@ class Chat$Query$Chat$ChatMemberConnection$ChatMember$ChatUser$User
 
   late String num;
 
+  String? name;
+
   Chat$Query$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar?
       avatar;
 
   @override
-  List<Object?> get props => [num, avatar];
+  List<Object?> get props => [num, name, avatar];
   @override
   Map<String, dynamic> toJson() =>
       _$Chat$Query$Chat$ChatMemberConnection$ChatMember$ChatUser$UserToJson(
@@ -2124,10 +2126,8 @@ class Chat$Query$Chat extends JsonSerializable with EquatableMixin {
 
   late bool isHidden;
 
-  late DateTime lastDelivery;
-
   @override
-  List<Object?> get props => [id, name, members, kind, isHidden, lastDelivery];
+  List<Object?> get props => [id, name, members, kind, isHidden];
   @override
   Map<String, dynamic> toJson() => _$Chat$Query$ChatToJson(this);
 }
@@ -2409,6 +2409,114 @@ class RecentChats$Query$ChatConnection$Chat$ChatItemEdge
 }
 
 @JsonSerializable(explicitToJson: true)
+class RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar
+    extends JsonSerializable with EquatableMixin {
+  RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar();
+
+  factory RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar.fromJson(
+          Map<String, dynamic> json) =>
+      _$RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatarFromJson(
+          json);
+
+  late String big;
+
+  @override
+  List<Object?> get props => [big];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatarToJson(
+          this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser$User
+    extends JsonSerializable with EquatableMixin {
+  RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser$User();
+
+  factory RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser$User.fromJson(
+          Map<String, dynamic> json) =>
+      _$RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser$UserFromJson(
+          json);
+
+  String? name;
+
+  RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar?
+      avatar;
+
+  @override
+  List<Object?> get props => [name, avatar];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser$UserToJson(
+          this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser
+    extends JsonSerializable with EquatableMixin {
+  RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser();
+
+  factory RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser.fromJson(
+          Map<String, dynamic> json) =>
+      _$RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUserFromJson(
+          json);
+
+  String? name;
+
+  late RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser$User
+      user;
+
+  @override
+  List<Object?> get props => [name, user];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUserToJson(
+          this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember
+    extends JsonSerializable with EquatableMixin {
+  RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember();
+
+  factory RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember.fromJson(
+          Map<String, dynamic> json) =>
+      _$RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMemberFromJson(
+          json);
+
+  late RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser
+      user;
+
+  @override
+  List<Object?> get props => [user];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMemberToJson(
+          this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class RecentChats$Query$ChatConnection$Chat$ChatMemberConnection
+    extends JsonSerializable with EquatableMixin {
+  RecentChats$Query$ChatConnection$Chat$ChatMemberConnection();
+
+  factory RecentChats$Query$ChatConnection$Chat$ChatMemberConnection.fromJson(
+          Map<String, dynamic> json) =>
+      _$RecentChats$Query$ChatConnection$Chat$ChatMemberConnectionFromJson(
+          json);
+
+  late List<
+          RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember>
+      nodes;
+
+  @override
+  List<Object?> get props => [nodes];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$RecentChats$Query$ChatConnection$Chat$ChatMemberConnectionToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
 class RecentChats$Query$ChatConnection$Chat extends JsonSerializable
     with EquatableMixin {
   RecentChats$Query$ChatConnection$Chat();
@@ -2430,8 +2538,11 @@ class RecentChats$Query$ChatConnection$Chat extends JsonSerializable
 
   RecentChats$Query$ChatConnection$Chat$ChatItemEdge? lastItem;
 
+  late RecentChats$Query$ChatConnection$Chat$ChatMemberConnection members;
+
   @override
-  List<Object?> get props => [id, name, kind, isHidden, lastDelivery, lastItem];
+  List<Object?> get props =>
+      [id, name, kind, isHidden, lastDelivery, lastItem, members];
   @override
   Map<String, dynamic> toJson() =>
       _$RecentChats$Query$ChatConnection$ChatToJson(this);
@@ -2502,11 +2613,13 @@ class CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection
 
   late String num;
 
+  String? name;
+
   CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar?
       avatar;
 
   @override
-  List<Object?> get props => [num, avatar];
+  List<Object?> get props => [num, name, avatar];
   @override
   Map<String, dynamic> toJson() =>
       _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$UserToJson(
@@ -5345,6 +5458,12 @@ final CHAT_QUERY_DOCUMENT = DocumentNode(definitions: [
                                           directives: [],
                                           selectionSet: null),
                                       FieldNode(
+                                          name: NameNode(value: 'name'),
+                                          alias: null,
+                                          arguments: [],
+                                          directives: [],
+                                          selectionSet: null),
+                                      FieldNode(
                                           name: NameNode(value: 'avatar'),
                                           alias: null,
                                           arguments: [],
@@ -5376,12 +5495,6 @@ final CHAT_QUERY_DOCUMENT = DocumentNode(definitions: [
                   selectionSet: null),
               FieldNode(
                   name: NameNode(value: 'isHidden'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              FieldNode(
-                  name: NameNode(value: 'lastDelivery'),
                   alias: null,
                   arguments: [],
                   directives: [],
@@ -5744,6 +5857,66 @@ final RECENT_CHATS_QUERY_DOCUMENT = DocumentNode(definitions: [
                                           ]))
                                     ]))
                               ]))
+                        ])),
+                    FieldNode(
+                        name: NameNode(value: 'members'),
+                        alias: null,
+                        arguments: [
+                          ArgumentNode(
+                              name: NameNode(value: 'first'),
+                              value: IntValueNode(value: '4'))
+                        ],
+                        directives: [],
+                        selectionSet: SelectionSetNode(selections: [
+                          FieldNode(
+                              name: NameNode(value: 'nodes'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: SelectionSetNode(selections: [
+                                FieldNode(
+                                    name: NameNode(value: 'user'),
+                                    alias: null,
+                                    arguments: [],
+                                    directives: [],
+                                    selectionSet: SelectionSetNode(selections: [
+                                      FieldNode(
+                                          name: NameNode(value: 'name'),
+                                          alias: null,
+                                          arguments: [],
+                                          directives: [],
+                                          selectionSet: null),
+                                      FieldNode(
+                                          name: NameNode(value: 'user'),
+                                          alias: null,
+                                          arguments: [],
+                                          directives: [],
+                                          selectionSet:
+                                              SelectionSetNode(selections: [
+                                            FieldNode(
+                                                name: NameNode(value: 'name'),
+                                                alias: null,
+                                                arguments: [],
+                                                directives: [],
+                                                selectionSet: null),
+                                            FieldNode(
+                                                name: NameNode(value: 'avatar'),
+                                                alias: null,
+                                                arguments: [],
+                                                directives: [],
+                                                selectionSet: SelectionSetNode(
+                                                    selections: [
+                                                      FieldNode(
+                                                          name: NameNode(
+                                                              value: 'big'),
+                                                          alias: null,
+                                                          arguments: [],
+                                                          directives: [],
+                                                          selectionSet: null)
+                                                    ]))
+                                          ]))
+                                    ]))
+                              ]))
                         ]))
                   ]))
             ]))
@@ -5867,6 +6040,12 @@ final CREATE_DIALOG_CHAT_MUTATION_DOCUMENT = DocumentNode(definitions: [
                                               SelectionSetNode(selections: [
                                             FieldNode(
                                                 name: NameNode(value: 'num'),
+                                                alias: null,
+                                                arguments: [],
+                                                directives: [],
+                                                selectionSet: null),
+                                            FieldNode(
+                                                name: NameNode(value: 'name'),
                                                 alias: null,
                                                 arguments: [],
                                                 directives: [],

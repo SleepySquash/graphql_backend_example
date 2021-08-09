@@ -2,6 +2,7 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:test/ui/page/my_profile/view.dart';
+import 'package:test/util/helper/avatar.dart';
 
 import '../../../../domain/service/auth.dart';
 
@@ -18,8 +19,7 @@ class MenuView extends StatelessWidget {
           ListTile(
             title: Text('Your profile'.tr),
             leading: CircleAvatar(
-              backgroundImage: NetworkImage(
-                  'http://localhost/files${Get.find<AuthService>().user?.avatar?.big}'),
+              backgroundImage: drawAvatar(Get.find<AuthService>().user?.avatar),
             ),
             onTap: () => Get.to(() => const MyProfileView()),
           ),

@@ -1,9 +1,11 @@
+import 'package:collection/collection.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:material_floating_search_bar/material_floating_search_bar.dart';
 import 'package:test/domain/model/chat_contact.dart';
 import 'package:test/domain/service/address_book.dart';
 import 'package:test/ui/page/profile/view.dart';
+import 'package:test/util/helper/avatar.dart';
 
 import 'controller.dart';
 
@@ -88,8 +90,7 @@ class ContactsView extends GetView<ContactsController> {
 
     Widget buildContactTile(ChatContact e) => ListTile(
           leading: CircleAvatar(
-            backgroundImage:
-                NetworkImage('http://localhost/files${e.users[0].avatar?.big}'),
+            backgroundImage: drawAvatar(e.users.firstOrNull?.avatar),
           ),
           title: Text(e.name),
           subtitle: Text(e.id),
@@ -97,31 +98,35 @@ class ContactsView extends GetView<ContactsController> {
         );
 
     Widget buildContactsList() => GetX<AddressBook>(
-          builder: (addressBook) => addressBook.status.value.isLoading
-              ? const Center(child: CircularProgressIndicator())
-              : addressBook.status.value.isEmpty
-                  ? const Center(child: Text('No contacts yet'))
-                  : ListView(
-                      children: [
-                        ListTile(),
-                        addressBook.favorites.isEmpty
-                            ? Container()
-                            : Column(
-                                children: [
-                                  ListTile(title: Text('Favorites')),
-                                  ...addressBook.favorites
-                                      .map((e) => buildContactTile(e))
-                                      .toList(),
-                                ],
-                              ),
-                        addressBook.contacts.isEmpty
-                            ? Container()
-                            : ListTile(title: Text('Contacts')),
-                        ...addressBook.contacts
-                            .map((e) => buildContactTile(e))
-                            .toList()
-                      ],
-                    ),
+          builder: (addressBook) => ListView(
+            children: [
+              const SizedBox(height: 72),
+              addressBook.favoritesStatus.value.isLoading
+                  ? Container()
+                  : addressBook.favorites.isEmpty
+                      ? Container()
+                      : Column(
+                          children: [
+                            const ListTile(title: Text('Favorites')),
+                            ...addressBook.favorites
+                                .map((e) => buildContactTile(e))
+                                .toList(),
+                          ],
+                        ),
+              addressBook.contactsStatus.value.isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : addressBook.favorites.isEmpty
+                      ? const ListTile(title: Text('No contacts yet'))
+                      : Column(
+                          children: [
+                            const ListTile(title: Text('Contacts')),
+                            ...addressBook.contacts
+                                .map((e) => buildContactTile(e))
+                                .toList(),
+                          ],
+                        ),
+            ],
+          ),
         );
 
     return Scaffold(
@@ -131,11 +136,20 @@ class ContactsView extends GetView<ContactsController> {
         children: [
           buildContactsList(),
           buildFloatingSearchBar(),
+          Obx(() => controller.addressBook.contactsStatus.value.isLoadingMore
+              ? const Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 20),
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              : Container()),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: controller.addressBook.refreshContacts,
-        child: Icon(Icons.refresh),
+        child: const Icon(Icons.refresh),
       ),
     );
   }

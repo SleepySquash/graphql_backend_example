@@ -10,8 +10,10 @@ class ChatService extends GetxController {
   RxList<Chat> chats = RxList<Chat>([]);
 
   Future<void> refreshChats() async {
-    status.value = RxStatus.loading();
-    chats.value = await chatRepository.recentChats();
-    status.value = chats.isEmpty ? RxStatus.empty() : RxStatus.success();
+    status.value = RxStatus.loadingMore();
+    chats.value = await chatRepository.recentChats((List<Chat> value) {
+      chats.value = value;
+      status.value = chats.isEmpty ? RxStatus.empty() : RxStatus.success();
+    });
   }
 }

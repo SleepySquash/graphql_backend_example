@@ -1654,6 +1654,7 @@ Chat$Query$Chat$ChatMemberConnection$ChatMember$ChatUser$User
         Map<String, dynamic> json) {
   return Chat$Query$Chat$ChatMemberConnection$ChatMember$ChatUser$User()
     ..num = json['num'] as String
+    ..name = json['name'] as String?
     ..avatar = json['avatar'] == null
         ? null
         : Chat$Query$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar
@@ -1666,6 +1667,7 @@ Map<String, dynamic>
                 instance) =>
         <String, dynamic>{
           'num': instance.num,
+          'name': instance.name,
           'avatar': instance.avatar?.toJson(),
         };
 
@@ -1726,8 +1728,7 @@ Chat$Query$Chat _$Chat$Query$ChatFromJson(Map<String, dynamic> json) {
         json['members'] as Map<String, dynamic>)
     ..kind = _$enumDecode(_$ChatKindEnumMap, json['kind'],
         unknownValue: ChatKind.artemisUnknown)
-    ..isHidden = json['isHidden'] as bool
-    ..lastDelivery = DateTime.parse(json['lastDelivery'] as String);
+    ..isHidden = json['isHidden'] as bool;
 }
 
 Map<String, dynamic> _$Chat$Query$ChatToJson(Chat$Query$Chat instance) =>
@@ -1737,7 +1738,6 @@ Map<String, dynamic> _$Chat$Query$ChatToJson(Chat$Query$Chat instance) =>
       'members': instance.members.toJson(),
       'kind': _$ChatKindEnumMap[instance.kind],
       'isHidden': instance.isHidden,
-      'lastDelivery': instance.lastDelivery.toIso8601String(),
     };
 
 const _$ChatKindEnumMap = {
@@ -1972,6 +1972,95 @@ Map<String, dynamic> _$RecentChats$Query$ChatConnection$Chat$ChatItemEdgeToJson(
       'node': instance.node.toJson(),
     };
 
+RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar
+    _$RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatarFromJson(
+        Map<String, dynamic> json) {
+  return RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar()
+    ..big = json['big'] as String;
+}
+
+Map<String, dynamic>
+    _$RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatarToJson(
+            RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar
+                instance) =>
+        <String, dynamic>{
+          'big': instance.big,
+        };
+
+RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser$User
+    _$RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser$UserFromJson(
+        Map<String, dynamic> json) {
+  return RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser$User()
+    ..name = json['name'] as String?
+    ..avatar = json['avatar'] == null
+        ? null
+        : RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar
+            .fromJson(json['avatar'] as Map<String, dynamic>);
+}
+
+Map<String, dynamic>
+    _$RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser$UserToJson(
+            RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser$User
+                instance) =>
+        <String, dynamic>{
+          'name': instance.name,
+          'avatar': instance.avatar?.toJson(),
+        };
+
+RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser
+    _$RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUserFromJson(
+        Map<String, dynamic> json) {
+  return RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser()
+    ..name = json['name'] as String?
+    ..user =
+        RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser$User
+            .fromJson(json['user'] as Map<String, dynamic>);
+}
+
+Map<String, dynamic>
+    _$RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUserToJson(
+            RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser
+                instance) =>
+        <String, dynamic>{
+          'name': instance.name,
+          'user': instance.user.toJson(),
+        };
+
+RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember
+    _$RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMemberFromJson(
+        Map<String, dynamic> json) {
+  return RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember()
+    ..user =
+        RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember$ChatUser
+            .fromJson(json['user'] as Map<String, dynamic>);
+}
+
+Map<String, dynamic>
+    _$RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMemberToJson(
+            RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember
+                instance) =>
+        <String, dynamic>{
+          'user': instance.user.toJson(),
+        };
+
+RecentChats$Query$ChatConnection$Chat$ChatMemberConnection
+    _$RecentChats$Query$ChatConnection$Chat$ChatMemberConnectionFromJson(
+        Map<String, dynamic> json) {
+  return RecentChats$Query$ChatConnection$Chat$ChatMemberConnection()
+    ..nodes = (json['nodes'] as List<dynamic>)
+        .map((e) =>
+            RecentChats$Query$ChatConnection$Chat$ChatMemberConnection$ChatMember
+                .fromJson(e as Map<String, dynamic>))
+        .toList();
+}
+
+Map<String,
+    dynamic> _$RecentChats$Query$ChatConnection$Chat$ChatMemberConnectionToJson(
+        RecentChats$Query$ChatConnection$Chat$ChatMemberConnection instance) =>
+    <String, dynamic>{
+      'nodes': instance.nodes.map((e) => e.toJson()).toList(),
+    };
+
 RecentChats$Query$ChatConnection$Chat
     _$RecentChats$Query$ChatConnection$ChatFromJson(Map<String, dynamic> json) {
   return RecentChats$Query$ChatConnection$Chat()
@@ -1984,7 +2073,10 @@ RecentChats$Query$ChatConnection$Chat
     ..lastItem = json['lastItem'] == null
         ? null
         : RecentChats$Query$ChatConnection$Chat$ChatItemEdge.fromJson(
-            json['lastItem'] as Map<String, dynamic>);
+            json['lastItem'] as Map<String, dynamic>)
+    ..members =
+        RecentChats$Query$ChatConnection$Chat$ChatMemberConnection.fromJson(
+            json['members'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic> _$RecentChats$Query$ChatConnection$ChatToJson(
@@ -1996,6 +2088,7 @@ Map<String, dynamic> _$RecentChats$Query$ChatConnection$ChatToJson(
       'isHidden': instance.isHidden,
       'lastDelivery': instance.lastDelivery.toIso8601String(),
       'lastItem': instance.lastItem?.toJson(),
+      'members': instance.members.toJson(),
     };
 
 RecentChats$Query$ChatConnection _$RecentChats$Query$ChatConnectionFromJson(
@@ -2044,6 +2137,7 @@ CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatM
         Map<String, dynamic> json) {
   return CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User()
     ..num = json['num'] as String
+    ..name = json['name'] as String?
     ..avatar = json['avatar'] == null
         ? null
         : CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar
@@ -2056,6 +2150,7 @@ Map<String, dynamic>
                 instance) =>
         <String, dynamic>{
           'num': instance.num,
+          'name': instance.name,
           'avatar': instance.avatar?.toJson(),
         };
 

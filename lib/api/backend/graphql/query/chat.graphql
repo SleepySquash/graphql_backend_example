@@ -8,16 +8,16 @@ query chat($id: ChatId!) {
                     id,
                     user {
                         num,
+                        name,
                         avatar {
                             big,
-                        }
+                        },
                     },
                     name
-                }
-            }
+                },
+            },
         },
         kind,
         isHidden,
-        lastDelivery,
     }
 }

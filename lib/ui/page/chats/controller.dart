@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:test/domain/service/chat.dart';
-import 'package:test/store/chat.dart';
 
 export 'view.dart';
 

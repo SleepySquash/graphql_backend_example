@@ -13,8 +13,7 @@ class ChatUser {
 class Chat {
   Chat(
     this.id,
-    this.kind,
-    this.lastDelivery, {
+    this.kind, {
     this.name,
     this.isHidden = false,
     this.unreadCount = 0,
@@ -25,7 +24,6 @@ class Chat {
   final String id;
   final String kind;
   String? name;
-  DateTime lastDelivery;
   bool isHidden;
   int unreadCount;
   ChatItem? lastItem;

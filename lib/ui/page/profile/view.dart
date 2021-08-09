@@ -19,133 +19,149 @@ class ProfileView extends StatelessWidget {
       builder: (ProfileController _) => Obx(
         () => _.status.value.isLoading
             ? const Scaffold(body: Center(child: CircularProgressIndicator()))
-            : Scaffold(
-                body: CustomScrollView(
-                  slivers: [
-                    SliverAppBar(
-                      leading: IconButton(
-                        onPressed: () => Get.back(),
-                        icon: const Icon(Icons.arrow_back),
-                      ),
-                      expandedHeight: MediaQuery.of(context).size.height * 0.6,
-                      pinned: true,
-                      flexibleSpace: FlexibleSpaceBar(
-                        background: Stack(
-                          fit: StackFit.passthrough,
-                          alignment: Alignment.center,
-                          children: [
-                            ImageFiltered(
-                              imageFilter:
-                                  ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                              child: Image.network(
-                                'http://localhost/files${_.user!.avatar?.original}',
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            Image.network(
-                              'http://localhost/files${_.user!.avatar?.original}',
-                              fit: BoxFit.contain,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    SliverList(
-                      delegate: SliverChildListDelegate.fixed(
-                        [
-                          Align(
-                            alignment: Alignment.center,
-                            child: ConstrainedBox(
-                              constraints: const BoxConstraints(maxWidth: 500),
-                              child: Column(
-                                children: [
-                                  const SizedBox(height: 10),
-                                  ListTile(
-                                    title: Text(
-                                      _.user!.name ?? 'no name',
-                                      style:
-                                          Theme.of(context).textTheme.headline5,
-                                    ),
-                                    trailing: const Icon(Icons.edit),
+            : Stack(
+                children: [
+                  Scaffold(
+                    body: CustomScrollView(
+                      slivers: [
+                        SliverAppBar(
+                          leading: IconButton(
+                            onPressed: () => Get.back(),
+                            icon: const Icon(Icons.arrow_back),
+                          ),
+                          expandedHeight:
+                              MediaQuery.of(context).size.height * 0.6,
+                          pinned: true,
+                          flexibleSpace: FlexibleSpaceBar(
+                            background: Stack(
+                              fit: StackFit.passthrough,
+                              alignment: Alignment.center,
+                              children: [
+                                ImageFiltered(
+                                  imageFilter:
+                                      ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                                  child: Image.network(
+                                    'http://localhost/files${_.user!.avatar?.original}',
+                                    fit: BoxFit.cover,
                                   ),
-                                  ListTile(
-                                      title: Text(_.user!.bio ?? 'no bio')),
-                                  const Divider(thickness: 2),
-                                  ListTile(
-                                    title: SelectableText(_.user!.num),
-                                    subtitle: const Text('Gapopa ID'),
-                                  ),
-                                  const Divider(thickness: 2),
-                                  ListTile(
-                                    title: Text('Write a message'.tr),
-                                    leading: const Icon(Icons.message),
-                                    onTap: () => Get.to(
-                                        ChatView(_.user!.contacts.firstOrNull
-                                                ?.dialogId ??
-                                            _.user!.id),
-                                        binding: ChatBindings(
-                                            _.user!.contacts.firstOrNull
-                                                    ?.dialogId ??
-                                                _.user!.id,
-                                            chatId: _.user!.contacts.firstOrNull
-                                                ?.dialogId,
-                                            user: _.user)),
-                                  ),
-                                  ListTile(
-                                    title: Text('Audio call'.tr),
-                                    leading: const Icon(Icons.call),
-                                  ),
-                                  ListTile(
-                                    title: Text('Video call'.tr),
-                                    leading: const Icon(Icons.video_call),
-                                  ),
-                                  const Divider(thickness: 2),
-                                  ListTile(
-                                    title: Text(_.user!.contacts.isEmpty
-                                        ? 'Add to contacts'.tr
-                                        : 'Remove from contacts'.tr),
-                                    leading: const Icon(Icons.contact_page),
-                                    onTap: () => _.user!.contacts.isEmpty
-                                        ? _.addToContacts()
-                                        : _.deleteFromContacts(),
-                                  ),
-                                  ListTile(
-                                    title: Text(_.user!.contacts.isEmpty
-                                        ? 'Add to favorites'.tr
-                                        : _.isInFavorites.value
-                                            ? 'Remove from favorites'.tr
-                                            : 'Add to favorites'.tr),
-                                    leading: const Icon(Icons.star_outline),
-                                    onTap: _.user!.contacts.isEmpty
-                                        ? null
-                                        : _.isInFavorites.value
-                                            ? _.removeFromFavorites
-                                            : _.addToFavorites,
-                                  ),
-                                  const Divider(thickness: 2),
-                                  ListTile(
-                                    title: Text('Create group'.tr),
-                                    leading: const Icon(Icons.group),
-                                  ),
-                                  const Divider(thickness: 2),
-                                  ListTile(
-                                    title: Text('Mute user'.tr),
-                                    leading:
-                                        const Icon(Icons.disabled_by_default),
-                                  ),
-                                  ListTile(
-                                    title: Text('Block user'.tr),
-                                    leading: const Icon(Icons.block),
-                                  ),
-                                ],
-                              ),
+                                ),
+                                Image.network(
+                                  'http://localhost/files${_.user!.avatar?.original}',
+                                  fit: BoxFit.contain,
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                        SliverList(
+                          delegate: SliverChildListDelegate.fixed(
+                            [
+                              Align(
+                                alignment: Alignment.center,
+                                child: ConstrainedBox(
+                                  constraints:
+                                      const BoxConstraints(maxWidth: 500),
+                                  child: Column(
+                                    children: [
+                                      const SizedBox(height: 10),
+                                      ListTile(
+                                        title: Text(
+                                          _.user!.name ?? 'no name',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline5,
+                                        ),
+                                        trailing: const Icon(Icons.edit),
+                                      ),
+                                      ListTile(
+                                          title: Text(_.user!.bio ?? 'no bio')),
+                                      const Divider(thickness: 2),
+                                      ListTile(
+                                        title: SelectableText(_.user!.num),
+                                        subtitle: const Text('Gapopa ID'),
+                                      ),
+                                      const Divider(thickness: 2),
+                                      ListTile(
+                                        title: Text('Write a message'.tr),
+                                        leading: const Icon(Icons.message),
+                                        onTap: () => Get.to(
+                                            ChatView(_.user!.contacts
+                                                    .firstOrNull?.dialogId ??
+                                                _.user!.id),
+                                            binding: ChatBindings(
+                                                _.user!.contacts.firstOrNull
+                                                        ?.dialogId ??
+                                                    _.user!.id,
+                                                chatId: _.user!.contacts
+                                                    .firstOrNull?.dialogId,
+                                                user: _.user)),
+                                      ),
+                                      ListTile(
+                                        title: Text('Audio call'.tr),
+                                        leading: const Icon(Icons.call),
+                                      ),
+                                      ListTile(
+                                        title: Text('Video call'.tr),
+                                        leading: const Icon(Icons.video_call),
+                                      ),
+                                      const Divider(thickness: 2),
+                                      ListTile(
+                                        title: Text(_.user!.contacts.isEmpty
+                                            ? 'Add to contacts'.tr
+                                            : 'Remove from contacts'.tr),
+                                        leading: const Icon(Icons.contact_page),
+                                        onTap: () => _.user!.contacts.isEmpty
+                                            ? _.addToContacts()
+                                            : _.deleteFromContacts(),
+                                      ),
+                                      ListTile(
+                                        title: Text(_.user!.contacts.isEmpty
+                                            ? 'Add to favorites'.tr
+                                            : _.isInFavorites.value
+                                                ? 'Remove from favorites'.tr
+                                                : 'Add to favorites'.tr),
+                                        leading: const Icon(Icons.star_outline),
+                                        onTap: _.user!.contacts.isEmpty
+                                            ? null
+                                            : _.isInFavorites.value
+                                                ? _.removeFromFavorites
+                                                : _.addToFavorites,
+                                      ),
+                                      const Divider(thickness: 2),
+                                      ListTile(
+                                        title: Text('Create group'.tr),
+                                        leading: const Icon(Icons.group),
+                                      ),
+                                      const Divider(thickness: 2),
+                                      ListTile(
+                                        title: Text('Mute user'.tr),
+                                        leading: const Icon(
+                                            Icons.disabled_by_default),
+                                      ),
+                                      ListTile(
+                                        title: Text('Block user'.tr),
+                                        leading: const Icon(Icons.block),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                  _.status.value.isLoadingMore
+                      ? const Align(
+                          alignment: Alignment.topCenter,
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 20),
+                            child: CircularProgressIndicator(),
+                          ),
+                        )
+                      : Container()
+                ],
               ),
       ),
     );

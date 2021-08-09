@@ -2,16 +2,19 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:test/domain/model/chat_item.dart';
+import 'package:test/domain/service/auth.dart';
 import 'package:test/ui/page/profile/view.dart';
 import 'package:intl/intl.dart';
+import 'package:test/util/helper/avatar.dart';
 
 import 'controller.dart';
 
 class ChatView extends GetView<ChatController> {
-  const ChatView(this.tag);
+  const ChatView(this._tag, {Key? key}) : super(key: key);
+  final String _tag;
 
   @override
-  final String tag;
+  String? get tag => _tag;
 
   @override
   Widget build(BuildContext context) {
@@ -77,12 +80,12 @@ class ChatView extends GetView<ChatController> {
                   switchInCurve: Curves.ease,
                   switchOutCurve: Curves.ease,
                   child: controller.messageIsEmpty.value
-                      ? Icon(
+                      ? const Icon(
                           Icons.keyboard_voice,
                           color: Colors.white,
                           key: ValueKey('Icons.keyboard_voice'),
                         )
-                      : Icon(
+                      : const Icon(
                           Icons.send,
                           color: Colors.white,
                           key: ValueKey('Icons.send'),
@@ -99,119 +102,122 @@ class ChatView extends GetView<ChatController> {
       ),
     );
 
-    return Obx(
-      () => controller.status.value.isLoading
-          ? Scaffold(body: Center(child: CircularProgressIndicator()))
-          : Scaffold(
-              appBar: AppBar(
-                title: Text(controller.chat?.name ??
-                    controller.user?.name ??
-                    controller.chat?.members.firstOrNull?.name ??
-                    'null'),
-                actions: [
-                  controller.chat == null
-                      ? TextButton(
-                          child: CircleAvatar(
-                            backgroundImage: NetworkImage(
-                                'http://localhost/files${controller.user!.avatar!.big}'),
-                          ),
-                          onPressed: () =>
-                              Get.to(() => ProfileView(controller.user!.id)),
-                        )
-                      : controller.chat!.kind == 'ChatKind.dialog'
-                          ? TextButton(
-                              child: CircleAvatar(
-                                backgroundImage: NetworkImage(
-                                    'http://localhost/files${controller.chat!.members.firstOrNull?.avatar!.big}'),
-                              ),
-                              onPressed: () => {})
-                          : TextButton(
-                              child: const CircleAvatar(), onPressed: () => {}),
-                ],
-              ),
-              body: Stack(
-                children: [
-                  controller.chat == null
-                      ? Center(child: Text('Write your first message!'))
-                      : Scrollbar(
-                          child: ListView(
-                            children: controller.items.reversed
-                                .map(
-                                  (e) => Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(15),
-                                        color: Get.theme.colorScheme.surface,
-                                      ),
-                                      margin: const EdgeInsets.all(5),
-                                      child: Builder(
-                                        builder: (_) {
-                                          if (e is ChatMessage) {
-                                            ChatMessage m = e;
-                                            return Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Column(
-                                                children: [
-                                                  Text(
-                                                    e.userId,
-                                                    style:
-                                                        Get.textTheme.caption,
-                                                  ),
-                                                  SelectableText(
-                                                    m.text ?? '',
-                                                    style:
-                                                        Get.textTheme.bodyText2,
-                                                  ),
-                                                  Text(
-                                                    DateFormat('kk:mm')
-                                                        .format(e.at),
-                                                    style:
-                                                        Get.textTheme.caption,
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          }
-                                          return Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  e.userId,
-                                                  style: Get.textTheme.caption,
-                                                ),
-                                                SelectableText(
-                                                  e.at.toString(),
-                                                  style:
-                                                      Get.textTheme.bodyText2,
-                                                ),
-                                                Text(
-                                                  DateFormat('kk:mm')
-                                                      .format(e.at),
-                                                  style: Get.textTheme.caption,
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  ),
-                                )
-                                .toList()
-                                  ..add(
-                                      const Align(child: SizedBox(height: 71))),
-                          ),
-                        ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [sendField],
+    Widget buildAvatarButton() {
+      if (controller.chat == null) {
+        return TextButton(
+          child: CircleAvatar(
+            backgroundImage: drawAvatar(controller.user?.avatar),
+          ),
+          onPressed: () => Get.to(() => ProfileView(controller.user!.id)),
+        );
+      } else if (controller.chat!.kind == 'ChatKind.group') {
+        return TextButton(child: const CircleAvatar(), onPressed: () => {});
+      } else {
+        return TextButton(
+          child: CircleAvatar(
+            backgroundImage:
+                drawAvatar(controller.chat!.members.firstOrNull?.avatar),
+          ),
+          onPressed: () => Get.to(() =>
+              ProfileView(controller.chat!.members.firstOrNull?.id ?? '')),
+        );
+      }
+    }
+
+    Widget buildMessageTile(ChatItem e) {
+      bool fromMe = Get.find<AuthService>().user!.id == e.userId;
+      return Align(
+        alignment: fromMe ? Alignment.topRight : Alignment.topLeft,
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: fromMe ? Colors.blueAccent[400] : Get.theme.highlightColor,
+          ),
+          margin: const EdgeInsets.all(5),
+          child: Builder(
+            builder: (_) {
+              if (e is ChatMessage) {
+                ChatMessage m = e;
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    children: [
+                      SelectableText(
+                        m.text ?? '',
+                        style: Get.textTheme.bodyText2,
+                      ),
+                      Text(
+                        DateFormat('kk:mm').format(e.at),
+                        style: Get.textTheme.caption,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                );
+              }
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Text(
+                      e.userId,
+                      style: Get.textTheme.caption,
+                    ),
+                    SelectableText(
+                      e.at.toString(),
+                      style: Get.textTheme.bodyText2,
+                    ),
+                    Text(
+                      DateFormat('kk:mm').format(e.at),
+                      style: Get.textTheme.caption,
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      );
+    }
+
+    return Obx(
+      () => Scaffold(
+        appBar: AppBar(
+          title: Text(controller.chat?.name ??
+              controller.user?.name ??
+              controller.chat?.members.firstOrNull?.name ??
+              '...'),
+          actions: [buildAvatarButton()],
+        ),
+        body: Stack(
+          children: [
+            controller.status.value.isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : controller.chat == null
+                    ? const Center(child: Text('Write your first message!'))
+                    : Scrollbar(
+                        child: ListView(
+                          children: controller.items
+                              .map((e) => buildMessageTile(e))
+                              .toList()
+                            ..add(const Align(child: SizedBox(height: 71))),
+                        ),
+                      ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [sendField],
             ),
+            controller.status.value.isLoadingMore
+                ? const Align(
+                    alignment: Alignment.topCenter,
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 20),
+                      child: CircularProgressIndicator(),
+                    ),
+                  )
+                : Container(),
+          ],
+        ),
+      ),
     );
   }
 }

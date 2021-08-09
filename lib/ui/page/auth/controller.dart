@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:test/domain/model/user.dart';
-import 'package:graphql/client.dart';
 import 'package:test/domain/service/auth.dart';
 import 'package:test/util/helper/exception_parser.dart';
 
@@ -36,6 +34,10 @@ class AuthController extends GetxController {
   }
 
   void register() async {
-    await Get.find<AuthService>().register();
+    try {
+      await Get.find<AuthService>().register();
+    } catch (e) {
+      ExceptionParser.error(e);
+    }
   }
 }

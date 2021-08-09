@@ -32,6 +32,19 @@ query recentChats($first: Int, $after: String, $last: Int, $before: String) {
                         }
                     }
                 }
+            },
+            members(first: 4) {
+                nodes {
+                    user {
+                        name
+                        user {
+                            name,
+                            avatar {
+                                big
+                            }
+                        }
+                    }
+                }
             }
         }
     }

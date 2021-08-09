@@ -23,6 +23,7 @@ class ChatController extends GetxController {
   ChatController(this.chatRepository, this.chatId, this.user);
   ChatRepository chatRepository;
   String? chatId;
+
   Chat? chat;
   User? user;
 
@@ -44,13 +45,19 @@ class ChatController extends GetxController {
     super.onReady();
 
     if (chatId != null) {
+      status.value = RxStatus.loadingMore();
       try {
         List<Future> futures = [
-          chatRepository.chat(chatId!).then((c) => chat = c),
-          chatRepository.messages(chatId!).then((i) => items.value = i),
+          chatRepository.chat(chatId!, (Chat c) {
+            chat = c;
+            status.refresh();
+          }).then((c) => chat = c),
+          chatRepository.messages(chatId!, (List<ChatItem> messages) {
+            items.value = messages.reversed.toList();
+            status.value = RxStatus.success();
+          }).then((i) => items.value = i.reversed.toList()),
         ];
         await Future.wait(futures);
-        status.value = RxStatus.success();
       } catch (e) {
         await ExceptionParser.error(e);
         Get.back();
@@ -58,11 +65,17 @@ class ChatController extends GetxController {
     } else if (user == null) {
       await ExceptionParser.error(Exception('No user/chat is selected'));
       Get.back();
+    } else {
+      status.value = RxStatus.success();
     }
   }
 
   Future<void> sendMessage() async {
-    if (chat != null) {
+    if (chat == null) {
+      chat = await chatRepository.createDialog(user!.id);
+      status.refresh();
+      await sendMessage();
+    } else {
       try {
         ChatMessage item = ChatMessage(
           '',

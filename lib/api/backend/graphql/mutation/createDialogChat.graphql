@@ -10,9 +10,10 @@ mutation createDialogChat($responderId: UserId) {
                         id,
                         user {
                             num,
+                            name,
                             avatar {
                                 big,
-                            }
+                            },
                         },
                         name
                     },

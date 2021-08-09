@@ -45,7 +45,7 @@ class AuthView extends GetView<AuthController> {
                 ),
               );
             })
-          : Scaffold(body: Center(child: CircularProgressIndicator())),
+          : const Scaffold(body: Center(child: CircularProgressIndicator())),
     );
   }
 }

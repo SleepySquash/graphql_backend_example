@@ -24,8 +24,9 @@ class MyProfileController extends GetxController {
   final FocusScopeNode bioScopeNode = FocusScopeNode();
 
   Future<void> updateName() async {
-    if (nameEditingController.text == Get.find<AuthService>().user!.name)
+    if (nameEditingController.text == Get.find<AuthService>().user!.name) {
       return;
+    }
     try {
       if (nameEditingController.text.isNotEmpty) {
         await userRepository.updateUserName(nameEditingController.text);
@@ -58,8 +59,9 @@ class MyProfileController extends GetxController {
 
   Future<void> updateLogin() async {
     if (loginEditingController.text.isEmpty) return;
-    if (loginEditingController.text == Get.find<AuthService>().user!.login)
+    if (loginEditingController.text == Get.find<AuthService>().user!.login) {
       return;
+    }
     try {
       Get.find<AuthService>().user!.login =
           await userRepository.updateUserLogin(loginEditingController.text);

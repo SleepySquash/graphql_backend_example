@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:test/domain/model/chat_contact.dart';
 import 'package:test/domain/model/user.dart';
 import 'package:test/domain/service/address_book.dart';
 import 'package:test/store/user.dart';

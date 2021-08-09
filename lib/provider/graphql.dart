@@ -1,9 +1,18 @@
 import 'package:graphql/client.dart';
+import 'package:graphql_flutter/graphql_flutter.dart';
 
 import '../api/backend/api.dart';
 
+class ResultOfQuery {
+  ResultOfQuery(this.observableQuery, this.data);
+  final Map<String, dynamic>? data;
+  final ObservableQuery? observableQuery;
+}
+
 class GraphQlProvider {
   String? token;
+
+  Future<void> init() async => await initHiveForFlutter();
 
   GraphQLClient getClient() {
     final httpLink = HttpLink('http://localhost:3000/api/graphql');
@@ -14,10 +23,160 @@ class GraphQlProvider {
     final link = Link.split(
         (request) => request.isSubscription, websocketLink, httpAuthLink);
     return GraphQLClient(
-      cache: GraphQLCache(), // TODO: use Hive
+      cache: GraphQLCache(store: HiveStore()),
+      defaultPolicies:
+          DefaultPolicies(query: Policies(fetch: FetchPolicy.networkOnly)),
       link: link,
     );
   }
+
+  Future<ResultOfQuery> _processQuery(document,
+      [Map<String, dynamic> variables = const {}]) async {
+    GraphQLClient client = getClient();
+
+    Map<String, dynamic>? data = client.readQuery(Request(
+      operation: Operation(document: document),
+      variables: variables,
+    ));
+
+    if (data == null) {
+      final QueryResult result = await client.query(QueryOptions(
+        fetchPolicy: FetchPolicy.cacheAndNetwork,
+        document: document,
+        variables: variables,
+      ));
+      if (result.hasException) throw Exception(result.exception.toString());
+      return ResultOfQuery(null, result.data);
+    } else {
+      ObservableQuery query = getClient().watchQuery(
+          WatchQueryOptions(document: document, variables: variables));
+      query.fetchResults();
+      return ResultOfQuery(query, data);
+    }
+  }
+
+  /////////////////////////////////////////////////////
+  ////////////////////// QUERIES //////////////////////
+  /////////////////////////////////////////////////////
+
+  Future<MyUser$Query$MyUser> myUser() async {
+    final QueryResult result =
+        await getClient().query(QueryOptions(document: MyUserQuery().document));
+    if (result.hasException) throw Exception(result.exception.toString());
+    return MyUser$Query$MyUser.fromJson(result.data!['myUser']);
+  }
+
+  Future<SearchUsers$Query$UserConnection> searchUsers(
+      String? num, String? login) async {
+    final QueryResult result = await getClient().query(QueryOptions(
+        document: SearchUsersQuery(
+          variables: SearchUsersArguments(num: num, login: login),
+        ).document,
+        variables: {'num': num, 'login': login}));
+
+    if (result.hasException) throw Exception(result.exception.toString());
+    return SearchUsers$Query$UserConnection.fromJson(
+        result.data!['searchUsers']);
+  }
+
+  Future<ResultOfQuery> user(String id) async => _processQuery(
+        UserQuery(variables: UserArguments(id: id)).document,
+        {'id': id},
+      );
+
+  Future<ResultOfQuery> chatContacts({
+    int? first,
+    String? after,
+    int? last,
+    String? before,
+    bool? noFavorite,
+  }) async =>
+      _processQuery(
+        ChatContactsQuery(
+          variables: ChatContactsArguments(
+            first: first,
+            last: last,
+            before: before,
+            after: after,
+            noFavorite: noFavorite,
+          ),
+        ).document,
+        {
+          'first': first,
+          'last': last,
+          'before': before,
+          'after': after,
+          'noFavorite': noFavorite,
+        },
+      );
+
+  Future<ResultOfQuery> favoriteChatContacts(
+          {int? first, String? after, int? last, String? before}) async =>
+      _processQuery(
+        FavoriteChatContactsQuery(
+          variables: FavoriteChatContactsArguments(
+            first: first,
+            last: last,
+            before: before,
+            after: after,
+          ),
+        ).document,
+        {
+          'first': first,
+          'last': last,
+          'before': before,
+          'after': after,
+        },
+      );
+
+  Future<ResultOfQuery> recentChats(
+          {int? first, String? after, int? last, String? before}) async =>
+      _processQuery(
+        RecentChatsQuery(
+          variables: RecentChatsArguments(
+            first: first,
+            after: after,
+            last: last,
+            before: before,
+          ),
+        ).document,
+        {
+          'first': first,
+          'after': after,
+          'last': last,
+          'before': before,
+        },
+      );
+
+  Future<ResultOfQuery> chat(String chatId) async => _processQuery(
+        ChatQuery(variables: ChatArguments(id: chatId)).document,
+        {'id': chatId},
+      );
+
+  Future<ResultOfQuery> messages(String chatId,
+          {int? first, String? after, int? last, String? before}) async =>
+      _processQuery(
+        MessagesQuery(
+          variables: MessagesArguments(
+            id: chatId,
+            first: first,
+            after: after,
+            last: last,
+            before: before,
+          ),
+        ).document,
+        {
+          'id': chatId,
+          'first': first,
+          'after': after,
+          'last': last,
+          'before': before,
+        },
+      );
+
+  /////////////////////////////////////////////////////
+  ///////////////////// MUTATIONS /////////////////////
+  /////////////////////////////////////////////////////
 
   Future<CreateUser$Mutation$CreateUserResult> registration() async {
     final QueryResult result = await getClient()
@@ -62,13 +221,6 @@ class GraphQlProvider {
         ).document,
         variables: {'token': token}));
     if (result.hasException) throw Exception(result.exception.toString());
-  }
-
-  Future<MyUser$Query$MyUser> myUser() async {
-    final QueryResult result =
-        await getClient().query(QueryOptions(document: MyUserQuery().document));
-    if (result.hasException) throw Exception(result.exception.toString());
-    return MyUser$Query$MyUser.fromJson(result.data!['myUser']);
   }
 
   Future<UpdateUserName$Mutation$MyUser> updateUserName(String name) async {
@@ -142,27 +294,6 @@ class GraphQlProvider {
         result.data!['updateUserPassword']);
   }
 
-  Future<SearchUsers$Query$UserConnection> searchUsers(
-      String? num, String? login) async {
-    final QueryResult result = await getClient().query(QueryOptions(
-        document: SearchUsersQuery(
-          variables: SearchUsersArguments(num: num, login: login),
-        ).document,
-        variables: {'num': num, 'login': login}));
-
-    if (result.hasException) throw Exception(result.exception.toString());
-    return SearchUsers$Query$UserConnection.fromJson(
-        result.data!['searchUsers']);
-  }
-
-  Future<User$Query$User> user(String id) async {
-    final QueryResult result = await getClient().query(QueryOptions(
-        document: UserQuery(variables: UserArguments(id: id)).document,
-        variables: {'id': id}));
-    if (result.hasException) throw Exception(result.exception.toString());
-    return User$Query$User.fromJson(result.data!['user']);
-  }
-
   Future<CreateChatContact$Mutation$CreateChatContactResult$ChatContact>
       createChatContact(String name, List<ChatContactRecord> records) async {
     final QueryResult result = await getClient().query(QueryOptions(
@@ -183,56 +314,6 @@ class GraphQlProvider {
         variables: {'id': id}));
     if (result.hasException) throw Exception(result.exception.toString());
     return DeleteChatContact$Mutation.fromJson(result.data!);
-  }
-
-  Future<ChatContacts$Query$ChatContactConnection> chatContacts(
-      {int? first,
-      int? last,
-      String? before,
-      String? after,
-      bool? noFavorite}) async {
-    final QueryResult result = await getClient().query(QueryOptions(
-        document: ChatContactsQuery(
-          variables: ChatContactsArguments(
-            first: first,
-            last: last,
-            before: before,
-            after: after,
-            noFavorite: noFavorite,
-          ),
-        ).document,
-        variables: {
-          'first': first,
-          'last': last,
-          'before': before,
-          'after': after,
-          'noFavorite': noFavorite,
-        }));
-    if (result.hasException) throw Exception(result.exception.toString());
-    return ChatContacts$Query$ChatContactConnection.fromJson(
-        result.data!['chatContacts']);
-  }
-
-  Future<FavoriteChatContacts$Query$ChatContactConnection> favoriteChatContacts(
-      {int? first, int? last, String? before, String? after}) async {
-    final QueryResult result = await getClient().query(QueryOptions(
-        document: FavoriteChatContactsQuery(
-          variables: FavoriteChatContactsArguments(
-            first: first,
-            last: last,
-            before: before,
-            after: after,
-          ),
-        ).document,
-        variables: {
-          'first': first,
-          'last': last,
-          'before': before,
-          'after': after,
-        }));
-    if (result.hasException) throw Exception(result.exception.toString());
-    return FavoriteChatContacts$Query$ChatContactConnection.fromJson(
-        result.data!['favoriteChatContacts']);
   }
 
   Future<FavoriteChatContact$Mutation$FavoriteChatContactResult$ChatContact>
@@ -257,61 +338,6 @@ class GraphQlProvider {
     if (result.hasException) throw Exception(result.exception.toString());
     return UnfavoriteChatContact$Mutation$UnfavoriteChatContactResult$ChatContact
         .fromJson(result.data!['unfavoriteChatContact']);
-  }
-
-  Future<RecentChats$Query$ChatConnection> recentChats(
-      {int? first, String? after, int? last, String? before}) async {
-    final QueryResult result = await getClient().query(QueryOptions(
-        document: RecentChatsQuery(
-          variables: RecentChatsArguments(
-            first: first,
-            after: after,
-            last: last,
-            before: before,
-          ),
-        ).document,
-        variables: {
-          'first': first,
-          'after': after,
-          'last': last,
-          'before': before,
-        }));
-    if (result.hasException) throw Exception(result.exception.toString());
-    return RecentChats$Query$ChatConnection.fromJson(
-        result.data!['recentChats']);
-  }
-
-  Future<Chat$Query$Chat> chat(String chatId) async {
-    final QueryResult result = await getClient().query(QueryOptions(
-        document: ChatQuery(
-          variables: ChatArguments(id: chatId),
-        ).document,
-        variables: {'id': chatId}));
-    if (result.hasException) throw Exception(result.exception.toString());
-    return Chat$Query$Chat.fromJson(result.data!['chat']);
-  }
-
-  Future<Messages$Query$Chat> messages(String chatId,
-      {int? first, String? after, int? last, String? before}) async {
-    final QueryResult result = await getClient().query(QueryOptions(
-        document: MessagesQuery(
-          variables: MessagesArguments(
-            id: chatId,
-            first: first,
-            after: after,
-            last: last,
-            before: before,
-          ),
-        ).document,
-        variables: {
-          'id': chatId,
-          'first': first,
-          'after': after,
-          'last': last,
-          'before': before,
-        }));
-    if (result.hasException) throw Exception(result.exception.toString());
-    return Messages$Query$Chat.fromJson(result.data!['chat']);
   }
 
   Future<PostChatMessage$Mutation$PostChatMessageResult$ChatMessage>

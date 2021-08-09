@@ -19,11 +19,16 @@ class ProfileController extends GetxController {
   void onReady() async {
     super.onReady();
     try {
-      user = await userRepository.user(id);
+      status.value = RxStatus.loadingMore();
+      user = await userRepository.user(id, (User user) {
+        this.user = user;
+        isInFavorites.value = user.contacts.isNotEmpty &&
+            user.contacts[0].favoritePosition != null;
+        status.value = RxStatus.success();
+      });
       isInFavorites.value = user != null &&
           user!.contacts.isNotEmpty &&
           user?.contacts[0].favoritePosition != null;
-      status.value = RxStatus.success();
     } catch (e) {
       await ExceptionParser.error(e);
       Get.back();

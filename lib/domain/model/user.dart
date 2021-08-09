@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:test/domain/model/chat_contact.dart';
 
@@ -25,6 +27,32 @@ class MyUser {
   // List<String> phones;
   bool hasPassword;
   int unreadChatsCount;
+
+  Map<String, String?> toJson() => {
+        'id': id,
+        'num': num,
+        'login': login,
+        'name': name,
+        'bio': bio,
+        'avatar': json.encode(avatar?.toJson()),
+        'hasPassword': hasPassword.toString(),
+        'unreadChatsCount': unreadChatsCount.toString(),
+      };
+  MyUser.fromJson(Map<String?, dynamic> json)
+      : id = json['id'],
+        num = json['num'],
+        login = json['login'],
+        name = json['name'],
+        bio = json['bio'],
+        avatar = Avatar.fromJson(jsonDecode(json['avatar'])),
+        hasPassword = json['hasPassword'] == null
+            ? false
+            : json['hasPassword'] == 'true'
+                ? true
+                : false,
+        unreadChatsCount = json['unreadChatsCount'] == null
+            ? 0
+            : int.parse(json['unreadChatsCount']);
 }
 
 // ignore: must_be_immutable

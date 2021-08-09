@@ -17,16 +17,6 @@ class MyProfileView extends GetView<MyProfileController> {
     AuthService authService = Get.find();
     MyUser user = authService.user!;
 
-    Widget userInfo = Column(
-      children: [
-        Text('id: ${authService.user!.id}'),
-        Text('num: ${authService.user!.num}'),
-        Text('login: ${authService.user!.login}'),
-        Text('name: ${authService.user!.name}'),
-        Text('bio: ${authService.user!.bio}'),
-      ],
-    );
-
     return GetBuilder(
       init: MyProfileController(Get.find()),
       builder: (MyProfileController _) => GestureDetector(

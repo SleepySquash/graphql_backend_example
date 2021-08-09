@@ -7,7 +7,8 @@ class AddressBook extends GetxController {
   AddressBook(this.userRepository);
   UserRepository userRepository;
 
-  Rx<RxStatus> status = Rx<RxStatus>(RxStatus.loading());
+  Rx<RxStatus> contactsStatus = Rx<RxStatus>(RxStatus.loading());
+  Rx<RxStatus> favoritesStatus = Rx<RxStatus>(RxStatus.loading());
   RxList<ChatContact> contacts = RxList<ChatContact>([]);
   RxList<ChatContact> favorites = RxList<ChatContact>([]);
 
@@ -26,19 +27,29 @@ class AddressBook extends GetxController {
   }
 
   Future<void> refreshContacts() async {
-    status.value = RxStatus.loading();
+    contactsStatus.value = RxStatus.loadingMore();
+    favoritesStatus.value = RxStatus.loadingMore();
     List<Future> futures = [
-      userRepository.contacts(noFavorite: true).then((v) => contacts.value = v),
-      userRepository.favoriteContacts().then((v) => favorites.value = v)
+      userRepository
+          .contacts(
+              noFavorite: true,
+              onUpdate: (List<ChatContact> v) {
+                contacts.value = v;
+                contactsStatus.value =
+                    contacts.isEmpty ? RxStatus.empty() : RxStatus.success();
+              })
+          .then((v) => contacts.value = v),
+      userRepository.favoriteContacts((List<ChatContact> v) {
+        favorites.value = v;
+        favoritesStatus.value =
+            favorites.isEmpty ? RxStatus.empty() : RxStatus.success();
+      }).then((v) => favorites.value = v)
     ];
     await Future.wait(futures);
-    status.value = contacts.isEmpty && favorites.isEmpty
-        ? RxStatus.empty()
-        : RxStatus.success();
   }
 
   Future<bool> addToFavorites(ChatContact contact) async {
-    double position = await userRepository.addToFavorites(contact);
+    double? position = await userRepository.addToFavorites(contact);
 
     ChatContact c = contacts.firstWhere((e) => e == contact);
     contacts.remove(c);

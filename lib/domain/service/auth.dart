@@ -23,6 +23,11 @@ class AuthService extends GetxController {
     if (map != null) {
       session = Session.fromJson(json.decode(map));
       if (session!.expireAt.isAfter(DateTime.now().toUtc())) {
+        String? userMap = prefs.getString('myUser');
+        if (userMap != null) {
+          user = MyUser.fromJson(json.decode(userMap));
+        }
+
         try {
           graphQlProvider.token = session!.token;
           MyUser$Query$MyUser response = await graphQlProvider.myUser();
@@ -53,13 +58,15 @@ class AuthService extends GetxController {
             prefs.remove('session');
             Get.offAndToNamed('/auth');
           }
-          print('AuthService.init: $e');
+          // print('AuthService.init: $e');
         }
       } else {
         graphQlProvider.token = null;
         prefs.remove('session');
         Get.offAndToNamed('/auth');
       }
+    } else {
+      Get.offAndToNamed('/auth');
     }
 
     status.value = RxStatus.empty();
@@ -76,6 +83,7 @@ class AuthService extends GetxController {
 
       var prefs = await SharedPreferences.getInstance();
       await prefs.setString('session', json.encode(session!.toJson()));
+      await prefs.setString('myUser', json.encode(user!.toJson()));
       status.value = RxStatus.success();
 
       Get.offAndToNamed('/');
@@ -118,6 +126,7 @@ class AuthService extends GetxController {
 
       var prefs = await SharedPreferences.getInstance();
       await prefs.setString('session', json.encode(session!.toJson()));
+      await prefs.setString('myUser', json.encode(user!.toJson()));
       status.value = RxStatus.success();
 
       Get.offAndToNamed('/');

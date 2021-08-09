@@ -8,7 +8,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   GraphQlProvider graphQlProvider = Get.put(GraphQlProvider());
-  await Get.put(AuthService(graphQlProvider)).init();
+  await graphQlProvider.init();
+
+  Get.put(AuthService(graphQlProvider)).init();
 
   runApp(const MyApp());
 }
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'GraphQL Demo',
       defaultTransition: Transition.cupertino,
-      initialRoute: '/auth',
+      initialRoute: '/',
       getPages: routes,
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),

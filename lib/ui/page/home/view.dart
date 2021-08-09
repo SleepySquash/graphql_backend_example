@@ -5,7 +5,6 @@ import 'package:test/ui/page/chats/controller.dart';
 import 'package:test/ui/page/contacts/view.dart';
 import 'package:test/ui/page/menu/view.dart';
 
-import '../my_profile/controller.dart';
 import 'controller.dart';
 
 class HomeView extends GetView<HomeController> {

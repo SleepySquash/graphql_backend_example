@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_controller.dart';
 import 'package:get/get.dart';
 import 'package:test/domain/model/chat_contact.dart';
 import 'package:test/domain/model/user.dart';
@@ -14,6 +15,8 @@ class ProfileController extends GetxController {
   RxBool isInFavorites = RxBool(false);
   UserRepository userRepository;
   String id;
+
+  RxInt carouselIndex = RxInt(0);
 
   @override
   void onReady() async {

@@ -7,6 +7,124 @@ part of 'api.graphql.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOk$GalleryItem
+    _$UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOk$GalleryItemFromJson(
+        Map<String, dynamic> json) {
+  return UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOk$GalleryItem()
+    ..id = json['id'] as String
+    ..original = json['original'] as String
+    ..addedAt = DateTime.parse(json['addedAt'] as String);
+}
+
+Map<String, dynamic>
+    _$UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOk$GalleryItemToJson(
+            UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOk$GalleryItem
+                instance) =>
+        <String, dynamic>{
+          'id': instance.id,
+          'original': instance.original,
+          'addedAt': instance.addedAt.toIso8601String(),
+        };
+
+UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOk
+    _$UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOkFromJson(
+        Map<String, dynamic> json) {
+  return UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOk()
+    ..$$typename = json['__typename'] as String?
+    ..galleryItem =
+        UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOk$GalleryItem
+            .fromJson(json['galleryItem'] as Map<String, dynamic>);
+}
+
+Map<String, dynamic>
+    _$UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOkToJson(
+            UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOk
+                instance) =>
+        <String, dynamic>{
+          '__typename': instance.$$typename,
+          'galleryItem': instance.galleryItem.toJson(),
+        };
+
+UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemError
+    _$UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemErrorFromJson(
+        Map<String, dynamic> json) {
+  return UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemError()
+    ..$$typename = json['__typename'] as String?
+    ..code = _$enumDecode(_$UploadUserGalleryItemErrorCodeEnumMap, json['code'],
+        unknownValue: UploadUserGalleryItemErrorCode.artemisUnknown);
+}
+
+Map<String, dynamic>
+    _$UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemErrorToJson(
+            UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemError
+                instance) =>
+        <String, dynamic>{
+          '__typename': instance.$$typename,
+          'code': _$UploadUserGalleryItemErrorCodeEnumMap[instance.code],
+        };
+
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
+}) {
+  if (source == null) {
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
+  }
+
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
+}
+
+const _$UploadUserGalleryItemErrorCodeEnumMap = {
+  UploadUserGalleryItemErrorCode.dimensionsTooBig: 'DIMENSIONS_TOO_BIG',
+  UploadUserGalleryItemErrorCode.malformed: 'MALFORMED',
+  UploadUserGalleryItemErrorCode.sizeTooBig: 'SIZE_TOO_BIG',
+  UploadUserGalleryItemErrorCode.unsupportedFormat: 'UNSUPPORTED_FORMAT',
+  UploadUserGalleryItemErrorCode.artemisUnknown: 'ARTEMIS_UNKNOWN',
+};
+
+UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult
+    _$UploadUserGalleryItem$Mutation$UploadUserGalleryItemResultFromJson(
+        Map<String, dynamic> json) {
+  return UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult()
+    ..$$typename = json['__typename'] as String?;
+}
+
+Map<String,
+    dynamic> _$UploadUserGalleryItem$Mutation$UploadUserGalleryItemResultToJson(
+        UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult instance) =>
+    <String, dynamic>{
+      '__typename': instance.$$typename,
+    };
+
+UploadUserGalleryItem$Mutation _$UploadUserGalleryItem$MutationFromJson(
+    Map<String, dynamic> json) {
+  return UploadUserGalleryItem$Mutation()
+    ..uploadUserGalleryItem =
+        UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult.fromJson(
+            json['uploadUserGalleryItem'] as Map<String, dynamic>);
+}
+
+Map<String, dynamic> _$UploadUserGalleryItem$MutationToJson(
+        UploadUserGalleryItem$Mutation instance) =>
+    <String, dynamic>{
+      'uploadUserGalleryItem': instance.uploadUserGalleryItem.toJson(),
+    };
+
 DeleteUserName$Mutation$MyUser _$DeleteUserName$Mutation$MyUserFromJson(
     Map<String, dynamic> json) {
   return DeleteUserName$Mutation$MyUser()..name = json['name'] as String?;
@@ -89,32 +207,6 @@ Map<String, dynamic>
           '__typename': instance.$$typename,
           'code': _$UnfavoriteChatContactErrorCodeEnumMap[instance.code],
         };
-
-K _$enumDecode<K, V>(
-  Map<K, V> enumValues,
-  Object? source, {
-  K? unknownValue,
-}) {
-  if (source == null) {
-    throw ArgumentError(
-      'A value must be provided. Supported values: '
-      '${enumValues.values.join(', ')}',
-    );
-  }
-
-  return enumValues.entries.singleWhere(
-    (e) => e.value == source,
-    orElse: () {
-      if (unknownValue == null) {
-        throw ArgumentError(
-          '`$source` is not one of the supported values: '
-          '${enumValues.values.join(', ')}',
-        );
-      }
-      return MapEntry(unknownValue, enumValues.values.first);
-    },
-  ).key;
-}
 
 const _$UnfavoriteChatContactErrorCodeEnumMap = {
   UnfavoriteChatContactErrorCode.unknownChatContact: 'UNKNOWN_CHAT_CONTACT',
@@ -549,6 +641,44 @@ Map<String, dynamic>
           'small': instance.small,
         };
 
+CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser$GalleryItemConnection$GalleryItem
+    _$CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser$GalleryItemConnection$GalleryItemFromJson(
+        Map<String, dynamic> json) {
+  return CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser$GalleryItemConnection$GalleryItem()
+    ..id = json['id'] as String
+    ..original = json['original'] as String
+    ..addedAt = DateTime.parse(json['addedAt'] as String);
+}
+
+Map<String, dynamic>
+    _$CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser$GalleryItemConnection$GalleryItemToJson(
+            CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser$GalleryItemConnection$GalleryItem
+                instance) =>
+        <String, dynamic>{
+          'id': instance.id,
+          'original': instance.original,
+          'addedAt': instance.addedAt.toIso8601String(),
+        };
+
+CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser$GalleryItemConnection
+    _$CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser$GalleryItemConnectionFromJson(
+        Map<String, dynamic> json) {
+  return CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser$GalleryItemConnection()
+    ..nodes = (json['nodes'] as List<dynamic>)
+        .map((e) =>
+            CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser$GalleryItemConnection$GalleryItem
+                .fromJson(e as Map<String, dynamic>))
+        .toList();
+}
+
+Map<String, dynamic>
+    _$CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser$GalleryItemConnectionToJson(
+            CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser$GalleryItemConnection
+                instance) =>
+        <String, dynamic>{
+          'nodes': instance.nodes.map((e) => e.toJson()).toList(),
+        };
+
 CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser
     _$CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUserFromJson(
         Map<String, dynamic> json) {
@@ -561,7 +691,10 @@ CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser
     ..avatar = json['avatar'] == null
         ? null
         : CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser$UserAvatar
-            .fromJson(json['avatar'] as Map<String, dynamic>);
+            .fromJson(json['avatar'] as Map<String, dynamic>)
+    ..gallery =
+        CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser$GalleryItemConnection
+            .fromJson(json['gallery'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic>
@@ -575,6 +708,7 @@ Map<String, dynamic>
           'name': instance.name,
           'bio': instance.bio,
           'avatar': instance.avatar?.toJson(),
+          'gallery': instance.gallery.toJson(),
         };
 
 CreateSession$Mutation$CreateSessionResult$CreateSessionOk
@@ -806,6 +940,183 @@ Map<String, dynamic> _$ChatContactRecordToJson(ChatContactRecord instance) =>
       'userId': instance.userId,
       'email': instance.email,
       'phone': instance.phone,
+    };
+
+CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar
+    _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatarFromJson(
+        Map<String, dynamic> json) {
+  return CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar()
+    ..big = json['big'] as String;
+}
+
+Map<String, dynamic>
+    _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatarToJson(
+            CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar
+                instance) =>
+        <String, dynamic>{
+          'big': instance.big,
+        };
+
+CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User
+    _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$UserFromJson(
+        Map<String, dynamic> json) {
+  return CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User()
+    ..num = json['num'] as String
+    ..name = json['name'] as String?
+    ..avatar = json['avatar'] == null
+        ? null
+        : CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar
+            .fromJson(json['avatar'] as Map<String, dynamic>);
+}
+
+Map<String, dynamic>
+    _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$UserToJson(
+            CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User
+                instance) =>
+        <String, dynamic>{
+          'num': instance.num,
+          'name': instance.name,
+          'avatar': instance.avatar?.toJson(),
+        };
+
+CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser
+    _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUserFromJson(
+        Map<String, dynamic> json) {
+  return CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser()
+    ..id = json['id'] as String
+    ..user =
+        CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User
+            .fromJson(json['user'] as Map<String, dynamic>)
+    ..name = json['name'] as String?;
+}
+
+Map<String, dynamic>
+    _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUserToJson(
+            CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser
+                instance) =>
+        <String, dynamic>{
+          'id': instance.id,
+          'user': instance.user.toJson(),
+          'name': instance.name,
+        };
+
+CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember
+    _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMemberFromJson(
+        Map<String, dynamic> json) {
+  return CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember()
+    ..user =
+        CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser
+            .fromJson(json['user'] as Map<String, dynamic>);
+}
+
+Map<String, dynamic>
+    _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMemberToJson(
+            CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember
+                instance) =>
+        <String, dynamic>{
+          'user': instance.user.toJson(),
+        };
+
+CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection
+    _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnectionFromJson(
+        Map<String, dynamic> json) {
+  return CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection()
+    ..nodes = (json['nodes'] as List<dynamic>)
+        .map((e) =>
+            CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember
+                .fromJson(e as Map<String, dynamic>))
+        .toList();
+}
+
+Map<String, dynamic>
+    _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnectionToJson(
+            CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection
+                instance) =>
+        <String, dynamic>{
+          'nodes': instance.nodes.map((e) => e.toJson()).toList(),
+        };
+
+CreateDialogChat$Mutation$CreateDialogChatResult$Chat
+    _$CreateDialogChat$Mutation$CreateDialogChatResult$ChatFromJson(
+        Map<String, dynamic> json) {
+  return CreateDialogChat$Mutation$CreateDialogChatResult$Chat()
+    ..$$typename = json['__typename'] as String?
+    ..id = json['id'] as String
+    ..name = json['name'] as String?
+    ..members =
+        CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection
+            .fromJson(json['members'] as Map<String, dynamic>)
+    ..kind = _$enumDecode(_$ChatKindEnumMap, json['kind'],
+        unknownValue: ChatKind.artemisUnknown);
+}
+
+Map<String, dynamic>
+    _$CreateDialogChat$Mutation$CreateDialogChatResult$ChatToJson(
+            CreateDialogChat$Mutation$CreateDialogChatResult$Chat instance) =>
+        <String, dynamic>{
+          '__typename': instance.$$typename,
+          'id': instance.id,
+          'name': instance.name,
+          'members': instance.members.toJson(),
+          'kind': _$ChatKindEnumMap[instance.kind],
+        };
+
+const _$ChatKindEnumMap = {
+  ChatKind.monolog: 'MONOLOG',
+  ChatKind.dialog: 'DIALOG',
+  ChatKind.group: 'GROUP',
+  ChatKind.artemisUnknown: 'ARTEMIS_UNKNOWN',
+};
+
+CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatError
+    _$CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatErrorFromJson(
+        Map<String, dynamic> json) {
+  return CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatError()
+    ..$$typename = json['__typename'] as String?
+    ..code = _$enumDecode(_$CreateDialogChatErrorCodeEnumMap, json['code'],
+        unknownValue: CreateDialogChatErrorCode.artemisUnknown);
+}
+
+Map<String, dynamic>
+    _$CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatErrorToJson(
+            CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatError
+                instance) =>
+        <String, dynamic>{
+          '__typename': instance.$$typename,
+          'code': _$CreateDialogChatErrorCodeEnumMap[instance.code],
+        };
+
+const _$CreateDialogChatErrorCodeEnumMap = {
+  CreateDialogChatErrorCode.blocked: 'BLOCKED',
+  CreateDialogChatErrorCode.unknownDirectLink: 'UNKNOWN_DIRECT_LINK',
+  CreateDialogChatErrorCode.artemisUnknown: 'ARTEMIS_UNKNOWN',
+};
+
+CreateDialogChat$Mutation$CreateDialogChatResult
+    _$CreateDialogChat$Mutation$CreateDialogChatResultFromJson(
+        Map<String, dynamic> json) {
+  return CreateDialogChat$Mutation$CreateDialogChatResult()
+    ..$$typename = json['__typename'] as String?;
+}
+
+Map<String, dynamic> _$CreateDialogChat$Mutation$CreateDialogChatResultToJson(
+        CreateDialogChat$Mutation$CreateDialogChatResult instance) =>
+    <String, dynamic>{
+      '__typename': instance.$$typename,
+    };
+
+CreateDialogChat$Mutation _$CreateDialogChat$MutationFromJson(
+    Map<String, dynamic> json) {
+  return CreateDialogChat$Mutation()
+    ..createDialogChat =
+        CreateDialogChat$Mutation$CreateDialogChatResult.fromJson(
+            json['createDialogChat'] as Map<String, dynamic>);
+}
+
+Map<String, dynamic> _$CreateDialogChat$MutationToJson(
+        CreateDialogChat$Mutation instance) =>
+    <String, dynamic>{
+      'createDialogChat': instance.createDialogChat.toJson(),
     };
 
 DeleteUserBio$Mutation$MyUser _$DeleteUserBio$Mutation$MyUserFromJson(
@@ -1079,6 +1390,54 @@ Map<String, dynamic>
           'id': instance.id,
         };
 
+Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage$Attachment$ImageAttachment
+    _$Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage$Attachment$ImageAttachmentFromJson(
+        Map<String, dynamic> json) {
+  return Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage$Attachment$ImageAttachment()
+    ..$$typename = json['__typename'] as String?
+    ..id = json['id'] as String
+    ..original = json['original'] as String
+    ..filename = json['filename'] as String
+    ..size = json['size'] as int
+    ..big = json['big'] as String;
+}
+
+Map<String, dynamic>
+    _$Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage$Attachment$ImageAttachmentToJson(
+            Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage$Attachment$ImageAttachment
+                instance) =>
+        <String, dynamic>{
+          '__typename': instance.$$typename,
+          'id': instance.id,
+          'original': instance.original,
+          'filename': instance.filename,
+          'size': instance.size,
+          'big': instance.big,
+        };
+
+Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage$Attachment
+    _$Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage$AttachmentFromJson(
+        Map<String, dynamic> json) {
+  return Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage$Attachment()
+    ..$$typename = json['__typename'] as String?
+    ..id = json['id'] as String
+    ..original = json['original'] as String
+    ..filename = json['filename'] as String
+    ..size = json['size'] as int;
+}
+
+Map<String, dynamic>
+    _$Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage$AttachmentToJson(
+            Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage$Attachment
+                instance) =>
+        <String, dynamic>{
+          '__typename': instance.$$typename,
+          'id': instance.id,
+          'original': instance.original,
+          'filename': instance.filename,
+          'size': instance.size,
+        };
+
 Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage
     _$Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessageFromJson(
         Map<String, dynamic> json) {
@@ -1092,7 +1451,12 @@ Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage
         ? null
         : Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage$ChatItem
             .fromJson(json['repliesTo'] as Map<String, dynamic>)
-    ..text = json['text'] as String?;
+    ..text = json['text'] as String?
+    ..attachments = (json['attachments'] as List<dynamic>)
+        .map((e) =>
+            Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage$Attachment
+                .fromJson(e as Map<String, dynamic>))
+        .toList();
 }
 
 Map<String, dynamic>
@@ -1107,6 +1471,7 @@ Map<String, dynamic>
           'at': instance.at.toIso8601String(),
           'repliesTo': instance.repliesTo?.toJson(),
           'text': instance.text,
+          'attachments': instance.attachments.map((e) => e.toJson()).toList(),
         };
 
 Messages$Query$Chat$ChatItemConnection$ChatItem$ChatForward$ChatItem
@@ -1313,6 +1678,38 @@ Map<String, dynamic> _$User$Query$User$ChatContactToJson(
       'favoritePosition': instance.favoritePosition,
     };
 
+User$Query$User$GalleryItemConnection$GalleryItem
+    _$User$Query$User$GalleryItemConnection$GalleryItemFromJson(
+        Map<String, dynamic> json) {
+  return User$Query$User$GalleryItemConnection$GalleryItem()
+    ..id = json['id'] as String
+    ..original = json['original'] as String
+    ..addedAt = DateTime.parse(json['addedAt'] as String);
+}
+
+Map<String, dynamic> _$User$Query$User$GalleryItemConnection$GalleryItemToJson(
+        User$Query$User$GalleryItemConnection$GalleryItem instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'original': instance.original,
+      'addedAt': instance.addedAt.toIso8601String(),
+    };
+
+User$Query$User$GalleryItemConnection
+    _$User$Query$User$GalleryItemConnectionFromJson(Map<String, dynamic> json) {
+  return User$Query$User$GalleryItemConnection()
+    ..nodes = (json['nodes'] as List<dynamic>)
+        .map((e) => User$Query$User$GalleryItemConnection$GalleryItem.fromJson(
+            e as Map<String, dynamic>))
+        .toList();
+}
+
+Map<String, dynamic> _$User$Query$User$GalleryItemConnectionToJson(
+        User$Query$User$GalleryItemConnection instance) =>
+    <String, dynamic>{
+      'nodes': instance.nodes.map((e) => e.toJson()).toList(),
+    };
+
 User$Query$User _$User$Query$UserFromJson(Map<String, dynamic> json) {
   return User$Query$User()
     ..id = json['id'] as String
@@ -1328,7 +1725,9 @@ User$Query$User _$User$Query$UserFromJson(Map<String, dynamic> json) {
     ..contacts = (json['contacts'] as List<dynamic>)
         .map((e) =>
             User$Query$User$ChatContact.fromJson(e as Map<String, dynamic>))
-        .toList();
+        .toList()
+    ..gallery = User$Query$User$GalleryItemConnection.fromJson(
+        json['gallery'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic> _$User$Query$UserToJson(User$Query$User instance) =>
@@ -1341,6 +1740,7 @@ Map<String, dynamic> _$User$Query$UserToJson(User$Query$User instance) =>
       'mutualContactsCount': instance.mutualContactsCount,
       'isDeleted': instance.isDeleted,
       'contacts': instance.contacts.map((e) => e.toJson()).toList(),
+      'gallery': instance.gallery.toJson(),
     };
 
 User$Query _$User$QueryFromJson(Map<String, dynamic> json) {
@@ -1415,6 +1815,41 @@ Map<String, dynamic> _$MyUser$Query$MyUser$UserAvatarToJson(
       'small': instance.small,
     };
 
+MyUser$Query$MyUser$GalleryItemConnection$GalleryItem
+    _$MyUser$Query$MyUser$GalleryItemConnection$GalleryItemFromJson(
+        Map<String, dynamic> json) {
+  return MyUser$Query$MyUser$GalleryItemConnection$GalleryItem()
+    ..id = json['id'] as String
+    ..original = json['original'] as String
+    ..addedAt = DateTime.parse(json['addedAt'] as String);
+}
+
+Map<String, dynamic>
+    _$MyUser$Query$MyUser$GalleryItemConnection$GalleryItemToJson(
+            MyUser$Query$MyUser$GalleryItemConnection$GalleryItem instance) =>
+        <String, dynamic>{
+          'id': instance.id,
+          'original': instance.original,
+          'addedAt': instance.addedAt.toIso8601String(),
+        };
+
+MyUser$Query$MyUser$GalleryItemConnection
+    _$MyUser$Query$MyUser$GalleryItemConnectionFromJson(
+        Map<String, dynamic> json) {
+  return MyUser$Query$MyUser$GalleryItemConnection()
+    ..nodes = (json['nodes'] as List<dynamic>)
+        .map((e) =>
+            MyUser$Query$MyUser$GalleryItemConnection$GalleryItem.fromJson(
+                e as Map<String, dynamic>))
+        .toList();
+}
+
+Map<String, dynamic> _$MyUser$Query$MyUser$GalleryItemConnectionToJson(
+        MyUser$Query$MyUser$GalleryItemConnection instance) =>
+    <String, dynamic>{
+      'nodes': instance.nodes.map((e) => e.toJson()).toList(),
+    };
+
 MyUser$Query$MyUser _$MyUser$Query$MyUserFromJson(Map<String, dynamic> json) {
   return MyUser$Query$MyUser()
     ..id = json['id'] as String
@@ -1426,7 +1861,9 @@ MyUser$Query$MyUser _$MyUser$Query$MyUserFromJson(Map<String, dynamic> json) {
     ..avatar = json['avatar'] == null
         ? null
         : MyUser$Query$MyUser$UserAvatar.fromJson(
-            json['avatar'] as Map<String, dynamic>);
+            json['avatar'] as Map<String, dynamic>)
+    ..gallery = MyUser$Query$MyUser$GalleryItemConnection.fromJson(
+        json['gallery'] as Map<String, dynamic>);
 }
 
 Map<String, dynamic> _$MyUser$Query$MyUserToJson(
@@ -1439,6 +1876,7 @@ Map<String, dynamic> _$MyUser$Query$MyUserToJson(
       'bio': instance.bio,
       'hasPassword': instance.hasPassword,
       'avatar': instance.avatar?.toJson(),
+      'gallery': instance.gallery.toJson(),
     };
 
 MyUser$Query _$MyUser$QueryFromJson(Map<String, dynamic> json) {
@@ -1740,13 +2178,6 @@ Map<String, dynamic> _$Chat$Query$ChatToJson(Chat$Query$Chat instance) =>
       'isHidden': instance.isHidden,
     };
 
-const _$ChatKindEnumMap = {
-  ChatKind.monolog: 'MONOLOG',
-  ChatKind.dialog: 'DIALOG',
-  ChatKind.group: 'GROUP',
-  ChatKind.artemisUnknown: 'ARTEMIS_UNKNOWN',
-};
-
 Chat$Query _$Chat$QueryFromJson(Map<String, dynamic> json) {
   return Chat$Query()
     ..chat = json['chat'] == null
@@ -1862,6 +2293,54 @@ Map<String, dynamic>
           'id': instance.id,
         };
 
+RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage$Attachment$ImageAttachment
+    _$RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage$Attachment$ImageAttachmentFromJson(
+        Map<String, dynamic> json) {
+  return RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage$Attachment$ImageAttachment()
+    ..$$typename = json['__typename'] as String?
+    ..id = json['id'] as String
+    ..original = json['original'] as String
+    ..filename = json['filename'] as String
+    ..size = json['size'] as int
+    ..big = json['big'] as String;
+}
+
+Map<String, dynamic>
+    _$RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage$Attachment$ImageAttachmentToJson(
+            RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage$Attachment$ImageAttachment
+                instance) =>
+        <String, dynamic>{
+          '__typename': instance.$$typename,
+          'id': instance.id,
+          'original': instance.original,
+          'filename': instance.filename,
+          'size': instance.size,
+          'big': instance.big,
+        };
+
+RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage$Attachment
+    _$RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage$AttachmentFromJson(
+        Map<String, dynamic> json) {
+  return RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage$Attachment()
+    ..$$typename = json['__typename'] as String?
+    ..id = json['id'] as String
+    ..original = json['original'] as String
+    ..filename = json['filename'] as String
+    ..size = json['size'] as int;
+}
+
+Map<String, dynamic>
+    _$RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage$AttachmentToJson(
+            RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage$Attachment
+                instance) =>
+        <String, dynamic>{
+          '__typename': instance.$$typename,
+          'id': instance.id,
+          'original': instance.original,
+          'filename': instance.filename,
+          'size': instance.size,
+        };
+
 RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage
     _$RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessageFromJson(
         Map<String, dynamic> json) {
@@ -1875,7 +2354,12 @@ RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage
         ? null
         : RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage$ChatItem
             .fromJson(json['repliesTo'] as Map<String, dynamic>)
-    ..text = json['text'] as String?;
+    ..text = json['text'] as String?
+    ..attachments = (json['attachments'] as List<dynamic>)
+        .map((e) =>
+            RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage$Attachment
+                .fromJson(e as Map<String, dynamic>))
+        .toList();
 }
 
 Map<String, dynamic>
@@ -1890,6 +2374,7 @@ Map<String, dynamic>
           'at': instance.at.toIso8601String(),
           'repliesTo': instance.repliesTo?.toJson(),
           'text': instance.text,
+          'attachments': instance.attachments.map((e) => e.toJson()).toList(),
         };
 
 RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatForward$ChatItem
@@ -2117,174 +2602,19 @@ Map<String, dynamic> _$RecentChats$QueryToJson(RecentChats$Query instance) =>
       'recentChats': instance.recentChats.toJson(),
     };
 
-CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar
-    _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatarFromJson(
-        Map<String, dynamic> json) {
-  return CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar()
-    ..big = json['big'] as String;
-}
-
-Map<String, dynamic>
-    _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatarToJson(
-            CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar
-                instance) =>
-        <String, dynamic>{
-          'big': instance.big,
-        };
-
-CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User
-    _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$UserFromJson(
-        Map<String, dynamic> json) {
-  return CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User()
-    ..num = json['num'] as String
-    ..name = json['name'] as String?
-    ..avatar = json['avatar'] == null
-        ? null
-        : CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar
-            .fromJson(json['avatar'] as Map<String, dynamic>);
-}
-
-Map<String, dynamic>
-    _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$UserToJson(
-            CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User
-                instance) =>
-        <String, dynamic>{
-          'num': instance.num,
-          'name': instance.name,
-          'avatar': instance.avatar?.toJson(),
-        };
-
-CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser
-    _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUserFromJson(
-        Map<String, dynamic> json) {
-  return CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser()
-    ..id = json['id'] as String
-    ..user =
-        CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User
-            .fromJson(json['user'] as Map<String, dynamic>)
-    ..name = json['name'] as String?;
-}
-
-Map<String, dynamic>
-    _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUserToJson(
-            CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser
-                instance) =>
-        <String, dynamic>{
-          'id': instance.id,
-          'user': instance.user.toJson(),
-          'name': instance.name,
-        };
-
-CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember
-    _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMemberFromJson(
-        Map<String, dynamic> json) {
-  return CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember()
-    ..user =
-        CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser
-            .fromJson(json['user'] as Map<String, dynamic>);
-}
-
-Map<String, dynamic>
-    _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMemberToJson(
-            CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember
-                instance) =>
-        <String, dynamic>{
-          'user': instance.user.toJson(),
-        };
-
-CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection
-    _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnectionFromJson(
-        Map<String, dynamic> json) {
-  return CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection()
-    ..nodes = (json['nodes'] as List<dynamic>)
-        .map((e) =>
-            CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember
-                .fromJson(e as Map<String, dynamic>))
-        .toList();
-}
-
-Map<String, dynamic>
-    _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnectionToJson(
-            CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection
-                instance) =>
-        <String, dynamic>{
-          'nodes': instance.nodes.map((e) => e.toJson()).toList(),
-        };
-
-CreateDialogChat$Mutation$CreateDialogChatResult$Chat
-    _$CreateDialogChat$Mutation$CreateDialogChatResult$ChatFromJson(
-        Map<String, dynamic> json) {
-  return CreateDialogChat$Mutation$CreateDialogChatResult$Chat()
-    ..$$typename = json['__typename'] as String?
-    ..id = json['id'] as String
-    ..name = json['name'] as String?
-    ..members =
-        CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection
-            .fromJson(json['members'] as Map<String, dynamic>)
-    ..kind = _$enumDecode(_$ChatKindEnumMap, json['kind'],
-        unknownValue: ChatKind.artemisUnknown);
-}
-
-Map<String, dynamic>
-    _$CreateDialogChat$Mutation$CreateDialogChatResult$ChatToJson(
-            CreateDialogChat$Mutation$CreateDialogChatResult$Chat instance) =>
-        <String, dynamic>{
-          '__typename': instance.$$typename,
-          'id': instance.id,
-          'name': instance.name,
-          'members': instance.members.toJson(),
-          'kind': _$ChatKindEnumMap[instance.kind],
-        };
-
-CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatError
-    _$CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatErrorFromJson(
-        Map<String, dynamic> json) {
-  return CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatError()
-    ..$$typename = json['__typename'] as String?
-    ..code = _$enumDecode(_$CreateDialogChatErrorCodeEnumMap, json['code'],
-        unknownValue: CreateDialogChatErrorCode.artemisUnknown);
-}
-
-Map<String, dynamic>
-    _$CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatErrorToJson(
-            CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatError
-                instance) =>
-        <String, dynamic>{
-          '__typename': instance.$$typename,
-          'code': _$CreateDialogChatErrorCodeEnumMap[instance.code],
-        };
-
-const _$CreateDialogChatErrorCodeEnumMap = {
-  CreateDialogChatErrorCode.blocked: 'BLOCKED',
-  CreateDialogChatErrorCode.unknownDirectLink: 'UNKNOWN_DIRECT_LINK',
-  CreateDialogChatErrorCode.artemisUnknown: 'ARTEMIS_UNKNOWN',
-};
-
-CreateDialogChat$Mutation$CreateDialogChatResult
-    _$CreateDialogChat$Mutation$CreateDialogChatResultFromJson(
-        Map<String, dynamic> json) {
-  return CreateDialogChat$Mutation$CreateDialogChatResult()
-    ..$$typename = json['__typename'] as String?;
-}
-
-Map<String, dynamic> _$CreateDialogChat$Mutation$CreateDialogChatResultToJson(
-        CreateDialogChat$Mutation$CreateDialogChatResult instance) =>
-    <String, dynamic>{
-      '__typename': instance.$$typename,
-    };
-
-CreateDialogChat$Mutation _$CreateDialogChat$MutationFromJson(
+UploadUserGalleryItemArguments _$UploadUserGalleryItemArgumentsFromJson(
     Map<String, dynamic> json) {
-  return CreateDialogChat$Mutation()
-    ..createDialogChat =
-        CreateDialogChat$Mutation$CreateDialogChatResult.fromJson(
-            json['createDialogChat'] as Map<String, dynamic>);
+  return UploadUserGalleryItemArguments(
+    file: fromGraphQLUploadNullableToDartMultipartFileNullable(
+        json['file'] as MultipartFile?),
+  );
 }
 
-Map<String, dynamic> _$CreateDialogChat$MutationToJson(
-        CreateDialogChat$Mutation instance) =>
+Map<String, dynamic> _$UploadUserGalleryItemArgumentsToJson(
+        UploadUserGalleryItemArguments instance) =>
     <String, dynamic>{
-      'createDialogChat': instance.createDialogChat.toJson(),
+      'file':
+          fromDartMultipartFileNullableToGraphQLUploadNullable(instance.file),
     };
 
 UpdateUserNameArguments _$UpdateUserNameArgumentsFromJson(
@@ -2413,6 +2743,19 @@ Map<String, dynamic> _$CreateChatContactArgumentsToJson(
     <String, dynamic>{
       'name': instance.name,
       'records': instance.records?.map((e) => e.toJson()).toList(),
+    };
+
+CreateDialogChatArguments _$CreateDialogChatArgumentsFromJson(
+    Map<String, dynamic> json) {
+  return CreateDialogChatArguments(
+    responderId: json['responderId'] as String?,
+  );
+}
+
+Map<String, dynamic> _$CreateDialogChatArgumentsToJson(
+        CreateDialogChatArguments instance) =>
+    <String, dynamic>{
+      'responderId': instance.responderId,
     };
 
 UpdateUserBioArguments _$UpdateUserBioArgumentsFromJson(
@@ -2567,17 +2910,4 @@ Map<String, dynamic> _$RecentChatsArgumentsToJson(
       'after': instance.after,
       'last': instance.last,
       'before': instance.before,
-    };
-
-CreateDialogChatArguments _$CreateDialogChatArgumentsFromJson(
-    Map<String, dynamic> json) {
-  return CreateDialogChatArguments(
-    responderId: json['responderId'] as String?,
-  );
-}
-
-Map<String, dynamic> _$CreateDialogChatArgumentsToJson(
-        CreateDialogChatArguments instance) =>
-    <String, dynamic>{
-      'responderId': instance.responderId,
     };

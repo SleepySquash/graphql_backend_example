@@ -25,6 +25,16 @@ query recentChats($first: Int, $after: String, $last: Int, $before: String) {
                             id       
                         }
                         text,
+                        attachments {
+                            __typename,
+                            id,
+                            original,
+                            filename,
+                            size,
+                            ... on ImageAttachment {
+                                big
+                            }
+                        }
                     },
                     ...on ChatForward {
                         item {

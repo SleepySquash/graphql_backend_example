@@ -1,0 +1,15 @@
+mutation uploadUserGalleryItem($file: Upload) {
+    uploadUserGalleryItem(file: $file) {
+        __typename,
+        ... on UploadUserGalleryItemOk {
+            galleryItem {
+                id,
+                original,
+                addedAt
+            }
+        },
+        ... on UploadUserGalleryItemError {
+            code
+        }
+    }
+}

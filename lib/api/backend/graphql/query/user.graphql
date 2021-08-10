@@ -28,6 +28,13 @@ query user($id: UserId!) {
                 }
             },
             favoritePosition
+        },
+        gallery {
+            nodes {
+                id,
+                original,
+                addedAt
+            }
         }
     }
 }

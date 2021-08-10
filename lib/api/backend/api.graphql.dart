@@ -5,7 +5,137 @@ import 'package:artemis/artemis.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gql/ast.dart';
+import 'package:http/http.dart';
+import 'package:test/api/backend/upload.dart';
 part 'api.graphql.g.dart';
+
+@JsonSerializable(explicitToJson: true)
+class UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOk$GalleryItem
+    extends JsonSerializable with EquatableMixin {
+  UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOk$GalleryItem();
+
+  factory UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOk$GalleryItem.fromJson(
+          Map<String, dynamic> json) =>
+      _$UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOk$GalleryItemFromJson(
+          json);
+
+  late String id;
+
+  late String original;
+
+  late DateTime addedAt;
+
+  @override
+  List<Object?> get props => [id, original, addedAt];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOk$GalleryItemToJson(
+          this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOk
+    extends UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult
+    with EquatableMixin {
+  UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOk();
+
+  factory UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOk.fromJson(
+          Map<String, dynamic> json) =>
+      _$UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOkFromJson(
+          json);
+
+  late UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOk$GalleryItem
+      galleryItem;
+
+  @override
+  List<Object?> get props => [galleryItem];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOkToJson(
+          this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemError
+    extends UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult
+    with EquatableMixin {
+  UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemError();
+
+  factory UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemError.fromJson(
+          Map<String, dynamic> json) =>
+      _$UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemErrorFromJson(
+          json);
+
+  @JsonKey(unknownEnumValue: UploadUserGalleryItemErrorCode.artemisUnknown)
+  late UploadUserGalleryItemErrorCode code;
+
+  @override
+  List<Object?> get props => [code];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemErrorToJson(
+          this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult
+    extends JsonSerializable with EquatableMixin {
+  UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult();
+
+  factory UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult.fromJson(
+      Map<String, dynamic> json) {
+    switch (json['__typename'].toString()) {
+      case r'UploadUserGalleryItemOk':
+        return UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOk
+            .fromJson(json);
+      case r'UploadUserGalleryItemError':
+        return UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemError
+            .fromJson(json);
+      default:
+    }
+    return _$UploadUserGalleryItem$Mutation$UploadUserGalleryItemResultFromJson(
+        json);
+  }
+
+  @JsonKey(name: '__typename')
+  String? $$typename;
+
+  @override
+  List<Object?> get props => [$$typename];
+  @override
+  Map<String, dynamic> toJson() {
+    switch ($$typename) {
+      case r'UploadUserGalleryItemOk':
+        return (this
+                as UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOk)
+            .toJson();
+      case r'UploadUserGalleryItemError':
+        return (this
+                as UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemError)
+            .toJson();
+      default:
+    }
+    return _$UploadUserGalleryItem$Mutation$UploadUserGalleryItemResultToJson(
+        this);
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class UploadUserGalleryItem$Mutation extends JsonSerializable
+    with EquatableMixin {
+  UploadUserGalleryItem$Mutation();
+
+  factory UploadUserGalleryItem$Mutation.fromJson(Map<String, dynamic> json) =>
+      _$UploadUserGalleryItem$MutationFromJson(json);
+
+  late UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult
+      uploadUserGalleryItem;
+
+  @override
+  List<Object?> get props => [uploadUserGalleryItem];
+  @override
+  Map<String, dynamic> toJson() => _$UploadUserGalleryItem$MutationToJson(this);
+}
 
 @JsonSerializable(explicitToJson: true)
 class DeleteUserName$Mutation$MyUser extends JsonSerializable
@@ -668,6 +798,52 @@ class CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser$UserAvat
 }
 
 @JsonSerializable(explicitToJson: true)
+class CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser$GalleryItemConnection$GalleryItem
+    extends JsonSerializable with EquatableMixin {
+  CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser$GalleryItemConnection$GalleryItem();
+
+  factory CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser$GalleryItemConnection$GalleryItem.fromJson(
+          Map<String, dynamic> json) =>
+      _$CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser$GalleryItemConnection$GalleryItemFromJson(
+          json);
+
+  late String id;
+
+  late String original;
+
+  late DateTime addedAt;
+
+  @override
+  List<Object?> get props => [id, original, addedAt];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser$GalleryItemConnection$GalleryItemToJson(
+          this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser$GalleryItemConnection
+    extends JsonSerializable with EquatableMixin {
+  CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser$GalleryItemConnection();
+
+  factory CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser$GalleryItemConnection.fromJson(
+          Map<String, dynamic> json) =>
+      _$CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser$GalleryItemConnectionFromJson(
+          json);
+
+  late List<
+          CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser$GalleryItemConnection$GalleryItem>
+      nodes;
+
+  @override
+  List<Object?> get props => [nodes];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser$GalleryItemConnectionToJson(
+          this);
+}
+
+@JsonSerializable(explicitToJson: true)
 class CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser
     extends JsonSerializable with EquatableMixin {
   CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser();
@@ -690,8 +866,11 @@ class CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser
   CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser$UserAvatar?
       avatar;
 
+  late CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUser$GalleryItemConnection
+      gallery;
+
   @override
-  List<Object?> get props => [id, num, login, name, bio, avatar];
+  List<Object?> get props => [id, num, login, name, bio, avatar, gallery];
   @override
   Map<String, dynamic> toJson() =>
       _$CreateSession$Mutation$CreateSessionResult$CreateSessionOk$MyUserToJson(
@@ -1004,6 +1183,223 @@ class ChatContactRecord extends JsonSerializable with EquatableMixin {
   List<Object?> get props => [userId, email, phone];
   @override
   Map<String, dynamic> toJson() => _$ChatContactRecordToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar
+    extends JsonSerializable with EquatableMixin {
+  CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar();
+
+  factory CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar.fromJson(
+          Map<String, dynamic> json) =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatarFromJson(
+          json);
+
+  late String big;
+
+  @override
+  List<Object?> get props => [big];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatarToJson(
+          this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User
+    extends JsonSerializable with EquatableMixin {
+  CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User();
+
+  factory CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User.fromJson(
+          Map<String, dynamic> json) =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$UserFromJson(
+          json);
+
+  late String num;
+
+  String? name;
+
+  CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar?
+      avatar;
+
+  @override
+  List<Object?> get props => [num, name, avatar];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$UserToJson(
+          this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser
+    extends JsonSerializable with EquatableMixin {
+  CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser();
+
+  factory CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser.fromJson(
+          Map<String, dynamic> json) =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUserFromJson(
+          json);
+
+  late String id;
+
+  late CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User
+      user;
+
+  String? name;
+
+  @override
+  List<Object?> get props => [id, user, name];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUserToJson(
+          this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember
+    extends JsonSerializable with EquatableMixin {
+  CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember();
+
+  factory CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember.fromJson(
+          Map<String, dynamic> json) =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMemberFromJson(
+          json);
+
+  late CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser
+      user;
+
+  @override
+  List<Object?> get props => [user];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMemberToJson(
+          this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection
+    extends JsonSerializable with EquatableMixin {
+  CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection();
+
+  factory CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection.fromJson(
+          Map<String, dynamic> json) =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnectionFromJson(
+          json);
+
+  late List<
+          CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember>
+      nodes;
+
+  @override
+  List<Object?> get props => [nodes];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnectionToJson(
+          this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class CreateDialogChat$Mutation$CreateDialogChatResult$Chat
+    extends CreateDialogChat$Mutation$CreateDialogChatResult
+    with EquatableMixin {
+  CreateDialogChat$Mutation$CreateDialogChatResult$Chat();
+
+  factory CreateDialogChat$Mutation$CreateDialogChatResult$Chat.fromJson(
+          Map<String, dynamic> json) =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$ChatFromJson(json);
+
+  late String id;
+
+  String? name;
+
+  late CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection
+      members;
+
+  @JsonKey(unknownEnumValue: ChatKind.artemisUnknown)
+  late ChatKind kind;
+
+  @override
+  List<Object?> get props => [id, name, members, kind];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$ChatToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatError
+    extends CreateDialogChat$Mutation$CreateDialogChatResult
+    with EquatableMixin {
+  CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatError();
+
+  factory CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatError.fromJson(
+          Map<String, dynamic> json) =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatErrorFromJson(
+          json);
+
+  @JsonKey(unknownEnumValue: CreateDialogChatErrorCode.artemisUnknown)
+  late CreateDialogChatErrorCode code;
+
+  @override
+  List<Object?> get props => [code];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatErrorToJson(
+          this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class CreateDialogChat$Mutation$CreateDialogChatResult extends JsonSerializable
+    with EquatableMixin {
+  CreateDialogChat$Mutation$CreateDialogChatResult();
+
+  factory CreateDialogChat$Mutation$CreateDialogChatResult.fromJson(
+      Map<String, dynamic> json) {
+    switch (json['__typename'].toString()) {
+      case r'Chat':
+        return CreateDialogChat$Mutation$CreateDialogChatResult$Chat.fromJson(
+            json);
+      case r'CreateDialogChatError':
+        return CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatError
+            .fromJson(json);
+      default:
+    }
+    return _$CreateDialogChat$Mutation$CreateDialogChatResultFromJson(json);
+  }
+
+  @JsonKey(name: '__typename')
+  String? $$typename;
+
+  @override
+  List<Object?> get props => [$$typename];
+  @override
+  Map<String, dynamic> toJson() {
+    switch ($$typename) {
+      case r'Chat':
+        return (this as CreateDialogChat$Mutation$CreateDialogChatResult$Chat)
+            .toJson();
+      case r'CreateDialogChatError':
+        return (this
+                as CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatError)
+            .toJson();
+      default:
+    }
+    return _$CreateDialogChat$Mutation$CreateDialogChatResultToJson(this);
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
+class CreateDialogChat$Mutation extends JsonSerializable with EquatableMixin {
+  CreateDialogChat$Mutation();
+
+  factory CreateDialogChat$Mutation.fromJson(Map<String, dynamic> json) =>
+      _$CreateDialogChat$MutationFromJson(json);
+
+  late CreateDialogChat$Mutation$CreateDialogChatResult createDialogChat;
+
+  @override
+  List<Object?> get props => [createDialogChat];
+  @override
+  Map<String, dynamic> toJson() => _$CreateDialogChat$MutationToJson(this);
 }
 
 @JsonSerializable(explicitToJson: true)
@@ -1334,6 +1730,71 @@ class Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage$ChatItem
 }
 
 @JsonSerializable(explicitToJson: true)
+class Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage$Attachment$ImageAttachment
+    extends Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage$Attachment
+    with EquatableMixin {
+  Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage$Attachment$ImageAttachment();
+
+  factory Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage$Attachment$ImageAttachment.fromJson(
+          Map<String, dynamic> json) =>
+      _$Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage$Attachment$ImageAttachmentFromJson(
+          json);
+
+  late String big;
+
+  @override
+  List<Object?> get props => [big];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage$Attachment$ImageAttachmentToJson(
+          this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage$Attachment
+    extends JsonSerializable with EquatableMixin {
+  Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage$Attachment();
+
+  factory Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage$Attachment.fromJson(
+      Map<String, dynamic> json) {
+    switch (json['__typename'].toString()) {
+      case r'ImageAttachment':
+        return Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage$Attachment$ImageAttachment
+            .fromJson(json);
+      default:
+    }
+    return _$Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage$AttachmentFromJson(
+        json);
+  }
+
+  @JsonKey(name: '__typename')
+  String? $$typename;
+
+  late String id;
+
+  late String original;
+
+  late String filename;
+
+  late int size;
+
+  @override
+  List<Object?> get props => [$$typename, id, original, filename, size];
+  @override
+  Map<String, dynamic> toJson() {
+    switch ($$typename) {
+      case r'ImageAttachment':
+        return (this
+                as Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage$Attachment$ImageAttachment)
+            .toJson();
+      default:
+    }
+    return _$Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage$AttachmentToJson(
+        this);
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
 class Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage
     extends Messages$Query$Chat$ChatItemConnection$ChatItem
     with EquatableMixin {
@@ -1349,8 +1810,12 @@ class Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage
 
   String? text;
 
+  late List<
+          Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessage$Attachment>
+      attachments;
+
   @override
-  List<Object?> get props => [repliesTo, text];
+  List<Object?> get props => [repliesTo, text, attachments];
   @override
   Map<String, dynamic> toJson() =>
       _$Messages$Query$Chat$ChatItemConnection$ChatItem$ChatMessageToJson(this);
@@ -1621,6 +2086,46 @@ class User$Query$User$ChatContact extends JsonSerializable with EquatableMixin {
 }
 
 @JsonSerializable(explicitToJson: true)
+class User$Query$User$GalleryItemConnection$GalleryItem extends JsonSerializable
+    with EquatableMixin {
+  User$Query$User$GalleryItemConnection$GalleryItem();
+
+  factory User$Query$User$GalleryItemConnection$GalleryItem.fromJson(
+          Map<String, dynamic> json) =>
+      _$User$Query$User$GalleryItemConnection$GalleryItemFromJson(json);
+
+  late String id;
+
+  late String original;
+
+  late DateTime addedAt;
+
+  @override
+  List<Object?> get props => [id, original, addedAt];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$User$Query$User$GalleryItemConnection$GalleryItemToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class User$Query$User$GalleryItemConnection extends JsonSerializable
+    with EquatableMixin {
+  User$Query$User$GalleryItemConnection();
+
+  factory User$Query$User$GalleryItemConnection.fromJson(
+          Map<String, dynamic> json) =>
+      _$User$Query$User$GalleryItemConnectionFromJson(json);
+
+  late List<User$Query$User$GalleryItemConnection$GalleryItem> nodes;
+
+  @override
+  List<Object?> get props => [nodes];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$User$Query$User$GalleryItemConnectionToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
 class User$Query$User extends JsonSerializable with EquatableMixin {
   User$Query$User();
 
@@ -1643,9 +2148,20 @@ class User$Query$User extends JsonSerializable with EquatableMixin {
 
   late List<User$Query$User$ChatContact> contacts;
 
+  late User$Query$User$GalleryItemConnection gallery;
+
   @override
-  List<Object?> get props =>
-      [id, num, name, bio, avatar, mutualContactsCount, isDeleted, contacts];
+  List<Object?> get props => [
+        id,
+        num,
+        name,
+        bio,
+        avatar,
+        mutualContactsCount,
+        isDeleted,
+        contacts,
+        gallery
+      ];
   @override
   Map<String, dynamic> toJson() => _$User$Query$UserToJson(this);
 }
@@ -1735,6 +2251,46 @@ class MyUser$Query$MyUser$UserAvatar extends JsonSerializable
 }
 
 @JsonSerializable(explicitToJson: true)
+class MyUser$Query$MyUser$GalleryItemConnection$GalleryItem
+    extends JsonSerializable with EquatableMixin {
+  MyUser$Query$MyUser$GalleryItemConnection$GalleryItem();
+
+  factory MyUser$Query$MyUser$GalleryItemConnection$GalleryItem.fromJson(
+          Map<String, dynamic> json) =>
+      _$MyUser$Query$MyUser$GalleryItemConnection$GalleryItemFromJson(json);
+
+  late String id;
+
+  late String original;
+
+  late DateTime addedAt;
+
+  @override
+  List<Object?> get props => [id, original, addedAt];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$MyUser$Query$MyUser$GalleryItemConnection$GalleryItemToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class MyUser$Query$MyUser$GalleryItemConnection extends JsonSerializable
+    with EquatableMixin {
+  MyUser$Query$MyUser$GalleryItemConnection();
+
+  factory MyUser$Query$MyUser$GalleryItemConnection.fromJson(
+          Map<String, dynamic> json) =>
+      _$MyUser$Query$MyUser$GalleryItemConnectionFromJson(json);
+
+  late List<MyUser$Query$MyUser$GalleryItemConnection$GalleryItem> nodes;
+
+  @override
+  List<Object?> get props => [nodes];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$MyUser$Query$MyUser$GalleryItemConnectionToJson(this);
+}
+
+@JsonSerializable(explicitToJson: true)
 class MyUser$Query$MyUser extends JsonSerializable with EquatableMixin {
   MyUser$Query$MyUser();
 
@@ -1755,8 +2311,11 @@ class MyUser$Query$MyUser extends JsonSerializable with EquatableMixin {
 
   MyUser$Query$MyUser$UserAvatar? avatar;
 
+  late MyUser$Query$MyUser$GalleryItemConnection gallery;
+
   @override
-  List<Object?> get props => [id, num, login, name, bio, hasPassword, avatar];
+  List<Object?> get props =>
+      [id, num, login, name, bio, hasPassword, avatar, gallery];
   @override
   Map<String, dynamic> toJson() => _$MyUser$Query$MyUserToJson(this);
 }
@@ -2267,6 +2826,71 @@ class RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage$Ch
 }
 
 @JsonSerializable(explicitToJson: true)
+class RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage$Attachment$ImageAttachment
+    extends RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage$Attachment
+    with EquatableMixin {
+  RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage$Attachment$ImageAttachment();
+
+  factory RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage$Attachment$ImageAttachment.fromJson(
+          Map<String, dynamic> json) =>
+      _$RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage$Attachment$ImageAttachmentFromJson(
+          json);
+
+  late String big;
+
+  @override
+  List<Object?> get props => [big];
+  @override
+  Map<String, dynamic> toJson() =>
+      _$RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage$Attachment$ImageAttachmentToJson(
+          this);
+}
+
+@JsonSerializable(explicitToJson: true)
+class RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage$Attachment
+    extends JsonSerializable with EquatableMixin {
+  RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage$Attachment();
+
+  factory RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage$Attachment.fromJson(
+      Map<String, dynamic> json) {
+    switch (json['__typename'].toString()) {
+      case r'ImageAttachment':
+        return RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage$Attachment$ImageAttachment
+            .fromJson(json);
+      default:
+    }
+    return _$RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage$AttachmentFromJson(
+        json);
+  }
+
+  @JsonKey(name: '__typename')
+  String? $$typename;
+
+  late String id;
+
+  late String original;
+
+  late String filename;
+
+  late int size;
+
+  @override
+  List<Object?> get props => [$$typename, id, original, filename, size];
+  @override
+  Map<String, dynamic> toJson() {
+    switch ($$typename) {
+      case r'ImageAttachment':
+        return (this
+                as RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage$Attachment$ImageAttachment)
+            .toJson();
+      default:
+    }
+    return _$RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage$AttachmentToJson(
+        this);
+  }
+}
+
+@JsonSerializable(explicitToJson: true)
 class RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage
     extends RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem
     with EquatableMixin {
@@ -2282,8 +2906,12 @@ class RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage
 
   String? text;
 
+  late List<
+          RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessage$Attachment>
+      attachments;
+
   @override
-  List<Object?> get props => [repliesTo, text];
+  List<Object?> get props => [repliesTo, text, attachments];
   @override
   Map<String, dynamic> toJson() =>
       _$RecentChats$Query$ChatConnection$Chat$ChatItemEdge$ChatItem$ChatMessageToJson(
@@ -2581,223 +3209,18 @@ class RecentChats$Query extends JsonSerializable with EquatableMixin {
   Map<String, dynamic> toJson() => _$RecentChats$QueryToJson(this);
 }
 
-@JsonSerializable(explicitToJson: true)
-class CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar
-    extends JsonSerializable with EquatableMixin {
-  CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar();
-
-  factory CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar.fromJson(
-          Map<String, dynamic> json) =>
-      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatarFromJson(
-          json);
-
-  late String big;
-
-  @override
-  List<Object?> get props => [big];
-  @override
-  Map<String, dynamic> toJson() =>
-      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatarToJson(
-          this);
+enum UploadUserGalleryItemErrorCode {
+  @JsonValue('DIMENSIONS_TOO_BIG')
+  dimensionsTooBig,
+  @JsonValue('MALFORMED')
+  malformed,
+  @JsonValue('SIZE_TOO_BIG')
+  sizeTooBig,
+  @JsonValue('UNSUPPORTED_FORMAT')
+  unsupportedFormat,
+  @JsonValue('ARTEMIS_UNKNOWN')
+  artemisUnknown,
 }
-
-@JsonSerializable(explicitToJson: true)
-class CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User
-    extends JsonSerializable with EquatableMixin {
-  CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User();
-
-  factory CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User.fromJson(
-          Map<String, dynamic> json) =>
-      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$UserFromJson(
-          json);
-
-  late String num;
-
-  String? name;
-
-  CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User$UserAvatar?
-      avatar;
-
-  @override
-  List<Object?> get props => [num, name, avatar];
-  @override
-  Map<String, dynamic> toJson() =>
-      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$UserToJson(
-          this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser
-    extends JsonSerializable with EquatableMixin {
-  CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser();
-
-  factory CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser.fromJson(
-          Map<String, dynamic> json) =>
-      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUserFromJson(
-          json);
-
-  late String id;
-
-  late CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser$User
-      user;
-
-  String? name;
-
-  @override
-  List<Object?> get props => [id, user, name];
-  @override
-  Map<String, dynamic> toJson() =>
-      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUserToJson(
-          this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember
-    extends JsonSerializable with EquatableMixin {
-  CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember();
-
-  factory CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember.fromJson(
-          Map<String, dynamic> json) =>
-      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMemberFromJson(
-          json);
-
-  late CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember$ChatUser
-      user;
-
-  @override
-  List<Object?> get props => [user];
-  @override
-  Map<String, dynamic> toJson() =>
-      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMemberToJson(
-          this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection
-    extends JsonSerializable with EquatableMixin {
-  CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection();
-
-  factory CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection.fromJson(
-          Map<String, dynamic> json) =>
-      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnectionFromJson(
-          json);
-
-  late List<
-          CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection$ChatMember>
-      nodes;
-
-  @override
-  List<Object?> get props => [nodes];
-  @override
-  Map<String, dynamic> toJson() =>
-      _$CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnectionToJson(
-          this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class CreateDialogChat$Mutation$CreateDialogChatResult$Chat
-    extends CreateDialogChat$Mutation$CreateDialogChatResult
-    with EquatableMixin {
-  CreateDialogChat$Mutation$CreateDialogChatResult$Chat();
-
-  factory CreateDialogChat$Mutation$CreateDialogChatResult$Chat.fromJson(
-          Map<String, dynamic> json) =>
-      _$CreateDialogChat$Mutation$CreateDialogChatResult$ChatFromJson(json);
-
-  late String id;
-
-  String? name;
-
-  late CreateDialogChat$Mutation$CreateDialogChatResult$Chat$ChatMemberConnection
-      members;
-
-  @JsonKey(unknownEnumValue: ChatKind.artemisUnknown)
-  late ChatKind kind;
-
-  @override
-  List<Object?> get props => [id, name, members, kind];
-  @override
-  Map<String, dynamic> toJson() =>
-      _$CreateDialogChat$Mutation$CreateDialogChatResult$ChatToJson(this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatError
-    extends CreateDialogChat$Mutation$CreateDialogChatResult
-    with EquatableMixin {
-  CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatError();
-
-  factory CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatError.fromJson(
-          Map<String, dynamic> json) =>
-      _$CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatErrorFromJson(
-          json);
-
-  @JsonKey(unknownEnumValue: CreateDialogChatErrorCode.artemisUnknown)
-  late CreateDialogChatErrorCode code;
-
-  @override
-  List<Object?> get props => [code];
-  @override
-  Map<String, dynamic> toJson() =>
-      _$CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatErrorToJson(
-          this);
-}
-
-@JsonSerializable(explicitToJson: true)
-class CreateDialogChat$Mutation$CreateDialogChatResult extends JsonSerializable
-    with EquatableMixin {
-  CreateDialogChat$Mutation$CreateDialogChatResult();
-
-  factory CreateDialogChat$Mutation$CreateDialogChatResult.fromJson(
-      Map<String, dynamic> json) {
-    switch (json['__typename'].toString()) {
-      case r'Chat':
-        return CreateDialogChat$Mutation$CreateDialogChatResult$Chat.fromJson(
-            json);
-      case r'CreateDialogChatError':
-        return CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatError
-            .fromJson(json);
-      default:
-    }
-    return _$CreateDialogChat$Mutation$CreateDialogChatResultFromJson(json);
-  }
-
-  @JsonKey(name: '__typename')
-  String? $$typename;
-
-  @override
-  List<Object?> get props => [$$typename];
-  @override
-  Map<String, dynamic> toJson() {
-    switch ($$typename) {
-      case r'Chat':
-        return (this as CreateDialogChat$Mutation$CreateDialogChatResult$Chat)
-            .toJson();
-      case r'CreateDialogChatError':
-        return (this
-                as CreateDialogChat$Mutation$CreateDialogChatResult$CreateDialogChatError)
-            .toJson();
-      default:
-    }
-    return _$CreateDialogChat$Mutation$CreateDialogChatResultToJson(this);
-  }
-}
-
-@JsonSerializable(explicitToJson: true)
-class CreateDialogChat$Mutation extends JsonSerializable with EquatableMixin {
-  CreateDialogChat$Mutation();
-
-  factory CreateDialogChat$Mutation.fromJson(Map<String, dynamic> json) =>
-      _$CreateDialogChat$MutationFromJson(json);
-
-  late CreateDialogChat$Mutation$CreateDialogChatResult createDialogChat;
-
-  @override
-  List<Object?> get props => [createDialogChat];
-  @override
-  Map<String, dynamic> toJson() => _$CreateDialogChat$MutationToJson(this);
-}
-
 enum UnfavoriteChatContactErrorCode {
   @JsonValue('UNKNOWN_CHAT_CONTACT')
   unknownChatContact,
@@ -2852,6 +3275,24 @@ enum CreateChatContactErrorCode {
   @JsonValue('ARTEMIS_UNKNOWN')
   artemisUnknown,
 }
+enum ChatKind {
+  @JsonValue('MONOLOG')
+  monolog,
+  @JsonValue('DIALOG')
+  dialog,
+  @JsonValue('GROUP')
+  group,
+  @JsonValue('ARTEMIS_UNKNOWN')
+  artemisUnknown,
+}
+enum CreateDialogChatErrorCode {
+  @JsonValue('BLOCKED')
+  blocked,
+  @JsonValue('UNKNOWN_DIRECT_LINK')
+  unknownDirectLink,
+  @JsonValue('ARTEMIS_UNKNOWN')
+  artemisUnknown,
+}
 enum UpdateUserLoginErrorCode {
   @JsonValue('OCCUPIED')
   occupied,
@@ -2872,24 +3313,128 @@ enum UpdateUserPasswordErrorCode {
   @JsonValue('ARTEMIS_UNKNOWN')
   artemisUnknown,
 }
-enum ChatKind {
-  @JsonValue('MONOLOG')
-  monolog,
-  @JsonValue('DIALOG')
-  dialog,
-  @JsonValue('GROUP')
-  group,
-  @JsonValue('ARTEMIS_UNKNOWN')
-  artemisUnknown,
+
+@JsonSerializable(explicitToJson: true)
+class UploadUserGalleryItemArguments extends JsonSerializable
+    with EquatableMixin {
+  UploadUserGalleryItemArguments({this.file});
+
+  @override
+  factory UploadUserGalleryItemArguments.fromJson(Map<String, dynamic> json) =>
+      _$UploadUserGalleryItemArgumentsFromJson(json);
+
+  @JsonKey(
+      fromJson: fromGraphQLUploadNullableToDartMultipartFileNullable,
+      toJson: fromDartMultipartFileNullableToGraphQLUploadNullable)
+  final MultipartFile? file;
+
+  @override
+  List<Object?> get props => [file];
+  @override
+  Map<String, dynamic> toJson() => _$UploadUserGalleryItemArgumentsToJson(this);
 }
-enum CreateDialogChatErrorCode {
-  @JsonValue('BLOCKED')
-  blocked,
-  @JsonValue('UNKNOWN_DIRECT_LINK')
-  unknownDirectLink,
-  @JsonValue('ARTEMIS_UNKNOWN')
-  artemisUnknown,
+
+final UPLOAD_USER_GALLERY_ITEM_MUTATION_DOCUMENT = DocumentNode(definitions: [
+  OperationDefinitionNode(
+      type: OperationType.mutation,
+      name: NameNode(value: 'uploadUserGalleryItem'),
+      variableDefinitions: [
+        VariableDefinitionNode(
+            variable: VariableNode(name: NameNode(value: 'file')),
+            type: NamedTypeNode(
+                name: NameNode(value: 'Upload'), isNonNull: false),
+            defaultValue: DefaultValueNode(value: null),
+            directives: [])
+      ],
+      directives: [],
+      selectionSet: SelectionSetNode(selections: [
+        FieldNode(
+            name: NameNode(value: 'uploadUserGalleryItem'),
+            alias: null,
+            arguments: [
+              ArgumentNode(
+                  name: NameNode(value: 'file'),
+                  value: VariableNode(name: NameNode(value: 'file')))
+            ],
+            directives: [],
+            selectionSet: SelectionSetNode(selections: [
+              FieldNode(
+                  name: NameNode(value: '__typename'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null),
+              InlineFragmentNode(
+                  typeCondition: TypeConditionNode(
+                      on: NamedTypeNode(
+                          name: NameNode(value: 'UploadUserGalleryItemOk'),
+                          isNonNull: false)),
+                  directives: [],
+                  selectionSet: SelectionSetNode(selections: [
+                    FieldNode(
+                        name: NameNode(value: 'galleryItem'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: SelectionSetNode(selections: [
+                          FieldNode(
+                              name: NameNode(value: 'id'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null),
+                          FieldNode(
+                              name: NameNode(value: 'original'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null),
+                          FieldNode(
+                              name: NameNode(value: 'addedAt'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null)
+                        ]))
+                  ])),
+              InlineFragmentNode(
+                  typeCondition: TypeConditionNode(
+                      on: NamedTypeNode(
+                          name: NameNode(value: 'UploadUserGalleryItemError'),
+                          isNonNull: false)),
+                  directives: [],
+                  selectionSet: SelectionSetNode(selections: [
+                    FieldNode(
+                        name: NameNode(value: 'code'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null)
+                  ]))
+            ]))
+      ]))
+]);
+
+class UploadUserGalleryItemMutation extends GraphQLQuery<
+    UploadUserGalleryItem$Mutation, UploadUserGalleryItemArguments> {
+  UploadUserGalleryItemMutation({required this.variables});
+
+  @override
+  final DocumentNode document = UPLOAD_USER_GALLERY_ITEM_MUTATION_DOCUMENT;
+
+  @override
+  final String operationName = 'uploadUserGalleryItem';
+
+  @override
+  final UploadUserGalleryItemArguments variables;
+
+  @override
+  List<Object?> get props => [document, operationName, variables];
+  @override
+  UploadUserGalleryItem$Mutation parse(Map<String, dynamic> json) =>
+      UploadUserGalleryItem$Mutation.fromJson(json);
 }
+
 final DELETE_USER_NAME_MUTATION_DOCUMENT = DocumentNode(definitions: [
   OperationDefinitionNode(
       type: OperationType.mutation,
@@ -3836,6 +4381,38 @@ final CREATE_SESSION_MUTATION_DOCUMENT = DocumentNode(definitions: [
                                     arguments: [],
                                     directives: [],
                                     selectionSet: null)
+                              ])),
+                          FieldNode(
+                              name: NameNode(value: 'gallery'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: SelectionSetNode(selections: [
+                                FieldNode(
+                                    name: NameNode(value: 'nodes'),
+                                    alias: null,
+                                    arguments: [],
+                                    directives: [],
+                                    selectionSet: SelectionSetNode(selections: [
+                                      FieldNode(
+                                          name: NameNode(value: 'id'),
+                                          alias: null,
+                                          arguments: [],
+                                          directives: [],
+                                          selectionSet: null),
+                                      FieldNode(
+                                          name: NameNode(value: 'original'),
+                                          alias: null,
+                                          arguments: [],
+                                          directives: [],
+                                          selectionSet: null),
+                                      FieldNode(
+                                          name: NameNode(value: 'addedAt'),
+                                          alias: null,
+                                          arguments: [],
+                                          directives: [],
+                                          selectionSet: null)
+                                    ]))
                               ]))
                         ]))
                   ])),
@@ -4107,6 +4684,183 @@ class CreateChatContactMutation extends GraphQLQuery<CreateChatContact$Mutation,
   @override
   CreateChatContact$Mutation parse(Map<String, dynamic> json) =>
       CreateChatContact$Mutation.fromJson(json);
+}
+
+@JsonSerializable(explicitToJson: true)
+class CreateDialogChatArguments extends JsonSerializable with EquatableMixin {
+  CreateDialogChatArguments({this.responderId});
+
+  @override
+  factory CreateDialogChatArguments.fromJson(Map<String, dynamic> json) =>
+      _$CreateDialogChatArgumentsFromJson(json);
+
+  final String? responderId;
+
+  @override
+  List<Object?> get props => [responderId];
+  @override
+  Map<String, dynamic> toJson() => _$CreateDialogChatArgumentsToJson(this);
+}
+
+final CREATE_DIALOG_CHAT_MUTATION_DOCUMENT = DocumentNode(definitions: [
+  OperationDefinitionNode(
+      type: OperationType.mutation,
+      name: NameNode(value: 'createDialogChat'),
+      variableDefinitions: [
+        VariableDefinitionNode(
+            variable: VariableNode(name: NameNode(value: 'responderId')),
+            type: NamedTypeNode(
+                name: NameNode(value: 'UserId'), isNonNull: false),
+            defaultValue: DefaultValueNode(value: null),
+            directives: [])
+      ],
+      directives: [],
+      selectionSet: SelectionSetNode(selections: [
+        FieldNode(
+            name: NameNode(value: 'createDialogChat'),
+            alias: null,
+            arguments: [
+              ArgumentNode(
+                  name: NameNode(value: 'responderId'),
+                  value: VariableNode(name: NameNode(value: 'responderId')))
+            ],
+            directives: [],
+            selectionSet: SelectionSetNode(selections: [
+              FieldNode(
+                  name: NameNode(value: '__typename'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: null),
+              InlineFragmentNode(
+                  typeCondition: TypeConditionNode(
+                      on: NamedTypeNode(
+                          name: NameNode(value: 'Chat'), isNonNull: false)),
+                  directives: [],
+                  selectionSet: SelectionSetNode(selections: [
+                    FieldNode(
+                        name: NameNode(value: 'id'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null),
+                    FieldNode(
+                        name: NameNode(value: 'name'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null),
+                    FieldNode(
+                        name: NameNode(value: 'members'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: SelectionSetNode(selections: [
+                          FieldNode(
+                              name: NameNode(value: 'nodes'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: SelectionSetNode(selections: [
+                                FieldNode(
+                                    name: NameNode(value: 'user'),
+                                    alias: null,
+                                    arguments: [],
+                                    directives: [],
+                                    selectionSet: SelectionSetNode(selections: [
+                                      FieldNode(
+                                          name: NameNode(value: 'id'),
+                                          alias: null,
+                                          arguments: [],
+                                          directives: [],
+                                          selectionSet: null),
+                                      FieldNode(
+                                          name: NameNode(value: 'user'),
+                                          alias: null,
+                                          arguments: [],
+                                          directives: [],
+                                          selectionSet:
+                                              SelectionSetNode(selections: [
+                                            FieldNode(
+                                                name: NameNode(value: 'num'),
+                                                alias: null,
+                                                arguments: [],
+                                                directives: [],
+                                                selectionSet: null),
+                                            FieldNode(
+                                                name: NameNode(value: 'name'),
+                                                alias: null,
+                                                arguments: [],
+                                                directives: [],
+                                                selectionSet: null),
+                                            FieldNode(
+                                                name: NameNode(value: 'avatar'),
+                                                alias: null,
+                                                arguments: [],
+                                                directives: [],
+                                                selectionSet: SelectionSetNode(
+                                                    selections: [
+                                                      FieldNode(
+                                                          name: NameNode(
+                                                              value: 'big'),
+                                                          alias: null,
+                                                          arguments: [],
+                                                          directives: [],
+                                                          selectionSet: null)
+                                                    ]))
+                                          ])),
+                                      FieldNode(
+                                          name: NameNode(value: 'name'),
+                                          alias: null,
+                                          arguments: [],
+                                          directives: [],
+                                          selectionSet: null)
+                                    ]))
+                              ]))
+                        ])),
+                    FieldNode(
+                        name: NameNode(value: 'kind'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null)
+                  ])),
+              InlineFragmentNode(
+                  typeCondition: TypeConditionNode(
+                      on: NamedTypeNode(
+                          name: NameNode(value: 'CreateDialogChatError'),
+                          isNonNull: false)),
+                  directives: [],
+                  selectionSet: SelectionSetNode(selections: [
+                    FieldNode(
+                        name: NameNode(value: 'code'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: null)
+                  ]))
+            ]))
+      ]))
+]);
+
+class CreateDialogChatMutation
+    extends GraphQLQuery<CreateDialogChat$Mutation, CreateDialogChatArguments> {
+  CreateDialogChatMutation({required this.variables});
+
+  @override
+  final DocumentNode document = CREATE_DIALOG_CHAT_MUTATION_DOCUMENT;
+
+  @override
+  final String operationName = 'createDialogChat';
+
+  @override
+  final CreateDialogChatArguments variables;
+
+  @override
+  List<Object?> get props => [document, operationName, variables];
+  @override
+  CreateDialogChat$Mutation parse(Map<String, dynamic> json) =>
+      CreateDialogChat$Mutation.fromJson(json);
 }
 
 final DELETE_USER_BIO_MUTATION_DOCUMENT = DocumentNode(definitions: [
@@ -4670,7 +5424,60 @@ final MESSAGES_QUERY_DOCUMENT = DocumentNode(definitions: [
                                     alias: null,
                                     arguments: [],
                                     directives: [],
-                                    selectionSet: null)
+                                    selectionSet: null),
+                                FieldNode(
+                                    name: NameNode(value: 'attachments'),
+                                    alias: null,
+                                    arguments: [],
+                                    directives: [],
+                                    selectionSet: SelectionSetNode(selections: [
+                                      FieldNode(
+                                          name: NameNode(value: '__typename'),
+                                          alias: null,
+                                          arguments: [],
+                                          directives: [],
+                                          selectionSet: null),
+                                      FieldNode(
+                                          name: NameNode(value: 'id'),
+                                          alias: null,
+                                          arguments: [],
+                                          directives: [],
+                                          selectionSet: null),
+                                      FieldNode(
+                                          name: NameNode(value: 'original'),
+                                          alias: null,
+                                          arguments: [],
+                                          directives: [],
+                                          selectionSet: null),
+                                      FieldNode(
+                                          name: NameNode(value: 'filename'),
+                                          alias: null,
+                                          arguments: [],
+                                          directives: [],
+                                          selectionSet: null),
+                                      FieldNode(
+                                          name: NameNode(value: 'size'),
+                                          alias: null,
+                                          arguments: [],
+                                          directives: [],
+                                          selectionSet: null),
+                                      InlineFragmentNode(
+                                          typeCondition: TypeConditionNode(
+                                              on: NamedTypeNode(
+                                                  name: NameNode(
+                                                      value: 'ImageAttachment'),
+                                                  isNonNull: false)),
+                                          directives: [],
+                                          selectionSet:
+                                              SelectionSetNode(selections: [
+                                            FieldNode(
+                                                name: NameNode(value: 'big'),
+                                                alias: null,
+                                                arguments: [],
+                                                directives: [],
+                                                selectionSet: null)
+                                          ]))
+                                    ]))
                               ])),
                           InlineFragmentNode(
                               typeCondition: TypeConditionNode(
@@ -4908,6 +5715,38 @@ final USER_QUERY_DOCUMENT = DocumentNode(definitions: [
                         arguments: [],
                         directives: [],
                         selectionSet: null)
+                  ])),
+              FieldNode(
+                  name: NameNode(value: 'gallery'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: SelectionSetNode(selections: [
+                    FieldNode(
+                        name: NameNode(value: 'nodes'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: SelectionSetNode(selections: [
+                          FieldNode(
+                              name: NameNode(value: 'id'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null),
+                          FieldNode(
+                              name: NameNode(value: 'original'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null),
+                          FieldNode(
+                              name: NameNode(value: 'addedAt'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null)
+                        ]))
                   ]))
             ]))
       ]))
@@ -5067,6 +5906,38 @@ final MY_USER_QUERY_DOCUMENT = DocumentNode(definitions: [
                         arguments: [],
                         directives: [],
                         selectionSet: null)
+                  ])),
+              FieldNode(
+                  name: NameNode(value: 'gallery'),
+                  alias: null,
+                  arguments: [],
+                  directives: [],
+                  selectionSet: SelectionSetNode(selections: [
+                    FieldNode(
+                        name: NameNode(value: 'nodes'),
+                        alias: null,
+                        arguments: [],
+                        directives: [],
+                        selectionSet: SelectionSetNode(selections: [
+                          FieldNode(
+                              name: NameNode(value: 'id'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null),
+                          FieldNode(
+                              name: NameNode(value: 'original'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null),
+                          FieldNode(
+                              name: NameNode(value: 'addedAt'),
+                              alias: null,
+                              arguments: [],
+                              directives: [],
+                              selectionSet: null)
+                        ]))
                   ]))
             ]))
       ]))
@@ -5831,7 +6702,66 @@ final RECENT_CHATS_QUERY_DOCUMENT = DocumentNode(definitions: [
                                           alias: null,
                                           arguments: [],
                                           directives: [],
-                                          selectionSet: null)
+                                          selectionSet: null),
+                                      FieldNode(
+                                          name: NameNode(value: 'attachments'),
+                                          alias: null,
+                                          arguments: [],
+                                          directives: [],
+                                          selectionSet:
+                                              SelectionSetNode(selections: [
+                                            FieldNode(
+                                                name: NameNode(
+                                                    value: '__typename'),
+                                                alias: null,
+                                                arguments: [],
+                                                directives: [],
+                                                selectionSet: null),
+                                            FieldNode(
+                                                name: NameNode(value: 'id'),
+                                                alias: null,
+                                                arguments: [],
+                                                directives: [],
+                                                selectionSet: null),
+                                            FieldNode(
+                                                name:
+                                                    NameNode(value: 'original'),
+                                                alias: null,
+                                                arguments: [],
+                                                directives: [],
+                                                selectionSet: null),
+                                            FieldNode(
+                                                name:
+                                                    NameNode(value: 'filename'),
+                                                alias: null,
+                                                arguments: [],
+                                                directives: [],
+                                                selectionSet: null),
+                                            FieldNode(
+                                                name: NameNode(value: 'size'),
+                                                alias: null,
+                                                arguments: [],
+                                                directives: [],
+                                                selectionSet: null),
+                                            InlineFragmentNode(
+                                                typeCondition: TypeConditionNode(
+                                                    on: NamedTypeNode(
+                                                        name: NameNode(
+                                                            value:
+                                                                'ImageAttachment'),
+                                                        isNonNull: false)),
+                                                directives: [],
+                                                selectionSet: SelectionSetNode(
+                                                    selections: [
+                                                      FieldNode(
+                                                          name: NameNode(
+                                                              value: 'big'),
+                                                          alias: null,
+                                                          arguments: [],
+                                                          directives: [],
+                                                          selectionSet: null)
+                                                    ]))
+                                          ]))
                                     ])),
                                 InlineFragmentNode(
                                     typeCondition: TypeConditionNode(
@@ -5941,181 +6871,4 @@ class RecentChatsQuery
   @override
   RecentChats$Query parse(Map<String, dynamic> json) =>
       RecentChats$Query.fromJson(json);
-}
-
-@JsonSerializable(explicitToJson: true)
-class CreateDialogChatArguments extends JsonSerializable with EquatableMixin {
-  CreateDialogChatArguments({this.responderId});
-
-  @override
-  factory CreateDialogChatArguments.fromJson(Map<String, dynamic> json) =>
-      _$CreateDialogChatArgumentsFromJson(json);
-
-  final String? responderId;
-
-  @override
-  List<Object?> get props => [responderId];
-  @override
-  Map<String, dynamic> toJson() => _$CreateDialogChatArgumentsToJson(this);
-}
-
-final CREATE_DIALOG_CHAT_MUTATION_DOCUMENT = DocumentNode(definitions: [
-  OperationDefinitionNode(
-      type: OperationType.mutation,
-      name: NameNode(value: 'createDialogChat'),
-      variableDefinitions: [
-        VariableDefinitionNode(
-            variable: VariableNode(name: NameNode(value: 'responderId')),
-            type: NamedTypeNode(
-                name: NameNode(value: 'UserId'), isNonNull: false),
-            defaultValue: DefaultValueNode(value: null),
-            directives: [])
-      ],
-      directives: [],
-      selectionSet: SelectionSetNode(selections: [
-        FieldNode(
-            name: NameNode(value: 'createDialogChat'),
-            alias: null,
-            arguments: [
-              ArgumentNode(
-                  name: NameNode(value: 'responderId'),
-                  value: VariableNode(name: NameNode(value: 'responderId')))
-            ],
-            directives: [],
-            selectionSet: SelectionSetNode(selections: [
-              FieldNode(
-                  name: NameNode(value: '__typename'),
-                  alias: null,
-                  arguments: [],
-                  directives: [],
-                  selectionSet: null),
-              InlineFragmentNode(
-                  typeCondition: TypeConditionNode(
-                      on: NamedTypeNode(
-                          name: NameNode(value: 'Chat'), isNonNull: false)),
-                  directives: [],
-                  selectionSet: SelectionSetNode(selections: [
-                    FieldNode(
-                        name: NameNode(value: 'id'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null),
-                    FieldNode(
-                        name: NameNode(value: 'name'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null),
-                    FieldNode(
-                        name: NameNode(value: 'members'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: SelectionSetNode(selections: [
-                          FieldNode(
-                              name: NameNode(value: 'nodes'),
-                              alias: null,
-                              arguments: [],
-                              directives: [],
-                              selectionSet: SelectionSetNode(selections: [
-                                FieldNode(
-                                    name: NameNode(value: 'user'),
-                                    alias: null,
-                                    arguments: [],
-                                    directives: [],
-                                    selectionSet: SelectionSetNode(selections: [
-                                      FieldNode(
-                                          name: NameNode(value: 'id'),
-                                          alias: null,
-                                          arguments: [],
-                                          directives: [],
-                                          selectionSet: null),
-                                      FieldNode(
-                                          name: NameNode(value: 'user'),
-                                          alias: null,
-                                          arguments: [],
-                                          directives: [],
-                                          selectionSet:
-                                              SelectionSetNode(selections: [
-                                            FieldNode(
-                                                name: NameNode(value: 'num'),
-                                                alias: null,
-                                                arguments: [],
-                                                directives: [],
-                                                selectionSet: null),
-                                            FieldNode(
-                                                name: NameNode(value: 'name'),
-                                                alias: null,
-                                                arguments: [],
-                                                directives: [],
-                                                selectionSet: null),
-                                            FieldNode(
-                                                name: NameNode(value: 'avatar'),
-                                                alias: null,
-                                                arguments: [],
-                                                directives: [],
-                                                selectionSet: SelectionSetNode(
-                                                    selections: [
-                                                      FieldNode(
-                                                          name: NameNode(
-                                                              value: 'big'),
-                                                          alias: null,
-                                                          arguments: [],
-                                                          directives: [],
-                                                          selectionSet: null)
-                                                    ]))
-                                          ])),
-                                      FieldNode(
-                                          name: NameNode(value: 'name'),
-                                          alias: null,
-                                          arguments: [],
-                                          directives: [],
-                                          selectionSet: null)
-                                    ]))
-                              ]))
-                        ])),
-                    FieldNode(
-                        name: NameNode(value: 'kind'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null)
-                  ])),
-              InlineFragmentNode(
-                  typeCondition: TypeConditionNode(
-                      on: NamedTypeNode(
-                          name: NameNode(value: 'CreateDialogChatError'),
-                          isNonNull: false)),
-                  directives: [],
-                  selectionSet: SelectionSetNode(selections: [
-                    FieldNode(
-                        name: NameNode(value: 'code'),
-                        alias: null,
-                        arguments: [],
-                        directives: [],
-                        selectionSet: null)
-                  ]))
-            ]))
-      ]))
-]);
-
-class CreateDialogChatMutation
-    extends GraphQLQuery<CreateDialogChat$Mutation, CreateDialogChatArguments> {
-  CreateDialogChatMutation({required this.variables});
-
-  @override
-  final DocumentNode document = CREATE_DIALOG_CHAT_MUTATION_DOCUMENT;
-
-  @override
-  final String operationName = 'createDialogChat';
-
-  @override
-  final CreateDialogChatArguments variables;
-
-  @override
-  List<Object?> get props => [document, operationName, variables];
-  @override
-  CreateDialogChat$Mutation parse(Map<String, dynamic> json) =>
-      CreateDialogChat$Mutation.fromJson(json);
 }

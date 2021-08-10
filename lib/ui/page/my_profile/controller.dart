@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:test/domain/model/gallery_item.dart';
+import 'package:test/domain/model/user.dart';
 import 'package:test/domain/service/auth.dart';
 import 'package:test/store/user.dart';
 import 'package:test/util/helper/exception_parser.dart';
+import 'package:test/util/helper/file_picker.dart';
 
 export 'view.dart';
 
@@ -22,6 +25,8 @@ class MyProfileController extends GetxController {
   final FocusScopeNode loginScopeNode = FocusScopeNode();
   final FocusScopeNode nameScopeNode = FocusScopeNode();
   final FocusScopeNode bioScopeNode = FocusScopeNode();
+
+  RxInt carouselIndex = RxInt(0);
 
   Future<void> updateName() async {
     if (nameEditingController.text == Get.find<AuthService>().user!.name) {
@@ -90,5 +95,14 @@ class MyProfileController extends GetxController {
   void logout() async {
     await Get.find<AuthService>().logout();
     Get.offAndToNamed('/auth');
+  }
+
+  Future<void> addGalleryImage(FileDetails file) async {
+    GalleryItem item = await userRepository.uploadGalleryImage(file);
+    MyUser? user = Get.find<AuthService>().user;
+    if (user != null) {
+      if (user.gallery.isEmpty) user.gallery = [];
+      user.gallery.insert(0, item);
+    }
   }
 }

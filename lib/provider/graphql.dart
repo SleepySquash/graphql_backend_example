@@ -1,3 +1,6 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:graphql/client.dart';
 import 'package:graphql_flutter/graphql_flutter.dart';
 
@@ -373,5 +376,122 @@ class GraphQlProvider {
     if (result.hasException) throw Exception(result.exception.toString());
     return CreateDialogChat$Mutation$CreateDialogChatResult$Chat.fromJson(
         result.data!['createDialogChat']);
+  }
+
+  Future<UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOk>
+      uploadUserGalleryItem(MultipartFile file) async {
+    var formData = FormData.fromMap({
+      'operations':
+          '{ "query": "mutation (\$file: Upload) { uploadUserGalleryItem(file: \$file) { __typename, ... on UploadUserGalleryItemOk { galleryItem { id, original, addedAt } }, ... on UploadUserGalleryItemError { code } } }", "variables": { "file": null } }',
+      'map': '{ "file": ["variables.file"] }',
+      'file': file
+    });
+
+    print(formData.length);
+    print(formData.fields);
+    print(formData.files);
+
+    Dio dio = Dio();
+    dio.interceptors.add(LogInterceptor(requestBody: true, responseBody: true));
+    var response = await dio.post('http://localhost:3000/api/graphql',
+        data: formData,
+        options: Options(contentType: 'multipart/form-data', headers: {
+          'Authorization': 'Bearer $token',
+        }));
+
+    print(response.data.toString());
+    return UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOk
+        .fromJson(response.data['data']['uploadUserGalleryItem']);
+
+    // GraphQLClient client = getClient();
+
+    /*final respons1 = await http.post(
+      Uri.parse('http://localhost:3000/api/graphql'),
+      headers: {
+        "Authorization": "Bearer $token",
+        "Content-Type": "application/json",
+      },
+      body: json.encode({
+        "query": '''
+mutation uploadUserGalleryItem(\$file: Upload) {
+    uploadUserGalleryItem(file: \$file) {
+        __typename,
+        ... on UploadUserGalleryItemOk {
+            galleryItem {
+                id,
+                original,
+                addedAt
+            }
+        },
+        ... on UploadUserGalleryItemError {
+            code
+        }
+    }
+}
+        ''',
+        "variables": {"file": null}
+      }),
+    );*/
+
+    /*var request = http.MultipartRequest(
+        "POST", Uri.parse('http://localhost:3000/api/graphql'));
+    request.headers['Authorization'] = "Bearer $token";
+    request.headers['Content-Type'] = "application/graphql";
+    request.fields['operations'] = '''
+mutation uploadUserGalleryItem(\$file: Upload) {
+    uploadUserGalleryItem(file: \$file) {
+        __typename,
+        ... on UploadUserGalleryItemOk {
+            galleryItem {
+                id,
+                original,
+                addedAt
+            }
+        },
+        ... on UploadUserGalleryItemError {
+            code
+        }
+    }
+}
+''';
+    request.fields['map'] = '"file": "null"';
+    // request.files.add(file);
+    var sending = await request.send();
+    print(sending.headers);
+
+    var response = await http.Response.fromStream(sending);
+    print(response.body);*/
+
+    /*var request = http.MultipartRequest(
+        "POST", Uri.parse('http://localhost:3000/api/graphql'));
+    request.headers['Authorization'] = "Bearer $token";
+    request.fields['operations'] =
+        '{ "query": "mutation (\$file: Upload) { uploadUserGalleryItem(file: \$file) { __typename, ... on UploadUserGalleryItemOk { galleryItem { id, original, addedAt } }, } }", "variables": { "file": null } }';
+    request.fields['map'] = '{ "file": ["variables.file"] }';
+    request.files.add(file);
+    print(request.headers);
+    print(request.fields);
+    print(request.files);
+
+    var response = await http.Response.fromStream(await request.send());
+    print(response.body);
+
+    print(response.statusCode);
+    if (response.statusCode != 200) {
+      throw Exception(response.body);
+    }
+
+    return UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOk
+        .fromJson(jsonDecode(response.body)['uploadUserGalleryItem']);*/
+
+    /*final QueryResult result = await getClient().query(QueryOptions(
+        document: UploadUserGalleryItemMutation(
+          variables: UploadUserGalleryItemArguments(file: null),
+        ).document,
+        variables: {'file': null}));
+    if (result.hasException) throw Exception(result.exception.toString());
+    print(result.data);
+    return UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOk
+        .fromJson(result.data!['uploadUserGalleryItem']);*/
   }
 }

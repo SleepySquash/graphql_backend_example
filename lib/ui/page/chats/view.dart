@@ -23,7 +23,7 @@ class ChatsView extends GetView<ChatsController> {
         ChatMessage m = item;
         return Get.find<AuthService>().user!.id == m.userId
             ? 'You: ${m.text}'
-            : m.text ?? 'null';
+            : m.text ?? '[${m.attachments.length} attachment(s)]';
       }
       return 'Unknown item type';
     }
@@ -81,15 +81,14 @@ class ChatsView extends GetView<ChatsController> {
                     child: const Icon(Icons.refresh),
                   ),
                 ),
-                chatService.status.value.isLoadingMore
-                    ? const Align(
-                        alignment: Alignment.topCenter,
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 20),
-                          child: CircularProgressIndicator(),
-                        ),
-                      )
-                    : Container(),
+                if (chatService.status.value.isLoadingMore)
+                  const Align(
+                    alignment: Alignment.topCenter,
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 20),
+                      child: CircularProgressIndicator(),
+                    ),
+                  ),
               ],
             ),
     );

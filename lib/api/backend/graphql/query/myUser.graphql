@@ -22,5 +22,12 @@ query myUser() {
             medium,
             small
         },
+        gallery {
+            nodes {
+                id,
+                original,
+                addedAt
+            }
+        }
     }
 }

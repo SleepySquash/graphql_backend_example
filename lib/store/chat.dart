@@ -1,5 +1,6 @@
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:test/api/backend/api.dart';
+import 'package:test/domain/model/attachment.dart';
 import 'package:test/domain/model/avatar.dart';
 import 'package:test/domain/model/chat.dart';
 import 'package:test/domain/model/chat_item.dart';
@@ -38,6 +39,12 @@ class ChatRepository implements AbstractChatRepository {
         node.at,
         text: node.text,
         repliesTo: node.repliesTo?.id,
+        attachments: (node.attachments as List)
+            .map((e) => e.$$typename == 'ImageAttachment'
+                ? ImageAttachment(e.id, e.original, e.filename, e.size,
+                    big: e.big)
+                : FileAttachment(e.id, e.original, e.filename, e.size))
+            .toList(),
       );
     }
 

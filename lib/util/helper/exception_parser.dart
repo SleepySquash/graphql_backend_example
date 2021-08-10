@@ -54,6 +54,8 @@ class ExceptionParser {
       return 'Site internal error'.tr;
     } else if (string.contains('Connection refused')) {
       return 'Connection refused'.tr;
+    } else if (string.contains('UNSUPPORTED_FORMAT')) {
+      return 'Unsupported format'.tr;
     }
     return string;
   }

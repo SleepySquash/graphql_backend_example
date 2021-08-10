@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:test/api/backend/api.dart';
 import 'package:test/domain/model/avatar.dart';
+import 'package:test/domain/model/gallery_item.dart';
 import '../model/session.dart';
 import '../model/user.dart';
 import '../../provider/graphql.dart';
@@ -49,6 +50,9 @@ class AuthService extends GetxController {
               medium: response.avatar?.medium,
               small: response.avatar?.small,
             ),
+            gallery: response.gallery.nodes
+                .map((e) => GalleryItem(e.id, e.original, e.addedAt))
+                .toList(),
           );
           status.value = RxStatus.success();
           return;
@@ -58,7 +62,7 @@ class AuthService extends GetxController {
             prefs.remove('session');
             Get.offAndToNamed('/auth');
           }
-          // print('AuthService.init: $e');
+          print('AuthService.init: $e');
         }
       } else {
         graphQlProvider.token = null;
@@ -121,6 +125,9 @@ class AuthService extends GetxController {
           medium: response.user.avatar?.medium,
           small: response.user.avatar?.small,
         ),
+        gallery: response.user.gallery.nodes
+            .map((e) => GalleryItem(e.id, e.original, e.addedAt))
+            .toList(),
       );
       graphQlProvider.token = session!.token;
 

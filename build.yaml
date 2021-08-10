@@ -8,6 +8,12 @@ targets:
               schema: lib/schema.graphql
               queries_glob: lib/api/backend/graphql/**.graphql
           scalar_mapping:
+            - custom_parser_import: 'package:test/api/backend/upload.dart'
+              graphql_type: Upload
+              dart_type:
+                name: MultipartFile
+                imports:
+                  - 'package:http/http.dart'
             - graphql_type: UserId
               dart_type: String
             - graphql_type: UserNum
@@ -41,4 +47,6 @@ targets:
             - graphql_type: ChatMessageText
               dart_type: String
             - graphql_type: AttachmentId
+              dart_type: String
+            - graphql_type: GalleryItemId
               dart_type: String

@@ -1,11 +1,14 @@
 import 'package:collection/collection.dart';
+import 'package:dio/dio.dart' as dio;
 import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:test/api/backend/api.dart';
 import 'package:test/domain/model/avatar.dart';
 import 'package:test/domain/model/chat_contact.dart';
+import 'package:test/domain/model/gallery_item.dart';
 import 'package:test/domain/model/user.dart';
 import 'package:test/provider/graphql.dart';
 import 'package:test/util/helper/exception_parser.dart';
+import 'package:test/util/helper/file_picker.dart';
 
 import '../domain/repository/user.dart';
 
@@ -46,27 +49,33 @@ class UserRepository implements AbstractUserRepository {
       _processQuery<User>(await graphQlProvider.user(id),
           (Map<String, dynamic>? data) {
         User$Query$User user = User$Query.fromJson(data!).user!;
-        return User(user.id, user.num,
-            isDeleted: user.isDeleted,
-            mutualContactsCount: user.mutualContactsCount,
-            name: user.name,
-            bio: user.bio,
-            avatar: Avatar(
-              x1: user.avatar?.crop?.topLeft.x,
-              y1: user.avatar?.crop?.topLeft.y,
-              x2: user.avatar?.crop?.bottomRight.x,
-              y2: user.avatar?.crop?.bottomRight.y,
-              original: user.avatar?.original,
-              big: user.avatar?.big,
-            ),
-            contacts: user.contacts
-                .map((e) => ChatContact(
-                      e.id,
-                      e.name,
-                      dialogId: e.chatUsers.firstOrNull?.dialog?.id,
-                      favoritePosition: e.favoritePosition,
-                    ))
-                .toList());
+        return User(
+          user.id,
+          user.num,
+          isDeleted: user.isDeleted,
+          mutualContactsCount: user.mutualContactsCount,
+          name: user.name,
+          bio: user.bio,
+          avatar: Avatar(
+            x1: user.avatar?.crop?.topLeft.x,
+            y1: user.avatar?.crop?.topLeft.y,
+            x2: user.avatar?.crop?.bottomRight.x,
+            y2: user.avatar?.crop?.bottomRight.y,
+            original: user.avatar?.original,
+            big: user.avatar?.big,
+          ),
+          contacts: user.contacts
+              .map((e) => ChatContact(
+                    e.id,
+                    e.name,
+                    dialogId: e.chatUsers.firstOrNull?.dialog?.id,
+                    favoritePosition: e.favoritePosition,
+                  ))
+              .toList(),
+          gallery: user.gallery.nodes
+              .map((e) => GalleryItem(e.id, e.original, e.addedAt))
+              .toList(),
+        );
       }, cb);
 
   Future<List<ChatContact>> contacts(
@@ -172,5 +181,17 @@ class UserRepository implements AbstractUserRepository {
   Future<double?> removeFromFavorites(ChatContact contact) async {
     return (await graphQlProvider.unfavoriteChatContact(contact.id))
         .favoritePosition;
+  }
+
+  Future<GalleryItem> uploadGalleryImage(FileDetails file) async {
+    dio.MultipartFile myFile = await dio.MultipartFile.fromFile(file.path,
+        filename: file.name, contentType: file.mime);
+    UploadUserGalleryItem$Mutation$UploadUserGalleryItemResult$UploadUserGalleryItemOk
+        response = await graphQlProvider.uploadUserGalleryItem(myFile);
+    return GalleryItem(
+      response.galleryItem.id,
+      response.galleryItem.original,
+      response.galleryItem.addedAt,
+    );
   }
 }

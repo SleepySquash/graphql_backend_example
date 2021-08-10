@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:test/domain/model/chat_contact.dart';
+import 'package:test/domain/model/gallery_item.dart';
 
 import 'avatar.dart';
 
@@ -15,6 +16,7 @@ class MyUser {
     this.bio,
     this.avatar,
     this.unreadChatsCount = 0,
+    this.gallery = const [],
   });
 
   final String id;
@@ -27,6 +29,7 @@ class MyUser {
   // List<String> phones;
   bool hasPassword;
   int unreadChatsCount;
+  List<GalleryItem> gallery;
 
   Map<String, String?> toJson() => {
         'id': id,
@@ -37,6 +40,7 @@ class MyUser {
         'avatar': json.encode(avatar?.toJson()),
         'hasPassword': hasPassword.toString(),
         'unreadChatsCount': unreadChatsCount.toString(),
+        'gallery': json.encode(gallery.map((e) => e.toJson()).toList()),
       };
   MyUser.fromJson(Map<String?, dynamic> json)
       : id = json['id'],
@@ -52,7 +56,10 @@ class MyUser {
                 : false,
         unreadChatsCount = json['unreadChatsCount'] == null
             ? 0
-            : int.parse(json['unreadChatsCount']);
+            : int.parse(json['unreadChatsCount']),
+        gallery = (jsonDecode(json['gallery']) as List)
+            .map((i) => GalleryItem.fromJson(i))
+            .toList();
 }
 
 // ignore: must_be_immutable
@@ -68,6 +75,7 @@ class User extends Equatable {
     this.avatar,
     this.mutualContactsCount = 0,
     this.contacts = const [],
+    this.gallery = const [],
   });
 
   final String id;
@@ -80,6 +88,7 @@ class User extends Equatable {
   bool isDeleted;
   int mutualContactsCount;
   List<ChatContact> contacts;
+  List<GalleryItem> gallery;
 
   @override
   List<Object> get props => [id, num];

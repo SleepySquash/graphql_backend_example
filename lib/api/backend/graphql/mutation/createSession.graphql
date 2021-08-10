@@ -28,6 +28,13 @@ mutation createSession($num: UserNum, $login: UserLogin, $email: UserEmail, $pho
                     medium,
                     small
                 },
+                gallery {
+                    nodes {
+                        id,
+                        original,
+                        addedAt
+                    }
+                }
             }
         }
         ... on CreateSessionError {

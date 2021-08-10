@@ -1,3 +1,5 @@
+import 'attachment.dart';
+
 abstract class ChatItem {
   const ChatItem(this.id, this.chatId, this.userId, this.at);
 
@@ -38,10 +40,12 @@ class ChatMessage extends ChatItem {
     DateTime at, {
     this.text,
     this.repliesTo,
+    this.attachments = const [],
   }) : super(id, chatId, userId, at);
 
   final String? repliesTo;
   final String? text;
+  List<Attachment> attachments;
 }
 
 class ChatForward extends ChatItem {

@@ -1,10 +1,13 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:photo_view/photo_view_gallery.dart';
 import 'package:test/domain/model/chat_item.dart';
+import 'package:test/domain/model/gallery_item.dart';
 import 'package:test/domain/service/auth.dart';
 import 'package:test/ui/page/profile/view.dart';
 import 'package:intl/intl.dart';
+import 'package:test/ui/widget/gallery_view.dart';
 import 'package:test/util/helper/avatar.dart';
 
 import 'controller.dart';
@@ -31,7 +34,7 @@ class ChatView extends GetView<ChatController> {
                 borderRadius: BorderRadius.circular(35.0),
                 boxShadow: const [
                   BoxShadow(
-                      offset: Offset(0, 3), blurRadius: 5, color: Colors.grey)
+                      offset: Offset(0, 3), blurRadius: 5, color: Colors.black)
                 ],
               ),
               child: Row(
@@ -72,7 +75,13 @@ class ChatView extends GetView<ChatController> {
           Container(
             padding: const EdgeInsets.all(15.0),
             decoration: const BoxDecoration(
-                color: Colors.blueAccent, shape: BoxShape.circle),
+              color: Colors.blueAccent,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                    offset: Offset(0, 3), blurRadius: 5, color: Colors.black)
+              ],
+            ),
             child: Obx(
               () => InkWell(
                 child: AnimatedSwitcher(
@@ -126,7 +135,65 @@ class ChatView extends GetView<ChatController> {
 
     Widget buildMessageTile(ChatItem e) {
       bool fromMe = Get.find<AuthService>().user!.id == e.userId;
-      return Align(
+      return Row(
+        mainAxisAlignment:
+            fromMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+        children: [
+          ConstrainedBox(
+            constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width * 0.8),
+            child: Container(
+              margin: const EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                  color: fromMe ? Colors.green : Get.theme.cardColor,
+                  borderRadius: BorderRadius.circular(10)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Builder(
+                    builder: (ctx) {
+                      if (e is ChatMessage) {
+                        ChatMessage m = e;
+                        return Column(
+                          children: [
+                            SelectableText(
+                              m.text ?? '',
+                              style: Get.textTheme.bodyText2,
+                            ),
+                            if (m.attachments.isNotEmpty)
+                              Column(
+                                  children: m.attachments
+                                      .map((a) => GestureDetector(
+                                            onTap: () => Get.to(() =>
+                                                GalleryPhotoViewWrapper(
+                                                    galleryItems: m.attachments
+                                                        .map((e) => GalleryItem(
+                                                            e.id,
+                                                            e.original,
+                                                            DateTime.now()))
+                                                        .toList())),
+                                            child: Image.network(
+                                                'http://localhost/files${a.original}'),
+                                          ))
+                                      .toList()),
+                          ],
+                        );
+                      }
+                      return Text('Unknown message type');
+                    },
+                  ),
+                  Text(
+                    DateFormat('kk:mm').format(e.at),
+                    style: Get.textTheme.caption,
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      );
+      /*return Align(
         alignment: fromMe ? Alignment.topRight : Alignment.topLeft,
         child: Container(
           decoration: BoxDecoration(
@@ -146,6 +213,14 @@ class ChatView extends GetView<ChatController> {
                         m.text ?? '',
                         style: Get.textTheme.bodyText2,
                       ),
+                      m.attachments.isEmpty
+                          ? Container(width: 0)
+                          : Column(
+                              children: m.attachments
+                                  .map((a) => ListTile(
+                                      title: Image.network(
+                                          'http://localhost/files${a.original}')))
+                                  .toList()),
                       Text(
                         DateFormat('kk:mm').format(e.at),
                         style: Get.textTheme.caption,
@@ -176,7 +251,7 @@ class ChatView extends GetView<ChatController> {
             },
           ),
         ),
-      );
+      );*/
     }
 
     return Obx(
@@ -195,11 +270,14 @@ class ChatView extends GetView<ChatController> {
                 : controller.chat == null
                     ? const Center(child: Text('Write your first message!'))
                     : Scrollbar(
-                        child: ListView(
-                          children: controller.items
-                              .map((e) => buildMessageTile(e))
-                              .toList()
-                            ..add(const Align(child: SizedBox(height: 71))),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: ListView(
+                            children: controller.items
+                                .map((e) => buildMessageTile(e))
+                                .toList()
+                              ..add(const Align(child: SizedBox(height: 71))),
+                          ),
                         ),
                       ),
             Column(
